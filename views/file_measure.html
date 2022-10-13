@@ -1,0 +1,136 @@
+<!-- nav tab for file -->
+<div class="w3-row">
+    {{each files file index}}
+    <a href="javascript:void(0)" onclick="openFirstTab(event, 'file_panel--{{file.filename}}');">
+        <div class="w3-third firsttablink w3-bottombar w3-hover-light-grey w3-padding" style="text-align: center;">
+            {{file.filename}}</div>
+    </a>
+    {{/each}}
+</div>
+<!-- nav tab for file ===end=== -->
+
+<!-- tab content for file -->
+{{each files file index}}
+<div class="w3-container firsttab" id="file_panel--{{file.filename}}" style="display:none">
+    <h4 id="h--{{file.filename}}" class="w3-padding-left-16">{{file.filename}}
+        <span id="file_fold--{{file.filename}}" class="w3-button w3-light-grey w3-section">
+            <i class="far fa-minus-square"></i>
+        </span>
+    </h4>
+    {{if file.code==200}}
+
+    <!-- nav tab for generation step -->
+    <div class="w3-row" id="step_tab--{{file.filename}}">
+        <div
+            class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding w3-border-blue">
+            <a href="javascript:void(0)" onclick="openSecondTab(event, 'measure_panel--{{file.filename}}');"
+                style="text-decoration: none; text-align: center;">
+                {{session=='Expert'? 'Measure':'Indicator'}} Detection
+            </a>
+            <span id="selec_measure_icon--{{file.filename}}" class="w3-button w3-light-grey w3-section">
+                <i class="far fa-minus-square"></i></span>
+        </div>
+
+        <div class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding">
+            <a href="javascript:void(0)" onclick="openSecondTab(event, 'schema_panel--{{file.filename}}' );"
+                style="text-decoration: none;">
+                {{session=='Expert'? 'Dimension':'Axis'}} Detection
+            </a>
+            <span id="schema_icon--{{file.filename}}" class="w3-button w3-light-grey w3-padding w3-section">
+                <i class="far fa-minus-square"></i>
+            </span>
+        </div>
+
+
+        <div class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding">
+            <a href="javascript:void(0)" onclick="openSecondTab(event, 'db_panel--{{file.filename}}');"
+                style="text-decoration: none;">
+                Data Warehouse {{session=='Expert'? 'Implementation':'Generation'}}
+            </a>
+            <span id="db_icon--{{file.filename}}" class="w3-button w3-light-grey w3-padding w3-section">
+                <i class="far fa-minus-square"></i>
+            </span>
+        </div>
+    </div>
+    <!-- nav tab for generation step ===end=== -->
+
+    <!-- tab content  for generation step -->
+    <div class="w3-panel secondtab--{{file.filename}}" id="measure_panel--{{file.filename}}">
+        <!-- tab content for step1 select measures -->
+        <div class="w3-panel" id="selec_measure_panel--{{file.filename}}">
+            <form class="w3-form" id="form--{{file.filename}}" method="post" name="{{file.filename}}">
+                <h5><i class="far fa-check-circle w3-text-red w3-large"></i> Proposed {{session=='Expert'?
+                    'Measures':'Indicators'}} &emsp;
+                    <span class="badge bg-primary rounded-pill">
+                        {{file.proposed_measures.length}}
+                    </span>
+                    {{if file.proposed_measures.length > 0}}
+                    &emsp; <span id="select_propose--{{file.filename}}"
+                        class="w3-button w3-light-grey w3-padding w3-section" style="color: grey;">None</span>
+                    {{/if}}
+                </h5>
+                <table class="w3-table w3-striped w3-white">
+                    {{each file.proposed_measures measure indexMea}}
+                    <tr>
+                        <td> 
+                            <input id="propose_{{indexMea}}--{{file.filename}}" class="propose--{{file.filename}}"
+                                type="checkbox" name="proposed_measure" value={{measure}} checked /> <label for="propose_{{indexMea}}--{{file.filename}}">{{measure}} </label>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </table>
+                <hr>
+
+                <h5><i class="fa fa-user-plus w3-text-yellow w3-large"></i> Can they also be {{session=='Expert'?
+                    'measures':'indicators'}} &emsp;
+                    <!-- <i>Number: -->
+                    <span class="badge bg-primary rounded-pill">
+                        {{file.additional_measures.length}}
+                    </span>
+                    <!-- </i> -->
+                    {{if file.additional_measures.length > 0}}
+                    &emsp; <span id="select_add--{{file.filename}}"
+                        class="w3-button w3-light-grey w3-padding w3-section">All</span>
+                    {{/if}}
+                </h5>
+                <table class="w3-table w3-striped w3-white">
+                    {{each file.additional_measures other indexAdd}}
+                    <tr>
+                        <td> <input class="additional--{{file.filename}}"
+                                id="additional_{{indexAdd}}--{{file.filename}}" type="checkbox"
+                                name="additional_measure" value={{other}} /> <label for="additional_{{indexAdd}}--{{file.filename}}">{{other}} </label>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </table>
+                <hr>
+
+                <div class="row justify-content-between">
+                    <div class="col-4">
+                        <button class="w3-button w3-light-grey w3-padding-large w3-section" type="button">
+                            <a href="#uplod_form" style="text-decoration: none; color:black; font-size: larger;">
+                                <i class="fa fa-arrow-left"></i> Return
+                            </a>
+                        </button>
+                    </div>
+                    <div class="col-4">
+                        <button class="w3-button w3-light-grey w3-padding-large w3-section"
+                            id="btn_measure--{{file.filename}}" type="button">
+                            <span style="font-size: larger; color: blue;">
+                                <i class="fa fa-arrow-right"></i> Next
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {{else}}
+        <h5> {{file.msg}} </h5>
+        {{/if}}
+        <!-- tab content for step1 select measures ===end=== -->
+    </div>
+    <!-- tab content for generation step ====end==== -->
+</div>
+{{/each}}
+<!-- tab content for file ====end=== -->
+<script src="../static/js/file_measure.js"></script>

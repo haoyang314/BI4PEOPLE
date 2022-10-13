@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+    </style>
+
+    <title>Upload File</title>
+</head>
+<body>
+    <div id="welcome"> </div>
+    <form method="POST" action="files" enctype="multipart/form-data">
+        <h6>Upload file: </h6>
+        <label for="input_file">
+            <i class="iconfont iconupload"></i>
+            <span>Choose file</span>
+            <input type="file" accept="csv/*" id="input_file" name="file" multiple/>
+        </label>
+        <span id="err_exist"></span>
+        <p><progress id="process" value="0" max="100"></progress></p>
+        <!-- <button class="w3-button w3-light-grey w3-padding-large w3-section" type="submit" formaction="files">
+            <span><i class="fa fa-upload"></i> Upload File & Execute</span>
+        </button> -->
+    </form>  
+
+    <h5><i class="fa fa-comment w3-text-yellow w3-large" ></i > Additional Measures &emsp;<i>Number: </i>
+        &emsp; <span id="select_add">All</span>
+    </h5>
+
+    <script src="../static/js/file.js"></script>
+</body>
+</html>

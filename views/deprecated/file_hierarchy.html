@@ -1,0 +1,42 @@
+<p>Select Hierarchies &emsp;&emsp; <span id="selec_hierarchies_icon--{{file.filename}}"
+        class="w3-button w3-light-grey w3-padding w3-section">-</span></p>
+<div class="w3-panel" id="selec_hierarchies_panel--{{file.filename}}">
+    <h5><i class="fa fa-bell w3-text-red w3-large"></i> Measures &emsp; Number: {{measures.length}}</h5>
+    <table class="w3-table w3-striped w3-white">
+        {{each measures m}}
+        <tr>
+            <td>{{m}}</td>
+        </tr>
+        {{/each}}
+    </table>
+    <hr>
+
+    <h5><i class="fa fa-bookmark w3-text-blue w3-large"></i> Dimensions &emsp;
+        <i>Number: {{dimensions.length}}</i>
+        {{if dimensions.length > 0}}
+        &emsp; <span id="select_propose_hierarchies--{{file.filename}}"
+            class="w3-button w3-light-grey w3-padding w3-section" style="color: grey;">None</span>
+        {{/if}}
+    </h5>
+    {{each dimensions value }}
+    <h6><strong>{{value.name}}</strong></h6>
+    <form class="w3-form" id="form_hie--{{file.filename}}" name="hie_{{file.filename}}" method="post">
+        <table class="w3-table w3-striped w3-white">
+            {{each value.hierarchies h}}
+            <tr>
+                <td><label></label><input class="propose_hierarchies--{{file.filename}}" type="checkbox"
+                        name="proposed_hierarchy" value={{h.hierarchy}} checked />{{h.hierarchy}}</label></td>
+            </tr>
+            {{/each}}
+        </table>
+        {{/each}}
+        <hr>
+        <span id="sele_hie_err"></span>
+        <button class="w3-button w3-light-grey w3-padding-large w3-section" type="button"
+            id="btn_genedb--{{file.filename}}">
+            <i class="fa fa-arrow-right"></i>Next Step
+        </button>
+    </form>
+</div>
+
+<script src="../static/js/file_hierarchy.js"></script>

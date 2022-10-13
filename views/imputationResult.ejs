@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Merging</title>
+    <%- include(process.cwd() +"/views/common/link.html") %>
+    <link rel="stylesheet" href="/css/collapse.css" type="text/css">
+</head>
+<body class="w3-light-grey">
+    <%- include(process.cwd() +"/views/common/menu.html") %>
+    <%- include(process.cwd() +"/views/common/header.html") %>
+
+      <div class="container-sm">
+
+        <p class="fs-5 mb-3">Result: </p>
+
+        <% if (typeof db_infos !== 'undefined')  { %>
+          <div class="card mb-5"  id="detail" >
+            <div class="card-body">
+              <h5 class="card-title">Database Infos</h5>
+                <% Object.entries(db_infos).forEach(function(entry){
+                  const [key, value] = entry%>
+                  <div class="row">
+                    <div class="col text-uppercase fw-bold float-end " value="<%- key %>" >
+                      <%- key %>
+                    </div>
+                    <% if (key == "pwd") {%>
+                      <div class="col" value="<%- value %>">
+                        ******
+                      </div>
+                    <% }else { %>
+                      <div class="col" value="<%- value %>">
+                        <%- value %>
+                      </div>
+                    <% } %>
+                  </div>
+                <% }) %> 
+            </div>
+          </div>
+        <% } %>
+
+        <% if (typeof attriImput !== 'undefined') { %>
+          
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Dimension</th>
+                <th scope="col">Attribute</th>
+                <th scope="col">Missing Number</th>
+                <th scope="col">Completed Number</th>
+                <th scope="col">Completed rate(%)</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              <% const attris = Object.values(attriImput) 
+                for (let i = 0; i < attris.length ; i++) { %>
+                  <tr>
+                    <th scope="row"><%- i+1%></th>
+                    <td class="text-uppercase"><%- attris[i]['Dimension'] %></td>
+                    <td class="text-uppercase"><%- attris[i]['Attribute'] %></td>
+                    <td class="text-uppercase"><%- attris[i]['Missing Number'] %></td>
+                    <td class="text-uppercase"><%- attris[i]['Missing Number'] %></td>
+                    <td class="text-uppercase">100%</td>
+                  </tr>
+              <%}%>
+              
+              
+            </tbody>
+          </table>
+          
+          <a href="/imputation" class="btn btn-primary" role="button">A new imputation</a>
+            
+        <% } %>       
+      </div>
+
+      <%- include(process.cwd() +"/views/common/footer.html") %>
+    </body>
+</html>

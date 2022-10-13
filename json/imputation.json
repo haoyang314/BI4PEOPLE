@@ -1,0 +1,85 @@
+{
+    "DW1_DW2": {
+        "customer_customer": {
+          "Attributes": ["regionkey","region","custkey","CUSTPHONE", "custaddress", "custname", "nationkey", "NATION", "NATIONCOMMENT","segment"],
+          "Hierarchy": {
+              "H_customer_seg1_H_customer_seg2":{
+                "Parameter": ["custkey", "segment"],
+                "Weak Attributes": {
+                  "custkey":["custname","custaddress"]
+                }
+              },
+              "H_customer_seg1_H_supplier_geo1_H_customer_geo2":{
+                "Parameter": ["custkey", "nationkey", "regionkey"],
+                "Weak Attributes": {
+                  "custkey":["custaddress", "custname"]
+                }
+              }
+              
+          },
+          "Missing": {
+            "regionkey": 143, 
+            "region": 143,
+            "custkey": 0, 
+            "CUSTPHONE": 31,
+            "custaddress": 31, 
+            "custname": 0, 
+            "nationkey": 31, 
+            "NATION": 31, 
+            "NATIONCOMMENT": 31,
+            "segment": 0
+          },
+          "Total Record Number": 143
+        },
+        "orderdate": {
+          "Attributes": ["month", "year", "orderdate"],
+          "Hierarchy": {
+              "H_date_my2":{
+                  "Parameter":  ["orderdate", "month", "year"],
+                  "Weak Attributes": {
+                  }
+              }
+          },
+          "Missing": {
+            "month": 0, 
+            "year": 0, 
+            "orderdate": 0
+          },
+          "Total Record Number": 0
+        },
+        "supplier_supplier": {
+          "Attributes": ["nation", "region", "suppaddress", "suppname", "nationcomment", "suppkey", "regionkey", "nationkey"],
+          "Hierarchy": {
+              "H_supplier_geo2":{
+                  "Parameter": ["suppkey", "nationkey"],
+                  "Weak Attributes": {
+                      "suppkey":["suppaddress", "suppname"],
+                      "nationkey":["nation", "nationcomment"]
+                  }
+              },
+              "H_supplier_geo1_H_customer_geo2_H_supplier_geo2":{
+                "Parameter": ["suppkey", "nationkey", "regionkey"],
+                "Weak Attributes": {
+                    "suppkey":["suppaddress", "suppname"],
+                    "nationkey":["nation", "nationcomment"],
+                    "regionkey": ["region"]
+                }
+            }
+          },
+          "Missing": {
+            "nation": 0, 
+            "region": 2, 
+            "suppaddress": 0, 
+            "suppname": 0, 
+            "nationcomment": 2, 
+            "suppkey": 0, 
+            "regionkey": 2, 
+            "nationkey": 0
+          },
+          "Total Record Number": 143
+        },
+        "part":{
+            "Attributes":["partkey", "type", "brand", "partname", "manufacture"]
+        }
+    }
+}

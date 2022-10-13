@@ -1,0 +1,55 @@
+<!-- Top container -->
+
+<div class="w3-bar w3-top w3-blue w3-large" style="z-index:4">
+    <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i
+            class="fa fa-bars"></i>  Menu</button>
+    <span class="w3-bar-item w3-right">Logo</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+    <div class="w3-container w3-row">
+        <!-- <div class="w3-col s4">   -->
+        <div class="w3-bar-block">
+            <strong>BI4PEOPLE</strong>
+            <!-- <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
+            <span>Welcome, <strong>transform your document</strong></span> -->
+        </div>
+        <div class="w3-col s8 w3-bar" id="myOverlay">
+            <span class="w3-button w3-display-topright w3-transparent ws-hover-black" title="Close Menu"
+                onclick="w3_close()" style="font-weight:bold;padding-top:10px;padding-bottom:11px;"><i class="fa fa-times fa-fw"></i>
+                </span>
+        </div>
+    </div>
+    <hr>
+    <div class="w3-bar-block">
+        <a href="/files" class="w3-bar-item w3-button w3-padding <%- pagename=='Generation'? 'w3-blue':''%>"><i
+                    class='fa fa-database'></i>  Generation </a>
+        <a href="/merging" class="w3-bar-item w3-button w3-padding <%- pagename=='Merging'? 'w3-blue':''%>"><i
+                class='fas fa-coins'></i>  Merging</a>
+        <a href="/imputation" class="w3-bar-item w3-button w3-padding <%- pagename=='Imputation'? 'w3-blue':''%>"><i
+                class='fa fa-wrench'></i>  Imputation</a>
+        <hr>
+        <div class="w3-padding"> 
+
+            <h6 style="margin-bottom: 12px;"><i class="fa fa-cog fa-fw"></i> <span> Select your version</span></h6>
+            <!-- <label class="form-check-label" for="select_version1">
+                <div class="form-check form-switch" id="select_version1" onclick="setVersion1()">
+                        <input class="form-check-input" type="checkbox" role="switch"  name="version1" value="Expert" checked>
+                       Expert    
+                </div>
+            </label>  -->
+            
+            <h6 onclick="setVersion()"> <label class=" form-check-label"><span class="badge bg-primary rounded-pill">No Expert</span></label>
+                <input type="checkbox" name="version" value="No Expert" id="select_version">
+                <label class=" form-check-label">
+                    <span class="badge bg-primary rounded-pill">Expert</span>
+                </label>
+            </h6>
+
+            <h6 style="margin-top: 10px;">Version : <span class="badge bg-primary rounded-pill" id="session_val"> Expert
+                </span></h6>
+        </div>
+        <!-- <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a> -->
+    </div>
+</nav>

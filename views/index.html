@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.4.0/json-viewer/jquery.json-viewer.css" rel="stylesheet">
+</head>
+<style type="text/css">
+    #json-display {
+        border: 1px solid #000;
+        margin: 0;
+        padding: 8px 15px;
+        min-height: 300px;
+        background: #1c2833;
+        color: #fff;
+    }
+</style>
+<body>
+<div style="padding: 40px 20px 0px 20px;">
+    <div>
+        <pre id="json-display" contenteditable="true"></pre>
+    </div>
+    <br>
+    <input type="button" id="format_btn" value="格式化" onclick="format_btn();" />
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.4.0/json-viewer/jquery.json-viewer.js"></script>
+<script>
+    $(document).ready(function(){   
+        var jsonObj = {"a":1,"b":"test"};
+        $("#json-display").jsonViewer(jsonObj,{withQuotes: true});//格式化展示
+    });
+    function format_btn() {
+        var jsonval = $("#json-display").text();
+        var jsonObj = JSON.parse(jsonval);   //把json字符串转为json对象
+        $("#json-display").jsonViewer(jsonObj,{withQuotes: true});//格式化展示
+    }
+</script>
+</body>
+</html>
+-----------------------------------
+©著作权归作者所有：来自51CTO博客作者赶路人儿的原创作品，请联系作者获取转载授权，否则将追究法律责任
+可视化编辑json数据——json editor
+https://blog.51cto.com/u_5650011/5394786

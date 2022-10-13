@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- 引入template-web.js -->
+    <!-- <script src="./node_modules/art-template/lib/template-web.js"></script> -->
+    <script src="../node_modules/art-template/lib/template-web.js"></script>
+    <style>
+        html,
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: "Raleway", sans-serif
+        }
+    </style>
+
+    <title>Upload File</title>
+</head>
+
+<body class="w3-light-grey">
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey"
+            onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+        <span class="w3-bar-item w3-right">Logo</span>
+    </div>
+
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+        <div class="w3-container w3-row">
+            <div class="w3-col s4">
+                <!-- <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px"> -->
+                <span>Welcome, <strong>transform your document</strong></span>
+            </div>
+            <div class="w3-col s8 w3-bar">
+                <span class="w3-button w3-display-topright w3-transparent ws-hover-black" title="Close Menu"
+                    onclick="w3_close()" style="font-weight:bold;padding-top:10px;padding-bottom:11px;"><i
+                        class="fa fa-remove fa-fw"></i></span>
+                <br>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+            </div>
+        </div>
+        <hr>
+        <div class="w3-bar-block">
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-home fa-fw"></i>  Home</a>
+            <a class="w3-bar-item w3-button w3-padding w3-blue"><button class="w3-button w3-block w3-left-align" onclick="myFunction('Demo1')"><i
+                        class="fa fa-users fa-fw"></i>   Auto-Generate <i class="fa fa-caret-down"></i></button></a>
+            <div class="w3-hide w3-blue" id="Demo1">
+                <a href="#" class="w3-bar-item w3-button">Generate</a>
+                <a href="#" class="w3-bar-item w3-button">Merge</a>
+                <a href="#" class="w3-bar-item w3-button">Complement</a>
+            </div>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Views</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
+        </div>
+    </nav>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" id="main" style="margin-top:43px; margin-left: 250px;">
+
+        <!-- Header -->
+        <header class="w3-container" style="padding-top:22px">
+            <h5><b><i class="fa fa-dashboard"></i> Home</b></h5>
+        </header>
+
+        <div class="w3-quarter">
+            <form class="w3-form" method="post" action="files" enctype="multipart/form-data">
+                <label for="input_file">
+                    <h6><i class="iconfont iconupload"></i> <i class="fa fa-upload"></i>
+                        <span>Upload file</span>
+                    </h6>
+                    <input type="file" accept="csv/*" id="input_file" name="file" multiple />
+                </label>
+                <span id="err_exist"></span>
+            </form>
+
+        </div>
+
+        <!-- import child module template -->
+        <div class="w3-container" id="file_container"></div>
+        <!-- end import child template -->
+
+        <!-- Footer -->
+        <footer class="w3-container w3-padding-16 w3-light-grey">
+            <h4>FOOTER</h4>
+            <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+        </footer>
+
+        <!-- End page content -->
+    </div>
+
+    <script>
+        function w3_open() {
+            if (document.getElementById("mySidebar").style.display == "block") {
+                document.getElementById("mySidebar").style.display = "none";
+                document.getElementById("myOverlay").style.display = "none";
+            } else {
+                document.getElementById("mySidebar").style.display = "block";
+                document.getElementById("myOverlay").style.display = "block";
+            }
+        }
+
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+
+        function myFunction(id) {
+            var x = document.getElementById(id);
+            console.log(x.previousElementSibling.firstElementChild.lastElementChild)
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.firstElementChild.lastElementChild.className = "fa fa-caret-up";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.firstElementChild.lastElementChild.className = "fa fa-caret-down";
+            }
+        }
+    </script>
+
+    <script src="../static/js/upload.js"></script>
+
+</body>
+
+</html>

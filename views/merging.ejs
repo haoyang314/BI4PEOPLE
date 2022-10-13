@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Merging</title>
+    <%- include(process.cwd() +"/views/common/link.html") %>
+    <link rel="stylesheet" href="/css/collapse.css" type="text/css">
+</head>
+<body class="w3-light-grey">
+    <%- include(process.cwd() +"/views/common/menu.html") %>
+    <%- include(process.cwd() +"/views/common/header.html") %>
+        <div class="container-sm">
+            <form action="/merging/result" method="post">
+                <p class="fs-5">Choose two databases to be merged: </p>
+
+                <% Object.entries(all_schema).forEach(function(one_db){ const [db_name, db_schema]=one_db%>
+
+                    <div class="form-check ">
+                        <div class="form-check-inline ">
+                            <input class="form-check-input" type="checkbox" value="<%- db_name %>" name="dwSelected"
+                                id="flexCheckDefault<%- db_name %>">
+                            <label class="form-check-label" for="flexCheckDefault<%- db_name %>">
+                                <%- db_name %>
+                            </label>
+                        </div>
+
+                        <button class="btn btn-secondary mb-3 btn-md " type="button" id="collapse<%- db_name %>">
+                            Infos
+                        </button>
+                    </div>
+
+                    <div class="card card-body mb-3" id="content<%- db_name %>" style="display: none;">
+                        <!--data warehouse infos-->
+                        <div class="card mb-5" id="detail">
+                            <div class="card-body">
+                                <h5 class="card-title">Database Infos</h5>
+                                <div class="row">
+                                    <div class="col text-uppercase fw-bold float-end ">
+                                        name
+                                    </div>
+                                    <div class="col">
+                                        <%- db_list[db_name].name %>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-uppercase fw-bold float-end ">
+                                        dsn
+                                    </div>
+                                    <div class="col">
+                                        <%- db_list[db_name].dsn %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p name="hints">You can analyse your data with respect to these axis.</p>
+
+                        <!--Dimensions-->
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{ %>
+                                    <% if (dim_name !="Fact" ) {%>
+                                        <% if (index==0) { %>
+                                            <button class="nav-link active text-uppercase"
+                                                id="nav-<%- db_name %>-<%- dim_name%>-tab" data-bs-toggle="tab"
+                                                data-bs-target="#nav-<%- db_name %>-<%- dim_name%>" type="button"
+                                                role="tab" aria-controls="#nav-<%- db_name %>-<%- dim_name%>"
+                                                aria-selected="true">
+                                                <%- dim_name %>
+                                            </button>
+                                            <% } else { %>
+                                                <button class="nav-link text-uppercase"
+                                                    id="nav-<%- db_name %>-<%- dim_name%>-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#nav-<%- db_name %>-<%- dim_name%>" type="button"
+                                                    role="tab" aria-controls="#nav-<%- db_name %>-<%- dim_name%>"
+                                                    aria-selected="false">
+                                                    <%- dim_name %>
+                                                </button>
+                                                <%}%>
+                                                    <% } })%>
+                            </div>
+                        </nav>
+
+                        <div class="overflow-auto mb-5" style="height:250px ;">
+                            <div class="tab-content" id="nav-tabContent">
+                                <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{
+                                    if(dim_name != "Fact") {
+                                    if (index == 0) { %>
+                                    <div class="tab-pane fade show active" id="nav-<%- db_name %>-<%- dim_name%>"
+                                        role="tabpanel" aria-labelledby="nav-<%- db_name %>-<%- dim_name%>-tab"
+                                        tabindex="0">
+                                        <% } else { %>
+                                            <div class="tab-pane fade" id="nav-<%- db_name %>-<%- dim_name%>"
+                                                role="tabpanel" aria-labelledby="nav-<%- db_name %>-<%- dim_name%>-tab"
+                                                tabindex="0">
+                                                <% } %>
+
+                                                    <table class="table table-hover table-responsive">
+                                                        <tr>
+                                                            <th scope="col" style="width: 22%" name="noExpert">Axis</th>
+                                                            <th scope="col" style="width: 22%; display: none;"
+                                                                name="expert">Dimension</th>
+                                                            <td scope="row" class="text-uppercase fw-bold">
+                                                                <%- dim_name %>
+                                                            </td>
+                                                        </tr>
+                                                        <% Object.entries(dim_detail).forEach(function(property){ const
+                                                            [proper_name, proper_detail]=property%>
+                                                            <% if (proper_name=="Hierarchy" && proper_detail !="None" )
+                                                                { %>
+                                                                <% Object.entries(proper_detail).forEach(([hie_name,
+                                                                    hie_detail], index)=>{%>
+                                                                    <tr name="hierarchy">
+                                                                        <th scope="col" name="noExpert">
+                                                                            Analysis Vision <%- index+1 %>
+                                                                                <span
+                                                                                    data-descr="In this axis, you have following analysis visions.">
+                                                                                    <svg width="28px" height="28px"
+                                                                                        viewBox="0 0 50 50"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path
+                                                                                            d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
+                                                                                        <path
+                                                                                            d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
+                                                                                    </svg>
+                                                                                </span>
+                                                                        </th>
+                                                                        <th scope="col" name="expert"
+                                                                            style="display: none;">Hierarchy <%- index+1
+                                                                                %>
+                                                                        </th>
+                                                                        <td class="text-uppercase">
+                                                                            <div class="row justify-content-between">
+                                                                                <div class="col-4">
+                                                                                    <%- hie_name%>
+                                                                                </div>
+                                                                                <div class="col-4">
+                                                                                    <svg width="20px" height="20px"
+                                                                                        viewBox="0 0 20 20"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path fill="#555"
+                                                                                            fill-rule="evenodd"
+                                                                                            d="M7.05307007,2.15808105 L14.2962587,9.41418482 C14.4320862,9.5496827 14.5,9.71077067 14.5,9.89744874 C14.5,10.0841268 14.4320862,10.2497803 14.2962587,10.3944092 C11.6760845,12.9498393 9.15095523,15.4168071 6.72087106,17.7953128 C6.5962677,17.912323 6.09560574,18.2032928 5.70989407,17.7705688 C5.3241824,17.3378448 5.55848694,16.9602509 5.70989407,16.8045692 C7.97174895,14.594209 10.3279004,12.2918355 12.7783485,9.89744874 L6.03100586,3.13816833 C5.78524099,2.79925826 5.80526899,2.48632792 6.09108986,2.19937732 C6.37691073,1.91242672 6.6975708,1.8986613 7.05307007,2.15808105 Z" />
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% Object.entries(hie_detail).forEach(function(hie_property){
+                                                                        const [hie_key, hie_value]=hie_property%>
+                                                                        <% if (hie_key=="Weak Attributes" ) { %>
+                                                                            <tr name="hieWeakAttributes"
+                                                                                style="display: none;">
+                                                                                <th scope="col" name="noExpert">
+                                                                                    - Supplementary Information
+                                                                                    <span
+                                                                                        data-descr="The levels contain following supplementary information.">
+                                                                                        <svg width="28px" height="28px"
+                                                                                            viewBox="0 0 50 50"
+                                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                                            <path
+                                                                                                d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
+                                                                                            <path
+                                                                                                d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                </th>
+                                                                                <th scope="col" name="expert"
+                                                                                    style="display: none;">- <%-
+                                                                                        hie_key%>
+                                                                                </th>
+                                                                                <td class="text-uppercase">
+                                                                                    <% Object.entries(hie_value).forEach(function(weak){
+                                                                                        const [key, weak_attri]=weak%>
+                                                                                        <%- key +": " + weak_attri%><br>
+                                                        <% }) %>
+                                                        </td>
+                                                    </tr>
+                                                    <% } else {%>
+                                                    <tr name=" hieParameter" style="display: none;">
+                                                                                <th scope="col" name="expert"
+                                                                                    style="display: none;">- <%-
+                                                                                        hie_key%>s
+                                                                                </th>
+                                                                                <th scope="col" name="noExpert">
+                                                                                    - Analysis Levels
+                                                                                    <span
+                                                                                        data-descr="In this vision, you have following analysis levels.">
+                                                                                        <svg width="28px" height="28px"
+                                                                                            viewBox="0 0 50 50"
+                                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                                            <path
+                                                                                                d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
+                                                                                            <path
+                                                                                                d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                </th>
+                                                                                <td class="text-uppercase">
+                                                                                    <%- hie_value%>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <% } %>
+                                                                                <% }) %>
+                                                                                    <% }) %>
+
+                                                                                        <% } else if
+                                                                                            (proper_name=="Missing" ) {
+                                                                                            %>
+                                                                                            <% } else if
+                                                                                                (proper_name=="Total Record Number"
+                                                                                                ) {%>
+                                                                                                </tr>
+                                                                                                <% } else {%>
+                                                                                                    <tr
+                                                                                                        name="attributes">
+                                                                                                        <th scope="col">
+                                                                                                            <%-
+                                                                                                                proper_name%>
+                                                                                                        </th>
+                                                                                                        <td
+                                                                                                            class="text-uppercase">
+                                                                                                            <%-
+                                                                                                                proper_detail%>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    <% } %>
+
+                                                                                                        <% }) %>
+                                                    </table>
+                                            </div>
+
+                                            <%}%>
+
+                                                <% }) %>
+
+                                    </div>
+                            </div>
+
+                            <!--Fact-->
+                            <p name="hints">These are analysis subjects.</p>
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <div class="nav nav-tabs" id="nav-tab-fact" role="tablist">
+                                        <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{
+                                            if (dim_name =="Fact") {
+                                            const db_fact = dim_detail %>
+                                            <% Object.entries(db_fact).forEach(([fact_name, fact_detail], index)=>{ %>
+                                                <% if (index==0) { %>
+                                                    <button class="nav-link active text-uppercase"
+                                                        id="nav-<%- db_name%>-<%- fact_name%>-tab" data-bs-toggle="tab"
+                                                        data-bs-target="#nav-<%- db_name %>-<%- fact_name%>"
+                                                        type="button" role="tab"
+                                                        aria-controls="#nav-<%- db_name %>-<%- fact_name%>"
+                                                        aria-selected="true">
+                                                        <%- fact_name%>
+                                                    </button>
+                                                    <% } else { %>
+                                                        <button class="nav-link text-uppercase"
+                                                            id="nav-<%- db_name %>-<%- fact_name%>-tab"
+                                                            data-bs-toggle="tab"
+                                                            data-bs-target="#nav-<%- db_name %>-<%- fact_name%>"
+                                                            type="button" role="tab"
+                                                            aria-controls="#nav-<%- db_name %>-<%- fact_name%>"
+                                                            aria-selected="false">
+                                                            <%- fact_name%>
+                                                        </button>
+                                                        <% } %>
+                                                            <%}) %>
+                                                                <% }%>
+                                                                    <% })%>
+                                    </div>
+                                </div>
+                            </nav>
+
+                            <div class="overflow-scroll mb-3" style="height:200px ;">
+                                <div class="tab-content" id="nav-tabContent-fact">
+                                    <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{
+                                        if (dim_name =="Fact") {
+                                        const db_fact = dim_detail %>
+                                        <% Object.entries(db_fact).forEach(([fact_name, fact_detail], index)=>{
+                                            if (index == 0) { %>
+                                            <div class="tab-pane fade show active"
+                                                id="nav-<%- db_name %>-<%- fact_name%>" role="tabpanel"
+                                                aria-labelledby="nav-<%- db_name %>-<%- fact_name%>-tab" tabindex="0">
+                                                <% } else { %>
+                                                    <div class="tab-pane fade" id="nav-<%- db_name %>-<%- fact_name%>"
+                                                        role="tabpanel"
+                                                        aria-labelledby="nav-<%- db_name %>-<%- fact_name%>-tab"
+                                                        tabindex="0">
+
+                                                        <% } %>
+                                                            <table class="table table-hover table-responsive">
+                                                                <tr>
+                                                                    <th scope="col" style="width: 20%" name="noExpert">
+                                                                        Subject</th>
+                                                                    <th scope="col" style="width: 20%; display: none;"
+                                                                        name="expert">Fact</th>
+                                                                    <td scope="row" class="text-uppercase fw-bold">
+                                                                        <%- fact_name%>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <% Object.entries(fact_detail).forEach(function(property){
+                                                                    const [proper_name, proper_detail]=property%>
+                                                                    <%if (proper_name=="Indicators" ) { %>
+                                                                        <!--Measures-->
+                                                                        <tr>
+                                                                            <th scope="col" name="noExpert">
+                                                                                Indicators
+                                                                                <span
+                                                                                    data-descr="In this subject, you have following indicators.">
+                                                                                    <svg width="28px" height="28px"
+                                                                                        viewBox="0 0 50 50"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path
+                                                                                            d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
+                                                                                        <path
+                                                                                            d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
+                                                                                    </svg>
+                                                                                </span>
+                                                                            </th>
+                                                                            <th scope="col" name="expert"
+                                                                                style="display: none;">Measures</th>
+                                                                            <td>
+                                                                                <%- proper_detail%>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <!--Dimension-->
+                                                                        <%} else { %>
+                                                                            <tr>
+                                                                                <th scope="col" name="noExpert">
+                                                                                    Associated to
+                                                                                    <span
+                                                                                        data-descr="This subject can be analysed with respect to these axis.">
+                                                                                        <svg width="28px" height="28px"
+                                                                                            viewBox="0 0 50 50"
+                                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                                            <path
+                                                                                                d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
+                                                                                            <path
+                                                                                                d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                </th>
+                                                                                <th scope="col" name="expert"
+                                                                                    style="display: none;">Associated to
+                                                                                </th>
+                                                                                <td>
+                                                                                    <%- proper_detail%>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <% } %>
+                                                                                <% }) %>
+
+                                                            </table>
+                                                    </div>
+
+                                                    <% }) %>
+                                                        <% }%>
+                                                            <% })%>
+
+                                            </div>
+                                </div>
+
+                            </div>
+
+
+
+                            <% }) %>
+
+                                <div id="warning"></div>
+
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="next">
+                                    Merge
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true" name="modalInfos">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="test"></div>
+                                                <div>
+                                                    <p>Please create your new data warehouses :</p>
+                                                    <div class="mb-3 row">
+                                                        <label for="createUser" class="col-sm-4 col-form-label">User
+                                                            Name<span style="color: red;">*</span></label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="createUser"
+                                                                name="userName">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="createPassword"
+                                                            class="col-sm-4 col-form-label">Enter
+                                                            Password<span style="color: red;">*</span></label>
+                                                        <div class="col-sm-6">
+                                                            <input type="password" class="form-control"
+                                                                id="createPassword" name="password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="confirmPassword"
+                                                            class="col-sm-4 col-form-label">Confirm
+                                                            Password<span style="color: red;">*</span></label>
+                                                        <div class="col-sm-6">
+                                                            <input type="password" class="form-control"
+                                                                id="confirmPassword">
+                                                        </div>
+                                                    </div>
+                                                    <span id="message"></span>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-primary">Yes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+            </form>
+        </div>
+        <%- include(process.cwd() +"/views/common/footer.html") %>
+            <script>
+                $(document).ready(function () {
+                    var nb_limit = 2
+
+                    //accordion
+                    $('[id^=collapse]').click(function () {
+                        console.log($(this).attr('id'))
+                        $(this).parent().next().toggle();
+                    })
+
+                    // condition to choose database
+                    $('input:checkbox').change(function () {
+                        if ($("input[name='dwSelected']:checked").length < nb_limit) {
+                            if (typeof $("#next").attr("data-bs-target") !== 'undefined' || $("#next").attr("data-bs-target") != false) {
+                                $("#next").removeAttr("data-bs-target")
+                                console.log($("#next").attr("data-bs-target"))
+                            }
+                        } else {
+                            if (typeof $("#next").attr("data-bs-target") === 'undefined' || $("#next").attr("data-bs-target") == false) {
+                                $("#next").attr("data-bs-target", "#exampleModal")
+                            }
+                        }
+
+                    });
+
+                    //condition to show modal
+                    $("#next").click(function () {
+                        if ($("input[name='dwSelected']:checked").length < 2) {
+                            if ($("#warning").html() === "") {
+                                if (typeof $("#next").attr("data-bs-target") !== 'undefined' || $("#next").attr("data-bs-target") != false) {
+                                    $("#next").removeAttr("data-bs-target")
+                                    console.log($("#next").attr("data-bs-target"))
+                                }
+                                $("#warning").append('<div class="alert alert-danger alert-dismissible fade show col-md-6 col-md-offset-6" role="alert">' +
+                                    '<strong>Please choose two data warehouses.</strong>' +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                    '</div>')
+                            }
+                        } else {
+                            $("#warning").html("")
+                            if (typeof $("#next").attr("data-bs-target") === 'undefined' || $("#next").attr("data-bs-target") == false) {
+                                $("#next").attr("data-bs-target", "#exampleModal")
+                            }
+                        }
+
+                    })
+
+                    //check password
+                    $("#createPassword, #confirmPassword").keyup(function () {
+                        //check password
+                        if ($('#createPassword').val() == $('#confirmPassword').val()) {
+                            $('#message').html('Correct password.').css('color', 'green');
+                        } else if ($('#confirmPassword').val() != "") {
+                            $('#message').html('Please try again.').css('color', 'red');
+                        }
+                    })
+
+                    //refresh modal
+                    $("#next").click(function () {
+                        console.log("input[name='dwSelected']:checked".length)
+                        if ($("input[name='dwSelected']:checked").length == nb_limit) {
+                            var allVals = [];
+                            $("#test").html("");
+                            $("#test").append("<p>The following data warehouses will be completed :</p>")
+                            $('input:checkbox[name=dwSelected]:checked').each(function () {
+                                $("#test").append("<p>" + $(this).val() + "</p>")
+                            })
+                        } else {
+                            $("#warning").html("")
+                            $("#warning").append('<div class="alert alert-danger alert-dismissible fade show col-md-6 col-md-offset-6" role="alert">' +
+                                '<strong>Please choose two data warehouses.</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>')
+                        }
+                    })
+
+                    //choose 2 database maximum
+                    $('input:checkbox[name=dwSelected]').on('change', function (evt) {
+                        if ($("input[name='dwSelected']:checked").length > nb_limit) {
+                            $(this).prop('checked', false);
+                            $("#warning").append('<div class="alert alert-warning alert-dismissible fade show col-md-6 col-md-offset-6" role="alert">' +
+                                '<strong>Only two data warehouses can be chosen at a time!</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>')
+
+                        }
+                    })
+
+                    // no expert version
+                    $("#noExpert").click(function () {
+                        if ($("#noExpert").hasClass("text-primary")) {
+                            $("#noExpert").toggleClass("text-primary")
+                            $("#noExpert").addClass("text-muted")
+                            $("#expert").removeClass("text-muted")
+                            $("#expert").addClass("text-primary")
+                            $('th[name=expert]').hide()
+                            $('th[name=noExpert]').show()
+                            $("p[name*='hints']").show()
+                            // $("tr[name*='hie']").hide()
+                            // $("tr[name*='ttributes']").hide()
+                        }
+                    })
+
+                    // expert version
+                    $("#expert").click(function () {
+                        if ($("#expert").hasClass("text-primary")) {
+                            $("#expert").removeClass("text-primary")
+                            $("#expert").addClass("text-muted")
+                            $("#noExpert").removeClass("text-muted")
+                            $("#noExpert").addClass("text-primary")
+                            // $("tr[name*='hie']").show()
+                            // $("tr[name*='ttributes']").show()
+                            $("p[name*='hints']").hide()
+                            $('th[name=noExpert]').hide()
+                            $('th[name=expert]').show()
+                        }
+                    })
+
+                    $("tr[name='hierarchy']").click(function () {
+                        // $("tr[name*='Attributes']").toggle()
+                        // $("tr[name*='meter']").toggle()
+                        $(this).next().toggle()
+                        $(this).next().addClass("opencss")
+                        $(this).next().next().toggle()
+                        $(this).next().next().addClass("opencss")
+                        var icon = $(this).children().last().children().children().last().children()
+                        if (icon.hasClass("rotated")) {
+                            icon.removeClass("rotated")
+                        } else {
+                            icon.addClass("rotated")
+                        }
+
+                    })
+
+                })
+
+            </script>
+</body>
+</html>

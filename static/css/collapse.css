@@ -1,0 +1,29 @@
+.rotated {
+  transform: rotate(90deg); /* Equal to rotateZ(45deg) */
+}
+
+.opencss {
+  background-color: #EBF5FB ;
+}
+
+span[data-descr] {
+  position: relative;
+  text-decoration: underline;
+  color: #00F;
+ }
+ 
+ span[data-descr]:hover::after {
+  content: attr(data-descr);
+  position: absolute;
+  left: 0;
+  top: 24px;
+  min-width: 200px;
+  border: 1px #aaaaaa solid;
+  border-radius: 5px;
+  background-color: #FEF9E7 ;
+  padding: 10px;
+  color: #000000;
+  font-size: 14px;
+  z-index: 1;
+  font-weight: lighter;
+ }

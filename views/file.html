@@ -1,0 +1,31 @@
+
+{{extend './common/layout.html'}}
+
+{{block 'title'}}Generate DB{{/block}}
+
+{{block 'link'}} {{include './common/link.html'}} {{/block}}
+
+{{block 'menu'}} {{include './common/menu.html'}} {{/block}}
+
+{{block 'header'}} {{include './common/header.html'}} {{/block}}
+
+{{block 'content'}}
+<div class="w3-quarter">
+        <form class="w3-form  w3-padding" id="uplod_form" method="post" action="files" enctype="multipart/form-data">
+    
+            <label for="input_file"><input class="w3-light-grey w3-padding" type="file" accept="csv/*" id="input_file"
+                    name="file" multiple /></label>
+            <button class="w3-button w3-light-grey w3-section" id="btn_upload" type="button">
+                <span><i class="fa fa-upload"></i> Upload & Execute</span>
+            </button>
+            <div class="w3-panel w3-display-container w3-border w3-round w3-green w3-card-4" id="err_exist" class="w3-padding"></div>
+        </form>
+</div>
+<div class="w3-container" id="file_measure">
+</div>
+{{/block}}
+{{block 'footer'}}
+<div class="w3-panel w3-display-container w3-border w3-round w3-green w3-card-4" id="msg_footer" class="w3-padding"></div>
+{{include './common/footer.html'}}
+<script src="../static/js/upload.js"></script>
+{{/block}}

@@ -1,0 +1,328 @@
+{
+    "filename": "DW1",
+    "df": [
+        [
+            "EXTENDEDPRICE",
+            "PARTKEY"
+        ],
+        [
+            "EXTENDEDPRICE",
+            "PARTNAME"
+        ],
+        [
+            "EXTENDEDPRICE",
+            "TYPE"
+        ],
+        [
+            "EXTENDEDPRICE",
+            "BRAND"
+        ],
+        [
+            "EXTENDEDPRICE",
+            "MANUFACTURE"
+        ],
+        [
+            "PARTKEY",
+            "PARTNAME"
+        ],
+        [
+            "PARTKEY",
+            "TYPE"
+        ],
+        [
+            "PARTKEY",
+            "BRAND"
+        ],
+        [
+            "PARTKEY",
+            "MANUFACTURE"
+        ],
+        [
+            "PARTNAME",
+            "PARTKEY"
+        ],
+        [
+            "PARTNAME",
+            "TYPE"
+        ],
+        [
+            "PARTNAME",
+            "BRAND"
+        ],
+        [
+            "PARTNAME",
+            "MANUFACTURE"
+        ],
+        [
+            "CUSTKEY",
+            "CUSTNAME"
+        ],
+        [
+            "CUSTKEY",
+            "CUSTADDRESS"
+        ],
+        [
+            "CUSTKEY",
+            "SEGMENT"
+        ],
+        [
+            "CUSTNAME",
+            "CUSTKEY"
+        ],
+        [
+            "CUSTNAME",
+            "CUSTADDRESS"
+        ],
+        [
+            "CUSTNAME",
+            "SEGMENT"
+        ],
+        [
+            "CUSTADDRESS",
+            "CUSTKEY"
+        ],
+        [
+            "CUSTADDRESS",
+            "CUSTNAME"
+        ],
+        [
+            "CUSTADDRESS",
+            "SEGMENT"
+        ],
+        [
+            "BRAND",
+            "MANUFACTURE"
+        ],
+        [
+            "SUPPKEY",
+            "SUPPNAME"
+        ],
+        [
+            "SUPPKEY",
+            "SUPPADDRESS"
+        ],
+        [
+            "SUPPKEY",
+            "NATIONKEY"
+        ],
+        [
+            "SUPPKEY",
+            "NATION"
+        ],
+        [
+            "SUPPKEY",
+            "REGIONKEY"
+        ],
+        [
+            "SUPPKEY",
+            "REGION"
+        ],
+        [
+            "SUPPNAME",
+            "SUPPKEY"
+        ],
+        [
+            "SUPPNAME",
+            "SUPPADDRESS"
+        ],
+        [
+            "SUPPNAME",
+            "NATIONKEY"
+        ],
+        [
+            "SUPPNAME",
+            "NATION"
+        ],
+        [
+            "SUPPNAME",
+            "REGIONKEY"
+        ],
+        [
+            "SUPPNAME",
+            "REGION"
+        ],
+        [
+            "SUPPADDRESS",
+            "SUPPKEY"
+        ],
+        [
+            "SUPPADDRESS",
+            "SUPPNAME"
+        ],
+        [
+            "SUPPADDRESS",
+            "NATIONKEY"
+        ],
+        [
+            "SUPPADDRESS",
+            "NATION"
+        ],
+        [
+            "SUPPADDRESS",
+            "REGIONKEY"
+        ],
+        [
+            "SUPPADDRESS",
+            "REGION"
+        ],
+        [
+            "NATIONKEY",
+            "SUPPKEY"
+        ],
+        [
+            "NATIONKEY",
+            "SUPPNAME"
+        ],
+        [
+            "NATIONKEY",
+            "SUPPADDRESS"
+        ],
+        [
+            "NATIONKEY",
+            "NATION"
+        ],
+        [
+            "NATIONKEY",
+            "REGIONKEY"
+        ],
+        [
+            "NATIONKEY",
+            "REGION"
+        ],
+        [
+            "NATION",
+            "SUPPKEY"
+        ],
+        [
+            "NATION",
+            "SUPPNAME"
+        ],
+        [
+            "NATION",
+            "SUPPADDRESS"
+        ],
+        [
+            "NATION",
+            "NATIONKEY"
+        ],
+        [
+            "NATION",
+            "REGIONKEY"
+        ],
+        [
+            "NATION",
+            "REGION"
+        ],
+        [
+            "REGIONKEY",
+            "REGION"
+        ],
+        [
+            "REGION",
+            "REGIONKEY"
+        ]
+    ],
+    "proposed_measures": [
+        "QUANTITY",
+        "TAX",
+        "EXTENDEDPRICE"
+    ],
+    "additional_measures": [
+        "CUSTKEY", "PARTKEY", "REGIONKEY"
+    ],
+    "selected_measures": [],
+    "final_dfs": [
+    ],
+    "equal_att": [
+    ],
+    "weak_att": [
+    ],
+    "dimensions": [
+        {
+            "name": "CUSTOMER",
+            "attributes": [
+                "CUSTKEY", "CUSTNAME","CUSTADDRESS","SEGMENT"]
+            ,
+            "hierarchies": [
+                {
+                    "name": "H_customer_seg1",
+                    "hierarchy": "CUSTKEY(CUSTNAME,CUSTADDRESS),SEGMENT",
+                    "parametres": [
+                        "CUSTKEY",
+                        "SEGMENT"
+                    ],
+                    "weak_att": [
+                        {
+                            "name": "CUSTKEY",
+                            "wk": [
+                                "CUSTNAME","CUSTADDRESS"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "D2",
+            "attributes": [
+                "SUPPKEY", "SUPPNAME", "SUPPADDRESS", "REGIONKEY","REGION","NATIONKEY","NATION"
+            ],
+            "hierarchies": [
+                {
+                    "name": "H_supplier_geo1",
+                    "hierarchy": "SUPPKEY( SUPPNAME,SUPPADDRESS),REGIONKEY(REGION),NATIONKEY(NATION)",
+                    "parametres": [
+                        "SUPPKEY",
+                        "REGIONKEY",
+                        "NATIONKEY"
+                    ],
+                    "weak_att": [
+                        {
+                            "name": "SUPPKEY",
+                            "wk": [
+                                "SUPPNAME",
+                                "SUPPADDRESS"
+                            ]
+                        },
+                        {
+                            "name": "REGIONKEY",
+                            "wk": [
+                                "REGION"
+                            ]
+                        },
+                        {
+                            "name": "NATIONKEY",
+                            "wk": [
+                                "NATION"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "D3",
+            "attributes": [
+                "PARTKEY", "PARTNAME","TYPE","BRAND", "MANUFACTURE"
+            ],
+            "hierarchies": [
+                {
+                    "name": "H_part_manu1",
+                    "hierarchy": "Date",
+                    "parametres": [
+                        "PARTKEY", "BRAND", "MANUFACTURE"
+                    ],
+                    "weak_att": [{
+                        "name": "PARTKEY",
+                        "wk":["PARTNAME"]
+                    }]
+                }
+            ]
+        }
+    ],
+    "facts":[{
+        "name": "lineorder1",
+        "measures": [ "QUANTITY", "TAX","EXTENDEDPRICE"],
+        "associations": ["CUSTOMER", "D2", "D3"]
+    }]
+}

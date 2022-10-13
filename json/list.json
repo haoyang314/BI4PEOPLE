@@ -1,0 +1,12 @@
+{
+    "DW1":{
+        "name": "DW1",
+        "dsn":"localhost/orcl"
+    },
+    "DW2":{
+        "name": "DW2",
+        "dsn":"localhost/orcl"
+    }
+}
+
+

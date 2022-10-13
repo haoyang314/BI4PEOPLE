@@ -1,0 +1,35 @@
+{{extend './common/layout.html'}}
+
+{{block 'title'}}index{{/block}}
+
+{{block 'link'}} {{include './common/link.html'}} {{/block}}
+
+{{block 'menu'}} {{include './common/menu.html'}} {{/block}}
+
+{{block 'header'}} {{include './common/header.html'}} {{/block}}
+
+{{block 'content'}}
+<div class="w3-quarter w3-padding" style="width: 500px;">
+    <form class="d-flex" role="search" method="post" action="/">
+        <!-- <label for="version">
+            <h6><i class="iconfont iconupload"></i> <i class="fa fa-cog fa-fw"></i>
+                <span> Select your version</span>
+            </h6>
+            <select class="w3-select" id="version" name="version">
+                <option> Expert </option>
+                <option> No Expert </option>
+            </select>
+        </label>
+        <button class="w3-button w3-light-grey w3-section" id="btn_version" type="submit">
+            <span> Submit </span>
+        </button> -->
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <br>
+    <!-- <h4 class="w3-padding">Version : <span class="w3-text-blue" id="err_exist"> {{version? version:"No Expert"}} </span>
+    </h4> -->
+</div>
+{{/block}}
+
+{{block 'footer'}} {{include './common/footer.html'}} {{/block}}

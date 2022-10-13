@@ -1,0 +1,98 @@
+<div class="w3-row">
+    {{each files file index}}
+    <a href="javascript:void(0)" onclick="openCity(event, 'file_panel--{{file.filename}}');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">{{file.filename}}</div>
+    </a>
+    {{/each}}
+</div>
+
+
+{{each files file index}}
+<div class="w3-container city" id="file_panel--{{file.filename}}" style="display:none">
+    <h4 id="h--{{file.filename}}" class="w3-padding-left-16">{{file.filename}} &emsp; &emsp;
+        <span id="file_fold--{{file.filename}}" class="w3-button w3-light-grey w3-section">
+            <i class="far fa-minus-square"></i>
+        </span>
+    </h4>
+    {{if file.code==200}}
+
+    <div class="w3-panel" id="measure_panel--{{file.filename}}">
+        <p>Select {{session=='Expert'? 'Measures':'Indicators'}} &emsp;&emsp; 
+            <span id="selec_measure_icon--{{file.filename}}" class="w3-button w3-light-grey w3-section">
+                <i class="far fa-minus-square"></i>
+            </span>
+        </p>
+        <div class="w3-panel" id="selec_measure_panel--{{file.filename}}">
+            <form class="w3-form" id="form--{{file.filename}}" method="post" name="{{file.filename}}"></form>
+            <h5><i class="far fa-check-circle w3-text-red w3-large"></i> Proposed {{session=='Expert'?
+                'Measures':'Indicators'}} &emsp;
+                    <span class="badge bg-primary rounded-pill">
+                    {{file.proposed_measures.length}} 
+            </span>
+                {{if file.proposed_measures.length > 0}}
+                &emsp; <span id="select_propose--{{file.filename}}"
+                    class="w3-button w3-light-grey w3-padding w3-section" style="color: grey;">None</span>
+                {{/if}}
+            </h5>
+            <table class="w3-table w3-striped w3-white">
+                {{each file.proposed_measures as measure}}
+                <tr>
+                    <td>{{measure}}
+                        <label> <input class="propose--{{file.filename}}" type="checkbox" name="proposed_measure"
+                                value={{measure}} checked /></label>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+            <hr>
+
+            <h5><i class="fa fa-user-plus w3-text-yellow w3-large"></i> Additional {{session=='Expert'?
+                'Measures':'Indicators'}} &emsp;
+                <!-- <i>Number: -->
+                <span class="badge bg-primary rounded-pill">
+                    {{file.additional_measures.length}} 
+                </span>
+                <!-- </i> -->
+                {{if file.additional_measures.length > 0}}
+                &emsp; <span id="select_add--{{file.filename}}"
+                    class="w3-button w3-light-grey w3-padding w3-section">All</span>
+                {{/if}}
+            </h5>
+            <table class="w3-table w3-striped w3-white">
+                {{each file.additional_measures as other}}
+                <tr>
+                    <td> {{other}} <label>
+                            <input class="additional--{{file.filename}}" type="checkbox" name="additional_measure"
+                                value={{other}} />
+                        </label></td>
+                </tr>
+                {{/each}}
+            </table>
+            <hr>
+
+            <button class="w3-button w3-light-grey w3-padding-large w3-section" id="btn_schema_pre--{{file.filename}}"
+                type="button">
+                <a href="#uplod_form" style="text-decoration: none">
+                    <i class="fa fa-arrow-left"></i> Return
+                </a>
+            </button>
+
+            <button class="w3-button w3-light-grey w3-padding-large w3-section" id="btn_measure--{{file.filename}}"
+                type="button">
+                Next <i class="fa fa-arrow-right"></i>
+            </button>
+
+            </form>
+        </div>
+        {{else}}
+        <h5> {{file.msg}} </h5>
+        {{/if}}
+
+        <!-- <div class="w3-panel" id="file_hierarchy"> -->
+        <div class="w3-panel" id="file_schema">
+        </div>
+    </div>
+</div>
+{{/each}}
+
+<script src="../static/js/file_measure.js"></script>
