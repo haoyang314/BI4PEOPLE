@@ -12,7 +12,7 @@ $(document).ready(() => {
         // $('#schema_panel--' + file).toggle();
     })
 
-    $('[id^=btn_schema]').click(function () {
+    $('[id^=btn_schema--]').click(function () {
         var file = $(this).attr('id').split("--")[1].trim();
         if ($('db_panel--' + file) !== undefined) {
             console.log('db_panel ' + $('db_panel--' + file))
@@ -23,18 +23,18 @@ $(document).ready(() => {
             type: 'post',
             // 
             url: 'http://127.0.0.1:80/files/' + file + '/adddb',
-            dataType: 'json',
-            data: JSON.stringify({ session: $('#session_val').text().trim() }),
+            data: JSON.stringify({ session: $('#session_val').text().trim()}),
+            xhrFields:{withCredentials:true},
             // Doesn't deal with the data and the contenu
             processData: false,
-            // xhrFields: { withCredentials: true },
             // contentType: 'application/json;charset=utf-8',
             contentType: false, //'text/html; charset=utf-8',
             success(response, textStatus) {
                 // console.log('Success:', result);
                 // $('#schema_icon--' + file).children(':first').attr("class", "far fa-plus-square");
                 // $('#detail_schema_panel--' + file).hide();
-                // console.log('schema icon is ' + $('#schema_icon--' + file).children(':first').attr("class"));                
+                // console.log('schema icon is ' + $('#schema_icon--' + file).children(':first').attr("class"));    
+                console.log(response)            
                 $('#file_panel--' + file).append(response);
 
                 //  Add tab
@@ -54,6 +54,7 @@ $(document).ready(() => {
                 }
             },
             error() {
+                alert("Get DB Faild!")
                 var classname = $("#err_exist").attr('class');
                 $("#err_exist").attr('class', classname.replace(" w3-yellow", " w3-blue").replace(" w3-green", " w3-blue"))
                 $("#err_exist").html("<span onclick='this.parentElement.style.display=\"none\"' class='w3-button w3-large w3-display-topright'>&times;</span><h3>Info!</h3><p>Can't creat data warehouse, please try again!</p>")
@@ -246,8 +247,10 @@ $(document).ready(() => {
         })
     })
 
-    $('[id^=btn_edit_schema--]').click(function () {
+    $("[id^='btn_edit_schema--']").click(function () {
         var classname = $("#msg_footer").attr('class');
+        var file = $(this).attr('id').split("--")[1];
+        console.log(file)
         $.ajax({
             type: 'post',
             utl: 'http://127.0.0.1:80/files/' + file + '/editschema',

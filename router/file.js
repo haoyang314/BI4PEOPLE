@@ -1,13 +1,13 @@
 // import express module
 const express = require('express')
 const path = require('path')
-
 // create Router Object
 const router = express.Router()
-
 // import router handler module
 const fileHandler = require(path.join(__dirname, '../router_handler','file'))
 const multer = require('multer')
+//import app
+const app = require('../app')
 
 
 
@@ -43,6 +43,7 @@ router.post('/upload', fileHandler.isExisted)
 // // ================ Way 4 ======================
 // router.post('/', fileHandler.getFile)
 // router.post('/', fileHandler.uploadFile)
+
 
 router.post('/:id/schema', fileHandler.getSchema)
 router.post('/:id/editname', fileHandler.editName)

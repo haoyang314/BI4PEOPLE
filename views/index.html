@@ -1,46 +1,35 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.4.0/json-viewer/jquery.json-viewer.css" rel="stylesheet">
-</head>
-<style type="text/css">
-    #json-display {
-        border: 1px solid #000;
-        margin: 0;
-        padding: 8px 15px;
-        min-height: 300px;
-        background: #1c2833;
-        color: #fff;
-    }
-</style>
-<body>
-<div style="padding: 40px 20px 0px 20px;">
-    <div>
-        <pre id="json-display" contenteditable="true"></pre>
-    </div>
-    <br>
-    <input type="button" id="format_btn" value="格式化" onclick="format_btn();" />
-</div>
+{{extend './common/layout.html'}}
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.4.0/json-viewer/jquery.json-viewer.js"></script>
-<script>
-    $(document).ready(function(){   
-        var jsonObj = {"a":1,"b":"test"};
-        $("#json-display").jsonViewer(jsonObj,{withQuotes: true});//格式化展示
-    });
-    function format_btn() {
-        var jsonval = $("#json-display").text();
-        var jsonObj = JSON.parse(jsonval);   //把json字符串转为json对象
-        $("#json-display").jsonViewer(jsonObj,{withQuotes: true});//格式化展示
-    }
-</script>
-</body>
-</html>
------------------------------------
-©著作权归作者所有：来自51CTO博客作者赶路人儿的原创作品，请联系作者获取转载授权，否则将追究法律责任
-可视化编辑json数据——json editor
-https://blog.51cto.com/u_5650011/5394786
+{{block 'title'}}index{{/block}}
+
+{{block 'link'}} {{include './common/link.html'}} {{/block}}
+
+{{block 'menu'}} {{include './common/menu.html'}} {{/block}}
+
+{{block 'header'}} {{include './common/header.html'}} {{/block}}
+
+{{block 'content'}}
+<div class="w3-quarter w3-padding" style="width: 500px;">
+    <form class="d-flex" role="search" method="post" action="/">
+        <!-- <label for="version">
+            <h6><i class="iconfont iconupload"></i> <i class="fa fa-cog fa-fw"></i>
+                <span> Select your version</span>
+            </h6>
+            <select class="w3-select" id="version" name="version">
+                <option> Expert </option>
+                <option> No Expert </option>
+            </select>
+        </label>
+        <button class="w3-button w3-light-grey w3-section" id="btn_version" type="submit">
+            <span> Submit </span>
+        </button> -->
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <br>
+    <!-- <h4 class="w3-padding">Version : <span class="w3-text-blue" id="err_exist"> {{version? version:"No Expert"}} </span>
+    </h4> -->
+</div>
+{{/block}}
+
+{{block 'footer'}} {{include './common/footer.html'}} {{/block}}
