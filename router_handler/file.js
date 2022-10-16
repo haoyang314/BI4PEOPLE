@@ -207,7 +207,7 @@ exports.editSchema = (req, res) => {
             fs.writeFile(jsonpath, JSON.stringify(jsondata, undefined, 2), (err) => {
                 if (err) { res.json({ code: 400 }) }
                 let cls, schemastr = schemaStyle(JSON.stringify(jsondata))
-                var html = app.template('file_schema', { database: jsondata, cls: cls, schema: schemastr, session: req.session.VERSION })
+                var html = app.template('file_schema', { database: JSON.parse(JSON.stringify(jsondata)), cls: cls, schema: schemastr, session: req.session.VERSION })
                 res.json({ code: 200, html: html})
             })
     }
