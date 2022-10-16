@@ -1,3 +1,4 @@
+const template = require("art-template")
 // add index router
 exports.index = (req, res) => {
     if (req.method === 'POST'){
@@ -5,5 +6,5 @@ exports.index = (req, res) => {
     }else{
         req.session.VERSION = "No Expert"
     }
-    res.render('index.html', {version: req.session.VERSION, pagename: 'Home'})
+    res.send(template('index.html', {version: req.session.VERSION, pagename: 'Home'}))
 }

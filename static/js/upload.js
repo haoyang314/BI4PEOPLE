@@ -13,7 +13,7 @@ $(document).ready(()=>{
             url: '/files/upload',
             dataType: 'json',
             contentType: 'application/json;charset=utf-8',
-            data: JSON.stringify({ filenames: filenames }),
+            data: JSON.stringify({filenames: filenames }),
             success(response) {
                 console.log('Stage 6: response.code ' + response.code)
                 if (response.code == 200) {

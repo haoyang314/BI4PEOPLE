@@ -1,1 +1,381 @@
-{"filename": "DW2", "df": [["CUSTKEY", "CUSTNAME"], ["CUSTKEY", "CUSTPHONE"], ["CUSTKEY", "NATIONKEY_CUS"], ["CUSTKEY", "NATION_CUS"], ["CUSTKEY", "NATIONCOMMENT_CUS"], ["CUSTKEY", "SEGMENT"], ["CUSTNAME", "CUSTKEY"], ["CUSTNAME", "CUSTPHONE"], ["CUSTNAME", "NATIONKEY_CUS"], ["CUSTNAME", "NATION_CUS"], ["CUSTNAME", "NATIONCOMMENT_CUS"], ["CUSTNAME", "SEGMENT"], ["CUSTPHONE", "CUSTKEY"], ["CUSTPHONE", "CUSTNAME"], ["CUSTPHONE", "NATIONKEY_CUS"], ["CUSTPHONE", "NATION_CUS"], ["CUSTPHONE", "NATIONCOMMENT_CUS"], ["CUSTPHONE", "SEGMENT"], ["NATIONKEY_CUS", "NATION_CUS"], ["NATIONKEY_CUS", "NATIONCOMMENT_CUS"], ["NATION_CUS", "NATIONKEY_CUS"], ["NATION_CUS", "NATIONCOMMENT_CUS"], ["NATIONCOMMENT_CUS", "NATIONKEY_CUS"], ["NATIONCOMMENT_CUS", "NATION_CUS"], ["SUPPKEY", "SUPPNAME"], ["SUPPKEY", "SUPPADDRESS"], ["SUPPKEY", "NATIONKEY_SUPP"], ["SUPPKEY", "NATION_SUPP"], ["SUPPKEY", "NATIONCOMMENT_SUPP"], ["SUPPNAME", "SUPPKEY"], ["SUPPNAME", "SUPPADDRESS"], ["SUPPNAME", "NATIONKEY_SUPP"], ["SUPPNAME", "NATION_SUPP"], ["SUPPNAME", "NATIONCOMMENT_SUPP"], ["SUPPADDRESS", "SUPPKEY"], ["SUPPADDRESS", "SUPPNAME"], ["SUPPADDRESS", "NATIONKEY_SUPP"], ["SUPPADDRESS", "NATION_SUPP"], ["SUPPADDRESS", "NATIONCOMMENT_SUPP"], ["NATIONKEY_SUPP", "NATION_SUPP"], ["NATIONKEY_SUPP", "NATIONCOMMENT_SUPP"], ["NATION_SUPP", "NATIONKEY_SUPP"], ["NATION_SUPP", "NATIONCOMMENT_SUPP"], ["NATIONCOMMENT_SUPP", "NATIONKEY_SUPP"], ["NATIONCOMMENT_SUPP", "NATION_SUPP"]], "proposed_measures": ["CUSTKEY"], "additional_measures": ["SUPPKEY", "NATIONKEYCUS", "NATIONKEYSUPP", "DISCOUNT", "QUANTITY"]}
+{
+  "filename": "DW2",
+  "df": [
+    [
+      "CUSTKEY",
+      "CUSTNAME"
+    ],
+    [
+      "CUSTKEY",
+      "CUSTPHONE"
+    ],
+    [
+      "CUSTKEY",
+      "NATIONKEY_CUS"
+    ],
+    [
+      "CUSTKEY",
+      "NATION_CUS"
+    ],
+    [
+      "CUSTKEY",
+      "NATIONCOMMENT_CUS"
+    ],
+    [
+      "CUSTKEY",
+      "SEGMENT"
+    ],
+    [
+      "CUSTNAME",
+      "CUSTKEY"
+    ],
+    [
+      "CUSTNAME",
+      "CUSTPHONE"
+    ],
+    [
+      "CUSTNAME",
+      "NATIONKEY_CUS"
+    ],
+    [
+      "CUSTNAME",
+      "NATION_CUS"
+    ],
+    [
+      "CUSTNAME",
+      "NATIONCOMMENT_CUS"
+    ],
+    [
+      "CUSTNAME",
+      "SEGMENT"
+    ],
+    [
+      "CUSTPHONE",
+      "CUSTKEY"
+    ],
+    [
+      "CUSTPHONE",
+      "CUSTNAME"
+    ],
+    [
+      "CUSTPHONE",
+      "NATIONKEY_CUS"
+    ],
+    [
+      "CUSTPHONE",
+      "NATION_CUS"
+    ],
+    [
+      "CUSTPHONE",
+      "NATIONCOMMENT_CUS"
+    ],
+    [
+      "CUSTPHONE",
+      "SEGMENT"
+    ],
+    [
+      "NATIONKEY_CUS",
+      "NATION_CUS"
+    ],
+    [
+      "NATIONKEY_CUS",
+      "NATIONCOMMENT_CUS"
+    ],
+    [
+      "NATION_CUS",
+      "NATIONKEY_CUS"
+    ],
+    [
+      "NATION_CUS",
+      "NATIONCOMMENT_CUS"
+    ],
+    [
+      "NATIONCOMMENT_CUS",
+      "NATIONKEY_CUS"
+    ],
+    [
+      "NATIONCOMMENT_CUS",
+      "NATION_CUS"
+    ],
+    [
+      "SUPPKEY",
+      "SUPPNAME"
+    ],
+    [
+      "SUPPKEY",
+      "SUPPADDRESS"
+    ],
+    [
+      "SUPPKEY",
+      "NATIONKEY_SUPP"
+    ],
+    [
+      "SUPPKEY",
+      "NATION_SUPP"
+    ],
+    [
+      "SUPPKEY",
+      "NATIONCOMMENT_SUPP"
+    ],
+    [
+      "SUPPNAME",
+      "SUPPKEY"
+    ],
+    [
+      "SUPPNAME",
+      "SUPPADDRESS"
+    ],
+    [
+      "SUPPNAME",
+      "NATIONKEY_SUPP"
+    ],
+    [
+      "SUPPNAME",
+      "NATION_SUPP"
+    ],
+    [
+      "SUPPNAME",
+      "NATIONCOMMENT_SUPP"
+    ],
+    [
+      "SUPPADDRESS",
+      "SUPPKEY"
+    ],
+    [
+      "SUPPADDRESS",
+      "SUPPNAME"
+    ],
+    [
+      "SUPPADDRESS",
+      "NATIONKEY_SUPP"
+    ],
+    [
+      "SUPPADDRESS",
+      "NATION_SUPP"
+    ],
+    [
+      "SUPPADDRESS",
+      "NATIONCOMMENT_SUPP"
+    ],
+    [
+      "NATIONKEY_SUPP",
+      "NATION_SUPP"
+    ],
+    [
+      "NATIONKEY_SUPP",
+      "NATIONCOMMENT_SUPP"
+    ],
+    [
+      "NATION_SUPP",
+      "NATIONKEY_SUPP"
+    ],
+    [
+      "NATION_SUPP",
+      "NATIONCOMMENT_SUPP"
+    ],
+    [
+      "NATIONCOMMENT_SUPP",
+      "NATIONKEY_SUPP"
+    ],
+    [
+      "NATIONCOMMENT_SUPP",
+      "NATION_SUPP"
+    ]
+  ],
+  "proposed_measures": [
+    "QUANTITY"
+  ],
+  "additional_measures": [
+    "SUPPKEY",
+    "NATIONKEYSUPP",
+    "CUSTKEY",
+    "DISCOUNT",
+    "NATIONKEYCUS"
+  ],
+  "selected_measures": [
+    "QUANTITY",
+    "DISCOUNT"
+  ],
+  "final_dfs": [
+    "CUSTKEY,NATIONKEY_CUS",
+    "CUSTKEY,SEGMENT",
+    "SUPPKEY,NATIONKEY_SUPP"
+  ],
+  "equal_att": [
+    "CUSTKEY=CUSTNAME,CUSTPHONE",
+    "NATIONKEY_CUS=NATION_CUS,NATIONCOMMENT_CUS",
+    "SUPPKEY=SUPPADDRESS,SUPPNAME",
+    "NATIONKEY_SUPP=NATION_SUPP,NATIONCOMMENT_SUPP"
+  ],
+  "weak_att": [
+    "CUSTKEY:CUSTNAME,CUSTPHONE",
+    "NATIONKEY_CUS:NATION_CUS,NATIONCOMMENT_CUS",
+    "SUPPKEY:SUPPADDRESS,SUPPNAME",
+    "NATIONKEY_SUPP:NATION_SUPP,NATIONCOMMENT_SUPP"
+  ],
+  "dimensions": [
+    {
+      "name": "CUSTKEY",
+      "attributes": [
+        "CUSTNAME",
+        "NATION_CUS",
+        "CUSTKEY",
+        "SEGMENT",
+        "CUSTPHONE",
+        "NATIONCOMMENT_CUS",
+        "NATIONKEY_CUS"
+      ],
+      "hierarchies": [
+        {
+          "name": "h_CUSTKEY_NATIONKEY_CUS",
+          "hierarchy": "CUSTKEY(CUSTNAME,CUSTPHONE),NATIONKEY_CUS(NATION_CUS,NATIONCOMMENT_CUS)",
+          "parametres": [
+            "NATIONKEY_CUS",
+            "CUSTKEY"
+          ],
+          "weak_att": [
+            {
+              "name": "CUSTKEY",
+              "wk": [
+                "CUSTNAME",
+                "CUSTPHONE"
+              ]
+            },
+            {
+              "name": "NATIONKEY_CUS",
+              "wk": [
+                "NATION_CUS",
+                "NATIONCOMMENT_CUS"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "h_CUSTKEY_SEGMENT",
+          "hierarchy": "CUSTKEY(CUSTNAME,CUSTPHONE),SEGMENT",
+          "parametres": [
+            "SEGMENT",
+            "CUSTKEY"
+          ],
+          "weak_att": [
+            {
+              "name": "CUSTKEY",
+              "wk": [
+                "CUSTNAME",
+                "CUSTPHONE"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SUPPKEY",
+      "attributes": [
+        "NATION_SUPP",
+        "NATIONCOMMENT_SUPP",
+        "SUPPKEY",
+        "SUPPADDRESS",
+        "SUPPNAME",
+        "NATIONKEY_SUPP"
+      ],
+      "hierarchies": [
+        {
+          "name": "h_SUPPKEY_NATIONKEY_SUPP",
+          "hierarchy": "SUPPKEY(SUPPADDRESS,SUPPNAME),NATIONKEY_SUPP(NATION_SUPP,NATIONCOMMENT_SUPP)",
+          "parametres": [
+            "SUPPKEY",
+            "NATIONKEY_SUPP"
+          ],
+          "weak_att": [
+            {
+              "name": "SUPPKEY",
+              "wk": [
+                "SUPPADDRESS",
+                "SUPPNAME"
+              ]
+            },
+            {
+              "name": "NATIONKEY_SUPP",
+              "wk": [
+                "NATION_SUPP",
+                "NATIONCOMMENT_SUPP"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ORDERDATE",
+      "attributes": [
+        "date",
+        "week",
+        "month",
+        "quarter",
+        "semester",
+        "year"
+      ],
+      "hierarchies": [
+        {
+          "name": "h_date_month",
+          "hierarchy": "date,month,quarter,semester,year",
+          "parametres": [
+            "date",
+            "month",
+            "quarter",
+            "semester",
+            "year"
+          ],
+          "weak_att": []
+        },
+        {
+          "name": "h_date_week",
+          "hierarchy": "date,week,year",
+          "parametres": [
+            "date",
+            "week",
+            "year"
+          ],
+          "weak_att": []
+        }
+      ]
+    },
+    {
+      "name": "DATE",
+      "attributes": [
+        "date",
+        "week",
+        "month",
+        "year"
+      ],
+      "hierarchies": [
+        {
+          "name": "h_date_week",
+          "hierarchy": "date,week,month,year",
+          "parametres": [
+            "date",
+            "week",
+            "month",
+            "year"
+          ],
+          "weak_att": []
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "name": "fact1",
+      "measures": [
+        "QUANTITY",
+        "DISCOUNT"
+      ],
+      "associations": [
+        "CUSTKEY",
+        "SUPPKEY",
+        "ORDERDATE"
+      ]
+    }
+  ]
+}

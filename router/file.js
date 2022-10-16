@@ -49,5 +49,6 @@ router.post('/:id/schema', fileHandler.getSchema)
 router.post('/:id/editname', fileHandler.editName)
 router.post('/:id/editschema', fileHandler.editSchema)
 router.post('/:id/adddb', fileHandler.generateDB)
+router.post('/:id/datedim', fileHandler.dateDimension)
 
 module.exports = router

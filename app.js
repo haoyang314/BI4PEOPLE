@@ -15,17 +15,31 @@ const app = express()
 
 //====================== add to router_handle ==============
 // // import art-template
-// const template = require('art-template')
+const template = require('art-template')
 // //  import dateformat
 // const dateformat = require('dateformat')
 // // import template variable
 // template.defaults.imports.dateFormat = dateformat
 // // const html = template('view.html', {time: new Date()})
 // // {{dateFormat(time, 'mm-dd-yyyy')}}
-// // set up template root dectory
-// template.defaults.root = path.join(__dirname, 'views')
-// // set up template's defaut extended name 
-// template.defaults.extname = '.html'  // '.art'
+
+const indexof = function(substr, str){
+    if (str.indexOf(substr) !== -1){
+        return true
+    }
+    return false
+}
+template.defaults.imports.indexOf = indexof
+
+const lower = function(str){
+    return str.toString().toLowerCase()
+}
+template.defaults.imports.lower = lower
+
+// set up template root dectory
+template.defaults.root = path.join(__dirname, 'views')
+// set up template's defaut extended name 
+template.defaults.extname = '.html'  // '.art'
 //====================== add to router_handle end ==============
 
 
@@ -51,8 +65,8 @@ app.engine('html', require('ejs').renderFile);
 app.use(cors())
 
 // encode application/x-www-form-urlencoded formart's form
+app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use(bodyParser.json())
 
 //add router to static files
 app.use('/static', express.static(path.join(__dirname, 'static')))
@@ -110,4 +124,5 @@ app.listen(80, () => {
 })
 
 // exports app
-module.exports = app;
+module.exports.app = app;
+module.exports.template = template;

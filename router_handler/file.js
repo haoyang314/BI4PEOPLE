@@ -1,26 +1,28 @@
 // import path and fs modules 
 const path = require('path')
 const fs = require('fs')
-const bodyParser = require('body-parser')
+const app = require('../app')
 const progress = require('progress-stream')
-const multer = require('multer')
 const spawn = require('child_process').spawn;
 const { execSync } = require('child_process');
 const exec = require('child_process').exec;
 const qs = require("querystring")
-const multiparty = require('multiparty')
+const multiparty = require('multiparty');
+const { json } = require('express');
 // import art-template
-const template = require('art-template')
+// const template = require('art-template')
+
 //  import dateformat
-const dateformat = require('dateformat')
+// const dateformat = require('dateformat')
 // // import template variable
 // template.defaults.imports.dateFormat = dateformat
 // // const html = template('view.html', {time: new Date()})
 // {{dateFormat(time, 'mm-dd-yyyy')}}
 // // set up template root dectory
-template.defaults.root = path.join(__dirname, "../views")
-// set up template's defaut extended name 
-template.defaults.extname = '.html'  // '.art'
+// template.defaults.root = path.join(__dirname, "../views")
+// // set up template's defaut extended name 
+// template.defaults.extname = '.html'  // '.art'
+
 
 // get upload page
 exports.upload = (req, res) => {
@@ -29,7 +31,7 @@ exports.upload = (req, res) => {
     }
     console.log("Upload : req.session ==> " + req.session.VERSION)
 
-    var html = template('file', { session: req.session.VERSION, pagename: 'Generation' })
+    var html = app.template('file', { session: req.session.VERSION, pagename: 'Generation' })
     res.end(html)
     // res.json({ session: req.session.VERSION, pagename: 'Generation' })
     // res.render(path.join(__dirname, '../views', 'file.html'))
@@ -45,12 +47,12 @@ exports.getMeasures = (req, res) => {
         let filenames = []
         req.files.forEach(file => {
 
-            let result = getFD1(file.originalname) 
+            let result = getFD1(file.originalname)
             // let result = getFD2(file.originalname)
             dataToSends.push(result)
 
         })
-        
+
         // send data to browser
         console.log("Stage 8 : dataToSend ==> " + dataToSends.length + " " + dataToSends[0].filename + " " + dataToSends[0].code + " " + dataToSends[0].proposed_measures)
         // res.writeHead(200, { "Content-type": "text/html; charset=UTF-8" });
@@ -62,7 +64,7 @@ exports.getMeasures = (req, res) => {
             req.session.VERSION = req.body.session
         }
         console.log("Measure : req.session after ==> " + req.session.VERSION)
-        var html = template('file_measure', { files: dataToSends, session: req.session.VERSION })
+        var html =  app.template('file_measure', { files: dataToSends, session: req.session.VERSION })
         res.end(html)
     }
 }
@@ -136,13 +138,13 @@ exports.getSchema = (req, res) => {
                 console.log(`data recepted 2 ${data_recu}`)
                 // let json_result = getJson(req.params.id + ".csv")
 
-                let cls,  schemastr = schemaStyle(data_recu)
+                let cls, schemastr = schemaStyle(data_recu)
                 console.log(`schemastr ==> ${schemastr}`)
 
                 // res.render(path.join(__dirname, '../views', 'file_schema.html'), { database: json_result, session: req.session.VERSION })
                 // res.end()
                 // var html = template('file_schema', { database: json_result, session: req.session.VERSION })
-                var html = template('file_schema', { database: JSON.parse(data_recu), cls: cls, schema: schemastr, session: req.session.VERSION })
+                var html = app.template('file_schema', { database: JSON.parse(data_recu), cls: cls, schema: schemastr, session: req.session.VERSION })
                 res.end(html)
                 // res.json({ database: json_result, session: req.session.VERSION })
             })
@@ -161,52 +163,134 @@ exports.editName = (req, res) => {
     var jsondata = JSON.parse(fs.readFileSync(jsonpath))
     let form = new multiparty.Form()
     form.parse(req, function (err, fields, file) {
-        for (let i=0; i<jsondata.dimensions.length; i++) {
+        for (let i = 0; i < jsondata.dimensions.length; i++) {
             var dim = "dimension" + i
             jsondata.dimensions[i].name = fields[dim]
-            for (let j=0; j < jsondata.dimensions[i].hierarchies.length; j++) {
+            for (let j = 0; j < jsondata.dimensions[i].hierarchies.length; j++) {
                 var hie = "hierarchy" + i + "_" + j
                 jsondata.dimensions[i].hierarchies.name = fields[hie]
             }
         }
-    
-        for (let i=0; i<jsondata.facts.length; i++) {
+
+        for (let i = 0; i < jsondata.facts.length; i++) {
             var fact = "fact" + i
             jsondata.facts[i].name = fields[fact]
             console.log(`fact ${i} ${jsondata.facts[i].name} ${fields[fact]}`)
         }
-    
+
         if (!req.session.VERSION) {
             req.session.VERSION = fields['session']
         }
-    
-        fs.writeFile(jsonpath, JSON.stringify(jsondata, undefined, 2), (err) => {
-            if (err) {res.json({ code: 400 })}
-            res.json({ code: 200 })
+
+        let jsondatastr = JSON.stringify(jsondata, undefined, 2)
+        fs.writeFile(jsonpath, jsondatastr, (err) => {
+            if (err) { res.json({ code: 400 }) }
+            let cls, schemastr = schemaStyle(jsondatastr)
+            res.json({ code: 200, cls: cls, schema: schemastr,})
         })
     })
 }
 
 exports.editSchema = (req, res) => {
-    let jsonpath = path.join(__dirname, "../json", req.params.id + ".json")
-    var jsondata = JSON.parse(fs.readFileSync(jsonpath))
-    let form = new multiparty.Form()
-    form.parse(req, function (err, fields, file) {
-        fs.writeFile(jsonpath, JSON.stringify(fields, undefined, 2), (err) => {
-            if (err) {res.json({ code: 400 })}
-            res.json({ code: 200 })
-        })
-    })
+    if (!req.params.id) {
+        throw Error("FILE_MISSING")
+    } else {
+        let jsonpath = path.join(__dirname, "../json", req.params.id + ".json")
+        var jsondata = JSON.parse(fs.readFileSync(jsonpath))
+        // console.log(JSON.stringify(req.body.dimensions))
+        // console.log(req.body.dimensions[0].name.toString().toLowerCase())
+        jsondata.dimensions = req.body.dimensions
+            jsondata.facts = req.body.facts
+            if (!req.session.VERSION) {
+                req.session.VERSION = req.body.session
+            }
+            fs.writeFile(jsonpath, JSON.stringify(jsondata, undefined, 2), (err) => {
+                if (err) { res.json({ code: 400 }) }
+                let cls, schemastr = schemaStyle(JSON.stringify(jsondata))
+                var html = app.template('file_schema', { database: jsondata, cls: cls, schema: schemastr, session: req.session.VERSION })
+                res.json({ code: 200, html: html})
+            })
+    }
 }
 
+exports.dateDimension = (req, res) => {
+    if (!req.params.id) {
+        throw Error("FILE_MISSING")
+    } else {
+        let jsonpath = path.join(__dirname, "../json", req.params.id + ".json")
+        var jsondata = JSON.parse(fs.readFileSync(jsonpath))
+        let form = new multiparty.Form()
+        form.parse(req, function (err, fields, file) {
+            jsondata.dimensions[fields.index].attributes = fields.date
+            console.log("before ==> " + JSON.stringify(fields.date))
+
+              // transfomr date dimension
+            var new_hie = JSON.parse(JSON.stringify(fields.date)) // light copy
+            var new_hie2 = []
+            
+            if (fields.date.indexOf("week") > -1 && getInclude(fields.date, ["month", "quarter","semester"]).length > 1){
+                new_hie2.push(fields.date[0])
+                new_hie.splice(new_hie.indexOf("week"), 1)
+                new_hie2.push("week")
+                if (new_hie.indexOf("year") > -1){
+                    new_hie2.push("year")
+                }
+            }
+
+            console.log("after ==> " + JSON.stringify(fields.date))
+
+ 
+            jsondata.dimensions[fields.index].hierarchies = []
+            jsondata.dimensions[fields.index].hierarchies.push({
+                name: "h_" + new_hie[0] +"_" + new_hie[1],
+                hierarchy: new_hie.toString(),
+                parametres: new_hie,
+                weak_att: []
+              })
+
+            if (new_hie2.length > 2){
+                jsondata.dimensions[fields.index].hierarchies.push({
+                    name: "h_" + new_hie2[0] +"_" + new_hie2[1],
+                    hierarchy: new_hie2.toString(),
+                    parametres: new_hie2,
+                    weak_att: []
+                  })
+            }
+            if (!req.session.VERSION) {
+                req.session.VERSION = fields.session
+            }
+
+            fs.writeFile(jsonpath, JSON.stringify(jsondata, undefined, 2), (err) => {
+                if (err) { res.json({ code: 400 }) }
+                var tablehtml = app.template('file_table', { database: {filename: jsondata.filename}, dim: JSON.parse(JSON.stringify(jsondata.dimensions[fields.index])), indexdim: parseInt(fields.index), session: req.session.VERSION })
+                let cls, schemastr = schemaStyle(JSON.stringify(jsondata))
+                res.json({code: 200, tablehtml: tablehtml, cls: cls, schema: schemastr})
+            })
+        })
+    }
+}
+
+// exports.editSchema = (req, res) => {
+//     let jsonpath = path.join(__dirname, "../json", req.params.id + ".json")
+//     var jsondata = JSON.parse(fs.readFileSync(jsonpath))
+//     jsondata.dimensions = req.body.dimensions
+//     jsondata.facts = req.body.facts
+
+//     fs.writeFile(jsonpath, JSON.stringify(jsondata, undefined, 2), (err) => {
+//         if (err) { res.json({ code: 400 }) }
+//         res.json({ code: 200 })
+//     })
+// }
+
 exports.generateDB = (req, res) => {
-    console.log("req.body.session " + fields['session'])
+    console.log("req.body " + req.body.data)
+    datastr = qs.parse(req.body)
     if (!req.params.id) {
         throw Error("FILE_MISSING")
     } else {
         console.log("DB : req.session ==> " + req.session.VERSION)
         if (!req.session.VERSION) {
-            req.session.VERSION = fields['session']
+            req.session.VERSION = req.body.session
         }
         console.log("DB : req.session after ==> " + req.session.VERSION)
 
@@ -230,7 +314,7 @@ exports.generateDB = (req, res) => {
             // res.render(path.join(__dirname, '../views', 'file_db.html'), { database: json_result })
             // res.end()
             let json_result = getJson(req.params.id + ".csv")
-            var html = template('file_db', { database: json_result, session: req.session.VERSION })
+            var html =  app.template('file_db', { database: json_result, session: req.session.VERSION })
             res.end(html)
         })
 
@@ -256,6 +340,12 @@ function isFileExisted(path) {
 // transform format for the data from python
 var uint8arrayToString = function (data) {
     return String.fromCharCode.apply(null, data);
+}
+
+function getInclude(arr1, arr2){
+    return arr1.filter((item) => {
+        return arr2.includes(item)
+    })
 }
 
 function executePython1(argvs) {
@@ -439,27 +529,27 @@ function getFD(filename) {
     })
 }
 
-function schemaStyle(schemastr){
-    if (typeof(schemastr)!=='Object'){
+function schemaStyle(schemastr) {
+    if (typeof (schemastr) !== 'Object') {
         schemastr = JSON.parse(schemastr)
     }
 
-    schemastr = JSON.stringify({dimensions: schemastr.dimensions, facts: schemastr.facts})
+    schemastr = JSON.stringify({ dimensions: schemastr.dimensions, facts: schemastr.facts })
     schemastr = schemastr.replace(/&/g, '&').replace(/</, '<').replace(/>/, '>')
-                return schemastr.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-                function(match){
-                    let cls = 'json-number'
-                    if(/^"/.test(match)){
-                        if(/:$/.test(match)){
-                            cls = 'json-key'
-                        }else{
-                            cls = 'json-string'
-                        }
-                    }else if (/true|false/.test(match)){
-                        cls = 'json-boolean'
-                    }else if (/null/.test(match)){
-                        cls = 'null'
-                    }
-                    return cls, match
-                })
+    return schemastr.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+        function (match) {
+            let cls = 'json-number'
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'json-key'
+                } else {
+                    cls = 'json-string'
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'json-boolean'
+            } else if (/null/.test(match)) {
+                cls = 'null'
+            }
+            return cls, match
+        })
 }

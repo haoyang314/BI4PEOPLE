@@ -1,0 +1,92 @@
+<tr>
+    <th width="20%">
+        {{session=='Expert'? 'Dimension':'Analysis Axis'}} {{indexdim + 1}} <br>
+        <span class="w3-text-grey" style="font-size: 10px;">
+            {{dim.hierarchies.length}}
+            {{session=='Expert'? 'Hierarchies':'Analysis Visions'}}
+        </span>
+    </th>
+    <th>
+        <a href="javascript:;" class="editattribute dimname_{{indexdim}}"
+            style="text-decoration: none;">{{dim.name}}</a>
+    </th>
+</tr>
+<tr>
+    <th width="20%">
+        Attributes <br>
+        <span class="w3-text-grey" style="font-size: 10px;">
+            {{dim.attributes.length}}
+            Attributes</span>
+    </th>
+    <td>
+        {{each dim.attributes a indexA}}
+        {{if indexA==dim.attributes.length-1}} {{a}} {{else}} {{a + ","}} {{/if}}
+        {{/each}}
+    </td>
+</tr>
+<tr id="all_hie--{{dim.name}}">
+    <th colspan="2">
+        <div class="row justify-content-around">
+            <div class="col-4" style="text-align: center;">
+                {{session=='Expert'? 'Hierarchies':'Analysis Visions'}} &emsp;&emsp;
+                <span class="badge bg-primary rounded-pill">
+                    {{dim.hierarchies.length}}</span>
+            </div>
+            <div class="col-4">
+                <i class="fa fa-caret-up"></i>
+            </div>
+        </div>
+    </th>
+</tr>
+{{each dim.hierarchies h indexh}}
+<tr>
+    <th width="20%">
+        {{session=='Expert'? 'Hierarchy':'Analysis Vision'}} {{indexh + 1}}
+        <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle" data-bs-toggle="tooltip"
+            data-bs-placement="top" data-bs-html="true"
+            data-bs-title="In this {{session=='Expert'? 'dimension':'analysis axis'}}, you have following {{session=='Expert'? 'hierarchies':'analysis visions'}}."></i>
+
+    </th>
+    <td id="hie--{{dim.name + '_' + indexh}}">
+        <div class="row justify-content-between">
+            <div class="col-4">
+                <a href="javascript:;" class="editattribute hiename_{{indexdim}}_{{indexh}}"
+                    style="text-decoration: none;">{{h.name}}</a>
+            </div>
+            <div class="col-4">
+                <i class="fa fa-caret-up">
+                </i>
+            </div>
+        </div>
+    </td>
+</tr>
+<tr class="detail_hie--{{dim.name + '_' + indexh}}">
+    <th width="20%">
+        - {{session=='Expert'? 'Parameters':'Levels'}} <i width="30px" height="30px" viewBox="0 0 20 20"
+            class="fa fa-info-circle w3-padding" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+            data-bs-title="In this {{session=='Expert'? 'hierarchy':'analysis vision'}}, you have following {{session=='Expert'? 'parameters':'levels'}}."></i>
+    </th>
+    <td>
+        {{each h.parametres p indexP}}
+        {{p}}{{indexP!==h.parametres.length-1 ? ", ":""}}
+        {{/each}}
+    </td>
+</tr>
+<tr class="detail_hie--{{dim.name + '_' + indexh}}">
+    <th width="20%">
+        - {{session=='Expert'? 'Weak Attributes':'Supplementary information'}} <i width="30px" height="30px"
+            viewBox="0 0 20 20" class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-html="true"
+            data-bs-title="The {{session=='Expert'? 'parameter':'level'}} contain following {{session=='Expert'? 'weak attributes':'supplementary information'}}.">
+        </i>
+    </th>
+    <td>
+        {{each h.weak_att wka indexWKA}}
+        {{wka.name}}: {{each wka.wk w indeW}} {{w}}
+        {{indeW!==wka.wk.length-1? "," : ""}}
+        {{/each}}
+        {{if indexWKA!==h.weak_att.length-1}},{{/if}}
+        {{/each}}
+    </td>
+</tr>
+{{/each}}
