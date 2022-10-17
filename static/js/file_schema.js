@@ -158,7 +158,7 @@ $(document).ready(() => {
             xhrFields: { withCredentials: true },
             contentType: false, //'application/json;charset=utf-8',
             // contentType: 'text/html; charset=utf-8',
-            success(response, textStatus) {
+            success(response) {
                 if (response.code === 200) {
                     for (let i = 0; i < editAttrs.length; i++) {
                         editAttrs.eq(i).html(editAttrs.eq(i).children(':first').val());

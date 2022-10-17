@@ -300,6 +300,7 @@ exports.generateDB = (req, res) => {
         let fpath = path.join(__dirname, '../uploads', req.params.id + ".csv")
         console.log(`fpath ${fpath}`)
 
+        // 下面删掉
         const python = spawn('python', [pypath, fpath, jsonpath])
 
         python.stderr.on('data', (data) => {
@@ -313,9 +314,12 @@ exports.generateDB = (req, res) => {
             // let dataToSend = { name: req.params.id.toString().split(".")[0], code: 200, measures: json_result['selected_measures'], dimensions: json_result['dimensions'] }
             // res.render(path.join(__dirname, '../views', 'file_db.html'), { database: json_result })
             // res.end()
+
+            //留下面三行
             let json_result = getJson(req.params.id + ".csv")
             var html =  app.template('file_db', { database: json_result, session: req.session.VERSION })
             res.end(html)
+            // end
         })
 
         python.stdout.on('end', (code) => {
@@ -345,73 +349,6 @@ var uint8arrayToString = function (data) {
 function getInclude(arr1, arr2){
     return arr1.filter((item) => {
         return arr2.includes(item)
-    })
-}
-
-function executePython1(argvs) {
-    return new Promise((resolve, reject) => {
-        const child = spawn('python', argvs)
-        var output = ""
-        child.stdout.on('data', (chunk) => {
-            console.log('chunk ' + chunk)
-            output += chunk.toString()
-        })
-
-        child.stdout.on('end', (code) => {
-            console.log('output 1 is' + output)
-            if (output !== "") {
-                output = output.toString().trim().replace(/\r\n/g, "").split("output")[1]
-                console.log('output is ' + output)
-                output = JSON.parse(output)
-                output.code = 200
-            } else {
-                output = { code: 400 }
-            }
-            console.log('output 2 is ' + output.filename)
-            resolve(output)
-        })
-
-        child.on('error', error => reject(error))
-    })
-}
-
-
-function run_cmd(args, cb, end) {
-    var spawn = require('child_process').spawn,
-        child = spawn('python', args),
-        me = this;
-    child.stdout.on('data', function (buffer) { cb(me, buffer) });
-    child.stdout.on('end', end);
-}
-
-function executePython(argvs, cb) {
-    var dataToSend = "";
-    const python = spawn('python', argvs)
-    // collect data from script
-
-    python.stdin.resume()
-    python.stdout.setEncoding('utf8');
-    python.stdout.on('data', (data) => {
-        console.log('Pipe data from python script ...')
-        // console.log(data.toString())
-        dataToSend += data
-    })
-
-    python.stderr.setEncoding('utf8')
-    python.stderr.on('data', (data) => {
-        console.error(`child stderr:\n${data}`)
-    })
-
-    python.stdout.on('end', (code) => {
-        console.log(`child process end all stdio with code ${code}`);
-        console.log("get dataToSend " + dataToSend.toString().trim().replace(/\r\n/g, "").split("output")[1])
-        if (dataToSend !== "") {
-            dataToSend = JSON.parse(dataToSend.toString().trim().replace(/\r\n/g, "").split("output")[1])
-            dataToSend.code = 200
-        } else {
-            dataToSend = { code: 400 }
-        }
-        cb(dataToSend)
     })
 }
 
@@ -448,39 +385,6 @@ function getFD1(filename) {
 }
 
 
-// get funtionnal dependance from python
-function getFD2(filename) {
-    let pypath = path.join(__dirname, '../python', 'measure.py')
-    console.log(pypath)
-    let hyfd = path.join(__dirname, '../python', 'HyFD', 'HyFD.jar')
-    console.log(hyfd)
-    let fpath = path.join(__dirname, '../uploads', filename)
-    console.log(fpath)
-
-    let pythonout = execSync('python ' + pypath + " " + fpath + " " + hyfd)
-
-    console.log(`python code is ${pythonout.toString()}`)
-    // let json_result = getJson(filename)
-    pythonout = JSON.parse(pythonout.toString().split("jsonoutput ")[1])
-    pythonresult.code = 200
-    pythonout.log(`pythonout ${pythonout.filename}  ${pythonout.code}  ${pythonout.proposed_measures}`)
-    pythonout.log(`type of meausres ${typeof pythonout.proposed_measures === "object"}`)
-
-    // var dataToSend = getJson(filename)
-    // console.log(`str2 ${dataToSend.name}  ${dataToSend.meausres}`)
-    // if (pythonout !== "") {
-    //     dataToSend = JSON.parse(pythonout.toString().trim().replace(/\r\n/g, "").split("output")[1])
-    //     dataToSend.code = 200
-    // } else {
-    //     dataToSend = {name: filename, code: 400, msg: 'Get maeasures failed' }
-    // }
-
-    // if (dataToSend === "") {
-    //     dataToSend = {name: filename, code: 400, msg: 'Get maeasures failed' }
-    // }
-    return pythonresult
-}
-
 function getJson(filename) {
     // ============= Edit for DW Test ================
     filename = filename.split(".")[0] + "_V0.csv"
@@ -496,38 +400,6 @@ function getJson(filename) {
     return data
 }
 
-function sleep(n) {
-    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n)
-}
-
-function getFD(filename) {
-    // spawn new child process to call the python script
-    // const python = spawn('python', ['script1.py', 12, 13]);
-    // const python = spawn('python', ['E:\\Stage\\PythonProject\\process\\process.py','E:\\Stage\\datafile\\example_mesure2.csv' ]);
-    let pypath = path.join(__dirname, '../python', 'measure.py')
-    console.log(pypath)
-    let hyfd = path.join(__dirname, '../python', 'HyFD', 'HyFD.jar')
-    console.log(hyfd)
-    let fpath = path.join(__dirname, '../uploads', filename)
-    console.log(fpath)
-    // let pypath = path.join(__dirname, '../python', 'script1.py')
-    // const python = spawn('python', [pypath, 11, 13 ])
-    const python = spawn('python', [pypath, fpath, hyfd])
-    // collect data from script
-    python.stderr.on('data', (data) => {
-        console.error(`child stderr:\n${data}`)
-    })
-
-    python.stdout.on('data', (data) => {
-        console.log('Pipe data from python script ...')
-        let data_recu = uint8arrayToString(data).replace(/'/g, '"')
-        console.log(`data recepted 2 ${data_recu}`)
-    })
-    python.stdout.on('end', (code) => {
-        console.log(`child process close all stdio with code ${code}`);
-
-    })
-}
 
 function schemaStyle(schemastr) {
     if (typeof (schemastr) !== 'Object') {
