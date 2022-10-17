@@ -59,6 +59,8 @@ const mergingRouter = require("./router/merging")
 // load template engine
 app.engine('html', require('express-art-template'))
 app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs')
+
 
 // register cors middleware as global middleware
 // app.use(cors({origin:'http://127.0.0.1:80', credentials: true}))

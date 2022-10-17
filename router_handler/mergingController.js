@@ -28,7 +28,7 @@ exports.mergingResult=function(req,res){
     } 
     res.locals.viewStatus = req.session.viewStatus
 
-    let merging_rawdata = fs.readFileSync(path.join(__dirname, '../json','merging.json'))
+    let merging_rawdata = fs.readFileSync(path.join(__dirname, '../json','mergingSchema.json'))
     const merging_schema = JSON.parse(merging_rawdata)
 
     res.render('mergingResult.ejs',{dwSelected: dwSelected, userName: userName, password: password, merging_schema:merging_schema, pagename: 'Merging'})
