@@ -1,14 +1,16 @@
 {
     "DW1": {
       "customer": {
+        "Name": "customer",
         "Attributes": ["custkey", "custname","custaddress","segment"],
         "Hierarchy": {
-            "H_customer_seg1":{
-                "Parameter": ["custkey", "segment"],
-                "Weak Attributes": {
-                    "custkey":["custname","custaddress"]
-                }
+          "H_customer_seg1":{
+            "Name": "H_customer_seg1",
+            "Parameter": ["custkey", "segment"],
+            "Weak Attributes": {
+              "custkey":["custname","custaddress"]
             }
+          }
         },
         "Missing": {
             "custkey": 0, 
@@ -19,15 +21,17 @@
         "Total Record Number": 0
       },
       "supplier": {
+        "Name": "supplier",
         "Attributes": ["suppkey", "suppname", "suppaddress", "regionkey","region","nationkey","nation"],
         "Hierarchy": {
             "H_supplier_geo1":{
-                "Parameter":  ["suppkey", "nationkey", "regionkey"],
-                "Weak Attributes": {
-                    "suppkey":["suppname", "suppaddress"],
-                    "regionkey":["region"],
-                    "nationkey":["nation"]
-                }
+              "Name": "H_supplier_geo1",
+              "Parameter":  ["suppkey", "nationkey", "regionkey"],
+              "Weak Attributes": {
+                  "suppkey":["suppname", "suppaddress"],
+                  "regionkey":["region"],
+                  "nationkey":["nation"]
+              }
             }
         },
         "Missing": {
@@ -42,13 +46,15 @@
         "Total Record Number": 0
       },
       "part": {
+        "Name": "part",
         "Attributes": ["partkey", "partname","type","brand", "manufacture"],
         "Hierarchy": {
             "H_part_manu1":{
-                "Parameter": ["partkey","brand", "manufacture"],
-                "Weak Attributes": {
-                    "partkey":["partname"]
-                }
+              "Name": "H_part_manu1",
+              "Parameter": ["partkey","brand", "manufacture"],
+              "Weak Attributes": {
+                  "partkey":["partname"]
+              }
             }
         },
         "Missing": {
@@ -62,22 +68,26 @@
       },
       "Fact":{
         "lineorder":{
-            "Indicators":["quantity", "extendedprice", "tax"],
-            "Associations": ["D_customer1", "D_supplier1", "D_part1"]
+          "Name": "lineorder",
+          "Indicators":["quantity", "extendedprice", "tax"],
+          "Associations": ["D_customer1", "D_supplier1", "D_part1"]
         }
       }
     },
     "DW2": {
         "customer": {
+            "Name": "customer",
             "Attributes": ["custkey", "nationkey","nation", "segment","custname","custphone","nationcomment"],
             "Hierarchy": {
                 "H_customer_seg2":{
+                    "Name": "H_customer_seg2",
                     "Parameter": ["custkey", "segment"],
                     "Weak Attributes": {
                         "custkey":["custname","custphone"]
                     }
                 },
                 "H_customer_geo2":{
+                    "Name": "H_customer_geo2",
                     "Parameter": ["custkey", "nationkey"],
                     "Weak Attributes": {
                         "custkey":["custname","custphone"],
@@ -97,9 +107,11 @@
             "Total Record Number": 0
         },
         "supplier":{
+            "Name": "supplier",
             "Attributes": ["suppkey", "suppname","suppaddress","nationkey","nation","nationcomment"],
             "Hierarchy": {
                 "H_supplier_geo2":{
+                    "Name": "H_supplier_geo2",
                     "Parameter": ["suppkey", "nationkey"],
                     "Weak Attributes": {
                         "suppkey":["suppname","suppaddress"],
@@ -118,9 +130,11 @@
             "Total Record Number": 0
         },
         "date": {
+            "Name": "date",
             "Attributes": ["orderdate", "month", "year"],
             "Hierarchy": {
                 "H_date_my2":{
+                    "Name" : "H_date_my2",
                     "Parameter": ["orderdate", "month", "year"],
                     "Weak Attributes": {
                     }
@@ -135,8 +149,9 @@
         },
         "Fact":{
             "lineorder":{
-            "Indicators":["quantity", "discount"],
-            "Associations": ["D_customer2", "D_supplier2", "D_date2"]
+              "Name": "lineorder",
+              "Indicators":["quantity", "discount"],
+              "Associations": ["D_customer2", "D_supplier2", "D_date2"]
             }
         }
     }
