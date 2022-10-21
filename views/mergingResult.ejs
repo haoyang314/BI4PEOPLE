@@ -21,40 +21,45 @@
                 <% }else{ %>
                     <li class="breadcrumb-item text-muted" id="noExpert">No Expert</li>
                     <li class="breadcrumb-item text-primary" id="expert">Expert</li>
-                <%} %>
+                <% } %>
             </ol>
         </nav>
 
-        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show col-md-8 "
-            role="alert">
-            <p>
-                <%- dwSelected[0] %> and <%- dwSelected[1] %> have been successfully merged.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <% if (typeof dwSelected != undefined){ %>
+            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show col-md-8 "
+                role="alert">
+                <p>
+                    <%- dwSelected[0] %> and <%- dwSelected[1] %> have been successfully merged.
+                </p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
+        
 
         <!--Database infos-->
-        <p class="fs-5">New data warehouse infos:</p>
-        <div class="card mb-5" id="detail">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col text-uppercase fw-bold float-end ">
-                        name
+        <% if (typeof userName != undefined){ %>
+            <p class="fs-5">New data warehouse infos:</p>
+            <div class="card mb-5" id="detail">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col text-uppercase fw-bold float-end ">
+                            name
+                        </div>
+                        <div class="col">
+                            <%- userName %>
+                        </div>
                     </div>
-                    <div class="col">
-                        <%- userName %>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col text-uppercase fw-bold float-end ">
-                        dsn
-                    </div>
-                    <div class="col">
-                        localhost/orcl
+                    <div class="row">
+                        <div class="col text-uppercase fw-bold float-end ">
+                            dsn
+                        </div>
+                        <div class="col">
+                            localhost/orcl
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <% } %>
 
         <!--Dimensions-->
         <p name="noExpert" class="fs-5">New axis infos:</p>
@@ -73,22 +78,22 @@
         <% Object.entries(merging_schema).forEach(function(one_db){ 
             const [db_name, db_schema]=one_db%>
             <!--Dimension-->
-            <form method="post">
-                <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <form action="javascript: void(0);"  >
+                <nav id="dimension_nav">
+                    <div class="nav nav-tabs" id="nav-tab-dim" role="tablist">
                         <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{ %>
                             <% if (dim_name !="Fact" ) {%>
                                 <% if (index==0) { %>
-                                    <button class="nav-link active text-uppercase" id="nav-<%- dim_name%>-tab"
-                                        data-bs-toggle="tab" data-bs-target="#nav-<%- dim_name%>" type="button"
-                                        role="tab" aria-controls="#nav-<%- dim_name%>" aria-selected="true">
-                                        <%- dim_name %>
+                                    <button class="nav-link active text-uppercase" id="nav-<%- db_name%>-<%- dim_name%>-tab"
+                                        data-bs-toggle="tab" data-bs-target="#nav-<%- db_name%>-<%- dim_name%>" type="button"
+                                        role="tab" aria-controls="#nav-<%- db_name%>-<%- dim_name%>" aria-selected="true">
+                                        <span><%- dim_detail.Name %></span>
                                     </button>
                                 <% } else { %>
-                                    <button class="nav-link text-uppercase" id="nav-<%- dim_name%>-tab"
-                                        data-bs-toggle="tab" data-bs-target="#nav-<%- dim_name%>" type="button"
-                                        role="tab" aria-controls="#nav-<%- dim_name%>" aria-selected="false">
-                                        <%- dim_name %>
+                                    <button class="nav-link text-uppercase" id="nav-<%- db_name%>-<%- dim_name%>-tab"
+                                        data-bs-toggle="tab" data-bs-target="#nav-<%- db_name%>-<%- dim_name%>" type="button"
+                                        role="tab" aria-controls="#nav-<%- db_name%>-<%- dim_name%>" aria-selected="false">
+                                        <%- dim_detail.Name %>
                                     </button>
                                 <%}%>
                             <% } %> 
@@ -97,17 +102,18 @@
                 </nav>
 
                 <div class=" mb-2 overflow-scroll mb-3" style="height:300px ;">
-                    <div class="tab-content mb-3" id="nav-tabContent">
+                    <div class="tab-content mb-3" id="nav-tabContent-dim">
                         <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{
                             if(dim_name != "Fact") {
                                 if (index == 0) { %>
-                                    <div class="tab-pane fade show active" id="nav-<%- dim_name%>" role="tabpanel"
-                                        aria-labelledby="nav-<%- dim_name%>-tab" tabindex="0">
+                                    <div class="tab-pane fade show active" id="nav-<%- db_name%>-<%- dim_name%>" role="tabpanel"
+                                        aria-labelledby="nav-<%- db_name%>-<%- dim_name%>-tab" tabindex="0">
                                 <% } else { %>
-                                    <div class="tab-pane fade" id="nav-<%- dim_name%>" role="tabpanel"
-                                        aria-labelledby="nav-<%- dim_name%>-tab" tabindex="0">
+                                    <div class="tab-pane fade" id="nav-<%- db_name%>-<%- dim_name%>" role="tabpanel"
+                                        aria-labelledby="nav-<%- db_name%>-<%- dim_name%>-tab" tabindex="0">
                                 <% } %>
 
+                                <input type="hidden" value="<%- db_name %>" name="dbName">
                                 <table class="table table-hover table-responsive">
                                     <tr name="dimension">
                                         <th scope="col" style="width: 18%" name="noExpert">Axis</th>
@@ -116,7 +122,7 @@
                                         <td scope="row" class="text-uppercase fw-bold">
                                             <input class="form-control-plaintext text-uppercase" type="text"
                                                 placeholder="Create a new name."
-                                                value="<%- dim_name %>"
+                                                value="<%- dim_detail.Name %>"
                                                 name="dimName"
                                                 readonly>
                                         </td>
@@ -150,7 +156,7 @@
                                                                     class="form-control-plaintext text-uppercase"
                                                                     type="text"
                                                                     placeholder="Create a new name."
-                                                                    value="<%- hie_name%>"
+                                                                    value="<%- hie_detail.Name%>"
                                                                     name="hieName"
                                                                     readonly>
                                                             </div>
@@ -221,16 +227,14 @@
                                             <% }) %>
                                         <% } else if (proper_name=="Missing") { %>
                                         <% } else if(proper_name=="Total Record Number") {%>
-                                        <% } else {%>
+                                        <% } else if(proper_name=="Attributes"){%>
                                             <tr name="attributes">
                                                 <th scope="col">
-                                                    <%-
-                                                        proper_name%>
+                                                    <%- proper_name%>
                                                 </th>
                                                 <td
                                                     class="text-uppercase">
-                                                    <%-
-                                                        proper_detail%>
+                                                    <%- proper_detail%>
                                                 </td>
                                             </tr>
                                         <% } %>
@@ -243,7 +247,7 @@
                 </div>
         
                 <button type="button" class="btn btn-primary mb-5" id="modifyDim">Modify</button>
-                <button type="button" class="btn btn-primary mb-5" style="display: none;" id="saveDim">Confirm</button>
+                <button type="button" class="btn btn-primary mb-5" style="display: none;" id="saveDim--<%- db_name%>">Confirm</button>
             </form>
 
             <!--Facts-->
@@ -251,33 +255,31 @@
             <p name="expert" style="display: none;" class="fs-5">New facts infos:</p>
             <p name="hints">These are analysis subjects.</p>
 
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <div class="nav nav-tabs" id="nav-tab-fact" role="tablist">
-                        <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{
-                            if (dim_name =="Fact") {
-                                const db_fact = dim_detail %>
-                                <% Object.entries(db_fact).forEach(([fact_name, fact_detail], index)=>{
-                                    %>
-                                    <% if (index==0) { %>
-                                        <button class="nav-link active text-uppercase"
-                                            id="nav-factname1-tab" data-bs-toggle="tab"
-                                            data-bs-target="#nav-factname1" type="button" role="tab"
-                                            aria-controls="#nav-factname1" aria-selected="true">
-                                            <%- fact_name%>
-                                        </button>
-                                    <% } else { %>
-                                        <button class="nav-link text-uppercase"
-                                            id="nav-factname2-tab" data-bs-toggle="tab"
-                                            data-bs-target="#nav-factname2" type="button" role="tab"
-                                            aria-controls="#nav-factname2" aria-selected="false">
-                                            <%- fact_name%>
-                                        </button>
-                                    <% } %>
-                                <%}) %>
-                            <% }%>
-                        <% })%>
-                    </div>
+            <nav id="fact_nav">
+                <div class="nav nav-tabs" id="nav-tab-fact" role="tablist">
+                    <% Object.entries(db_schema).forEach(([dim_name, dim_detail], index)=>{
+                        if (dim_name =="Fact") {
+                            const db_fact = dim_detail %>
+                            <% Object.entries(db_fact).forEach(([fact_name, fact_detail], index)=>{
+                                %>
+                                <% if (index==0) { %>
+                                    <button class="nav-link active text-uppercase"
+                                        id="nav-factname1-tab" data-bs-toggle="tab"
+                                        data-bs-target="#nav-factname1" type="button" role="tab"
+                                        aria-controls="#nav-factname1" aria-selected="true">
+                                        <%- fact_detail.Name%>
+                                    </button>
+                                <% } else { %>
+                                    <button class="nav-link text-uppercase"
+                                        id="nav-factname2-tab" data-bs-toggle="tab"
+                                        data-bs-target="#nav-factname2" type="button" role="tab"
+                                        aria-controls="#nav-factname2" aria-selected="false">
+                                        <%- fact_detail.Name%>
+                                    </button>
+                                <% } %>
+                            <%}) %>
+                        <% }%>
+                    <% })%>
                 </div>
             </nav>
 
@@ -305,7 +307,7 @@
                                                     <input class="form-control-plaintext text-uppercase"
                                                         type="text"
                                                         placeholder="Create a new name."
-                                                        value="<%- fact_name%>"
+                                                        value="<%- fact_detail.Name%>"
                                                         name="factName"
                                                         readonly>
                                                 </td>
@@ -334,7 +336,7 @@
                                                             <%- proper_detail%>
                                                         </td>
                                                     </tr>
-                                                <%} else { %>
+                                                <%} else if (proper_name=="Associations" ) { %>
                                                     <!--Dimension-->
                                                     <tr>
                                                         <th scope="col" name="noExpert">
@@ -431,24 +433,23 @@
                 }
             })
 
+            // collapse hierarchy
             $("tr[name*='hierarchy']").click(function () {
-            // $("tr[name*='Attributes']").toggle()
-            // $("tr[name*='meter']").toggle()
-            $(this).next().toggle()
-            $(this).next().addClass("opencss")
-            $(this).next().next().toggle()
-            $(this).next().next().addClass("opencss")
-            var icon = $(this).children().last().children().children().last().children()
+                $(this).next().toggle()
+                $(this).next().addClass("opencss")
+                $(this).next().next().toggle()
+                $(this).next().next().addClass("opencss")
+                var icon = $(this).children().last().children().children().last().children()
 
-            if (icon.hasClass("rotated")) {
-                icon.removeClass("rotated")
-            } else {
-                icon.addClass("rotated")
-            }
-
-        })
+                if (icon.hasClass("rotated")) {
+                    icon.removeClass("rotated")
+                } else {
+                    icon.addClass("rotated")
+                }
+            })
         
-            $("button[id*='modify']").click(function(){
+            // modify name
+            $("button[id*='modify']").on("click",function(){
                 $(this).hide()
                 $(this).next().show()
                 if ( $(this).attr("id").includes("Dim")){
@@ -464,11 +465,56 @@
                     $("input[name='factName']").removeAttr("readonly")
                 }
             })
-
-            $("button[id*='save']").click(function(){
+            $("button[id*='save']").on("click", function(){
                 $(this).hide()
-                $(this).last().show()
+                $(this).prev().show()
+                var idname = $(this).attr("id")
+                var button_div = $(this).parent().parent().parent().parent()
+                dimlist = $('input[name="dimName"]')
+                            .map(function() {
+                                return $(this).val();
+                            }).get()
+                hielist = $('input[name="hieName"]')
+                            .map(function() {
+                                return $(this).val();
+                            }).get()
+                factlist = $('input[name="factName"]')
+                            .map(function() {
+                                return $(this).val();
+                            }).get()
+
+                $.ajax({   
+                    url:'/merging/result',
+                    method: 'PUT',
+                    data: {
+                        "dbname": $('input[name="dbName"]').val(),
+                        "dimname": JSON.stringify(dimlist),
+                        "hiename": JSON.stringify(hielist),
+                        "factname": JSON.stringify(factlist),
+                    },
+                    success:function(data){
+                        console.log("yes")
+                        if ( idname.includes("Dim")){
+                            $("input[name='hieName']").addClass("form-control-plaintext")
+                            $("input[name='hieName']").removeClass("form-control")
+                            $("input[name='hieName']").prop("readonly")
+                            $("input[name='dimName']").addClass("form-control-plaintext")
+                            $("input[name='dimName']").removeClass("form-control")
+                            $("input[name='dimName']").prop("readonly")
+                            $("#dimension_nav").load(window.location.href + " #dimension_nav")
+                            $("#nav-tab-dim").children().first().click()
+                        }else{
+                            $("input[name='factName']").addClass("form-control-plaintext")
+                            $("input[name='factName']").removeClass("form-control")
+                            $("input[name='factName']").prop("readonly")
+                            $("#fact_nav").load(window.location.href + " #fact_nav")
+                            $("#nav-tab-fact").children().first().click()
+                        }
+                    }
+                })
+
             })
+    
         })
         
 
