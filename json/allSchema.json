@@ -116,6 +116,7 @@
             "Attributes": ["suppkey", "suppname","suppaddress","nationkey","nation","nationcomment"],
             "Hierarchy": {
                 "H_supplier_geo2":{
+                    "Type": "standard",
                     "Name": "H_supplier_geo2",
                     "Parameter": ["suppkey", "nationkey"],
                     "Weak Attributes": {
@@ -139,6 +140,7 @@
             "Attributes": ["orderdate", "month", "year"],
             "Hierarchy": {
                 "H_date_my2":{
+                    "Type": "standard",
                     "Name" : "H_date_my2",
                     "Parameter": ["orderdate", "month", "year"],
                     "Weak Attributes": {
