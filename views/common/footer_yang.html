@@ -1,0 +1,89 @@
+<!-- Footer -->
+<footer class="w3-container w3-padding-16 w3-light-grey">
+    <!-- <h4>FOOTER</h4>
+        <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p> -->
+</footer>
+
+<!-- End page content -->
+</div>
+
+<script>
+
+    function w3_open() {
+        if (document.getElementById("mySidebar").style.display == "block") {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        } else {
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("myOverlay").style.display = "block";
+        }
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("myOverlay").style.display = "none";
+    }
+
+    function myFunction(id) {
+        var x = document.getElementById(id);
+        console.log(x.previousElementSibling.firstElementChild.lastElementChild)
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.lastElementChild.className = "fa fa-caret-up w3-button";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.lastElementChild.className = "fa fa-caret-down  w3-button";
+        }
+    }
+
+    function openFirstTab(evt, filePanel) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("firsttab");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("firsttablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+        }
+        document.getElementById(filePanel).style.display = "block";
+        evt.currentTarget.firstElementChild.className += " w3-border-red";
+        file = filePanel.split("--")[1];
+    }
+
+    function openSecondTab(evt, stepName) {
+        var i, x, tablinks;
+        var file = stepName.split("--")[1];
+        x = document.getElementsByClassName("secondtab--" + file);
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+            evt.currentTarget.nextElementSibling.firstElementChild.className = "far fa-plus-square";
+        }
+        tablinks = document.getElementsByClassName("secondtablink--" + file);
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-blue", "");
+        }
+        document.getElementById(stepName).style.display = "block";
+        evt.currentTarget.parentElement.className += " w3-border-blue";
+        evt.currentTarget.nextElementSibling.firstElementChild.className = "far fa-minus-square";
+    }
+
+    //console.log($('#select_version'))
+    function setNoExpert() {
+        if($("input[name='version']").prop('checked') == true ){
+            $("input[name='version']").prop('checked', false)
+            $('#session_val').text("No Expert")
+        }
+    }
+
+    function setExpert() {
+        if($("input[name='version']").prop('checked') != true ){
+            $('#session_val').text("Expert")
+            $("input[name='version']").prop('checked', true)
+        }
+        
+    }
+</script>
+</body>
+
+</html>
