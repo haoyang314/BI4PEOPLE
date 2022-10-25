@@ -28,9 +28,9 @@
             ]
           }
         },
-        "H_customer_seg1_H_supplier_geo1_H_customer_geo2_m2": {
+        "H_customer_seg1_H_supplier_geo1_H_customer_geo2": {
           "Type": "standard",
-          "Name": "H_customer_seg1_H_supplier_geo1_H_customer_geo2_m2",
+          "Name": "H_customer_seg1_H_supplier_geo1_H_customer_geo2",
           "Parameter": [
             "custkey",
             "nationkey",
@@ -43,9 +43,9 @@
             ]
           }
         },
-        "H_customer_seg1_H_customer_geo2_m2":{
+        "H_customer_seg1_H_customer_geo2":{
           "Type": "specialty",
-          "Name": "H_customer_seg1_H_customer_geo2_m2",
+          "Name": "H_customer_seg1_H_customer_geo2",
           "Parameter": [
             "custkey", 
             "nationkey"
