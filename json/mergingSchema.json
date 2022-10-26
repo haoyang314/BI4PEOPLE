@@ -4,14 +4,15 @@
       "Name": "customer_customer",
       "Attributes": [
         "regionkey",
+        "region",
         "custkey",
-        "custaddress",
         "custname",
-        "nationkey",
-        "segment",
         "CUSTPHONE",
+        "custaddress",
+        "nationkey",
         "NATION",
-        "NATIONCOMMENT"
+        "NATIONCOMMENT",
+        "segment"
       ],
       "Hierarchy": {
         "H_customer_seg1_H_customer_seg2": {
@@ -59,14 +60,18 @@
         }
       },
       "Missing": {
-        "regionkey": 0,
-        "custkey": 0,
-        "custaddress": 0,
-        "custname": 0,
-        "nationkey": 0,
+        "regionkey": 143, 
+        "region": 143,
+        "custkey": 0, 
+        "CUSTPHONE": 31,
+        "custaddress": 31, 
+        "custname": 0, 
+        "nationkey": 31, 
+        "NATION": 31, 
+        "NATIONCOMMENT": 31,
         "segment": 0
       },
-      "Total Record Number": 0
+      "Total Record Number": 143
     },
     "orderdate": {
       "Name": "orderdate",
