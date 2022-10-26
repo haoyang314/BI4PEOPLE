@@ -2,16 +2,18 @@ const {spawn} = require('child_process')
 const bodyParser = require('body-parser')
 const fs = require('fs');
 const path = require('path')
+
 var uint8arrayToString = function(data){
     return String.fromCharCode.apply(null, data);
 };
 
-
+//get "/imputation"
 exports.selection_database = function(req,res){
-    if (typeof req.session.viewStatus == 'undefined'){
-        req.session.viewStatus = "noExpert"
-    } 
-    res.locals.viewStatus = req.session.viewStatus
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }    
 
     let dw_rawdata = fs.readFileSync(path.join(__dirname, '../json', 'list.json'));
     db_list = JSON.parse(dw_rawdata)
@@ -20,20 +22,29 @@ exports.selection_database = function(req,res){
     res.end();
 }
 
-
+//post "/imputation"
 exports.database_infos= function(req,res){
-    const viewStatus = req.body.viewStatus
-    res.locals.viewStatus = viewStatus
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }    
 
     let dw_rawdata = fs.readFileSync(path.join(__dirname, '../json', 'allSchema.json'));
     let db_schema = JSON.parse(dw_rawdata)
     db_name = req.body.db_selected;
+
     res.render('imputation.ejs', {db_infos: db_list[db_name], db_schema: db_schema[db_name], pagename: 'Imputation'})
     res.end();
 }
 
+//post "/imputation/result"
 exports.postResult = function(req, res){
-    res.locals.viewStatus = req.body.viewStatus
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }    
 
     //dbInfos:  db_list[db_name]
 

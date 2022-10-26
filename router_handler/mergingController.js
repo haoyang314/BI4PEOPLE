@@ -7,12 +7,13 @@ var uint8arrayToString = function(data){
     return String.fromCharCode.apply(null, data);
 };
 
-
+//get "/merging"
 exports.database_infos= function(req,res){
-    if (typeof req.session.viewStatus == 'undefined'){
-        req.session.viewStatus = "noExpert"
-    } 
-    res.locals.viewStatus = req.session.viewStatus
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }    
 
     let all_rawdata = fs.readFileSync(path.join(__dirname, '../json', 'allSchema.json'))
     let all_schema = JSON.parse(all_rawdata)
@@ -22,16 +23,17 @@ exports.database_infos= function(req,res){
     res.end();
 }
 
-
+//post "/merging/result"
 exports.mergingResult=function(req,res){
     dwSelected = req.body.dwSelected
     userName = req.body.userName
     password = req.body.password
 
-    if (typeof req.session.viewStatus == 'undefined'){
-        req.session.viewStatus = "noExpert"
-    } 
-    res.locals.viewStatus = req.session.viewStatus
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }    
 
     let merging_rawdata = fs.readFileSync(path.join(__dirname, '../json','mergingSchema.json'))
     const merging_schema = JSON.parse(merging_rawdata)
@@ -49,7 +51,7 @@ exports.mergingResult=function(req,res){
                         "dsn":"localhost/orcl"
                     }
     fs.writeFile(path.join(__dirname, '../json','list.json'), JSON.stringify(db_infos,undefined,2), function (err) {
-        console.log(err);
+        //console.log(err);
         });
 
     //create database
@@ -93,12 +95,13 @@ exports.mergingResult=function(req,res){
     res.end()
 }
 
+//get "/merging/result"
 exports.refreshMergingResult=function(req,res){
-
-    if (typeof req.session.viewStatus == 'undefined'){
-        req.session.viewStatus = "noExpert"
-    } 
-    res.locals.viewStatus = req.session.viewStatus
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }    
 
     let merging_rawdata = fs.readFileSync(path.join(__dirname, '../json','mergingSchema.json'))
     const merging_schema = JSON.parse(merging_rawdata)
@@ -107,6 +110,7 @@ exports.refreshMergingResult=function(req,res){
     res.end()
 }
 
+//put "/merging/result"
 exports.changeName = function(req, res){
     const db_name = req.body.dbname
     const dim_names = JSON.parse(req.body.dimname)

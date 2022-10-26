@@ -23,47 +23,61 @@
     </div>
     <hr>
     <div class="w3-bar-block">
-        <a href="/files" class="w3-bar-item w3-button w3-padding <%- pagename=='Generation'? 'w3-blue':''%>"><i
-                    class='fa fa-database'></i>  Generation </a>
-        <a href="/merging" class="w3-bar-item w3-button w3-padding <%- pagename=='Merging'? 'w3-blue':''%>"><i
-                class='fas fa-coins'></i>  Merging</a>
-        <a href="/imputation" class="w3-bar-item w3-button w3-padding <%- pagename=='Imputation'? 'w3-blue':''%>"><i
-                class='fa fa-wrench'></i>  Imputation</a>
-        <hr>
-        <div class="w3-padding"> 
+        <form id="views" method="post">
+            <a href="/files" class="w3-bar-item w3-button w3-padding <%- pagename=='Generation'? 'w3-blue':''%>" name="link">
+                <i class='fa fa-database'></i>  
+                Generation 
+            </a>
+            <a href="/merging" class="w3-bar-item w3-button w3-padding <%- pagename=='Merging'? 'w3-blue':''%>" name="link">
+                <i class='fas fa-coins'></i>  
+                Merging
+            </a>
+            <a href="/imputation" class="w3-bar-item w3-button w3-padding <%- pagename=='Imputation'? 'w3-blue':''%>" name="link">
+                <i class='fa fa-wrench'></i>  
+                Imputation
+            </a>
 
-            <h6 style="margin-bottom: 12px;"><i class="fa fa-cog fa-fw"></i> <span> Select your version</span></h6>
-            
-            
-            <label class=" form-check-label" id="noExpert" onclick="setNoExpert()">
-                <span class="badge bg-primary rounded-pill" >
-                    No Expert
-                </span>
-            </label>&nbsp;
+            <hr>
 
-            <% if (viewStatus==="expert" ) { %>
-                <input type="checkbox" name="version" value="No Expert" id="select_version" disabled checked>&nbsp;
-            <% }else{ %>
-                <input type="checkbox" name="version" value="Expert" id="select_version" disabled>&nbsp;
-            <% } %>
-
-            <label class=" form-check-label"  id="expert" onclick="setExpert()">
-                <span class="badge bg-primary rounded-pill">
-                    Expert
-                </span>
-            </label>
-            
-
-            <h6 style="margin-top: 10px;">Version : 
-                <span class="badge bg-primary rounded-pill" id="session_val"> 
-                    <% if (viewStatus==="expert" ) { %>
-                        Expert
-                    <% }else{ %>
+            <div class="w3-padding"> 
+                <h6 style="margin-bottom: 12px;">
+                    <i class="fa fa-cog fa-fw"></i> 
+                    <span> 
+                        Select your version
+                    </span>
+                </h6>
+                
+                <label class=" form-check-label" id="noExpert" onclick="setNoExpert()">
+                    <span class="badge bg-primary rounded-pill" >
                         No Expert
-                    <% } %>  
-                </span>
-            </h6>
-        </div>
-        <!-- <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a> -->
+                    </span>
+                </label>&nbsp;
+
+                <% if (viewStatus === "Expert" ) { %>
+                    <input type="checkbox" name="version" value="Expert" id="select_version" disabled checked>&nbsp;
+                <% }else{ %>
+                    <input type="checkbox" name="version" value="No Expert" id="select_version" disabled >&nbsp;
+                <% } %>
+
+                <label class=" form-check-label"  id="expert" onclick="setExpert()">
+                    <span class="badge bg-primary rounded-pill">
+                        Expert
+                    </span>
+                </label>
+                
+
+                <h6 style="margin-top: 10px;">Version : 
+                    <span class="badge bg-primary rounded-pill" id="session_val"> 
+                        <% if (viewStatus==="Expert" ) { %>
+                            Expert
+                        <% }else{ %>
+                            No Expert
+                        <% } %>  
+                    </span>
+                </h6>
+            </div>
+            <!-- <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a> -->
+            <input type="hidden" value="noExpert" name="viewInitial">
+        </form>
     </div>
 </nav>

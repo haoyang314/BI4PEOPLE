@@ -73,16 +73,44 @@
         if($("input[name='version']").prop('checked') == true ){
             $("input[name='version']").prop('checked', false)
             $('#session_val').text("No Expert")
+            $("input[name=viewInitial]").val("noExpert")
         }
+        fetch('/setsession', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+            },
+            body: JSON.stringify({ "version": "No Expert" })
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                $('#session_val').text(result.version)
+            })
     }
 
     function setExpert() {
         if($("input[name='version']").prop('checked') != true ){
             $('#session_val').text("Expert")
             $("input[name='version']").prop('checked', true)
+            $("input[name=viewInitial]").val("expert")
         }
-        
+        fetch('/setsession', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+            },
+            body: JSON.stringify({ "version": "Expert" })
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                $('#session_val').text(result.version)
+            })
     }
+
+    $('a[name="link"]').click(function() {
+        $('#views').submit()
+    })
+        
 </script>
 </body>
 
