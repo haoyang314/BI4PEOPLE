@@ -269,13 +269,17 @@
                     </div>
                     <div id="complement" style="display: none;">
                       <div class="mb-3 row">
-                        <label for="k" class="col-sm-5 col-form-label">K:</label>
+                        <label for="k" class="col-sm-5 col-form-label">
+                          K <span style="color: red;">*</span>:
+                        </label>
                         <div class="col-sm-5">
-                          <input type="text" class="form-control" id="k" name="kvalue">
+                          <input type="text" class="form-control" id="k" name="kvalue" pattern="[0-9]+">
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label for="weight" class="col-sm-5 col-form-label">Hierarchy level weight:</label>
+                        <label for="weight" class="col-sm-5 col-form-label">
+                          Hierarchy level weight <span style="color: red;">*</span>:
+                        </label>
                         <div class="col-sm-5">
                           <select class="form-select form-select-md mb-3" aria-label=".form-select-lg example" name="weight">
                             <option value="wc">wc</option>
