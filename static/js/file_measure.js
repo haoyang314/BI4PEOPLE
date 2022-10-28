@@ -130,4 +130,12 @@ $(document).ready(() => {
         })
 
     })
+
+    if ( $("#select_version").prop("checked") ){
+        $("a[name='expert']").show()
+        $("span[name='expert']").show()
+        
+        $("a[name='noExpert']").hide()
+        $("span[name='noExpert']").hide()
+    }
 })

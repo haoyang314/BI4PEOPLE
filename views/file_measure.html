@@ -24,8 +24,13 @@
         <div
             class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding w3-border-blue">
             <a href="javascript:void(0)" onclick="openSecondTab(event, 'measure_panel--{{file.filename}}');"
-                style="text-decoration: none; text-align: center;">
-                {{session=='Expert'? 'Measure':'Indicator'}} Detection
+                style="text-decoration: none; text-align: center; display: none;" name="expert">
+                Measure Detection
+            </a>
+            <a href="javascript:void(0)" onclick="openSecondTab(event, 'measure_panel--{{file.filename}}');"
+                style="text-decoration: none; text-align: center;" name="noExpert">
+                Indicator Detection
+                <!-- {{session =='Expert'? 'Measure':'Indicator'}} Detection -->
             </a>
             <span id="selec_measure_icon--{{file.filename}}" class="w3-button w3-light-grey w3-section">
                 <i class="far fa-minus-square"></i></span>
@@ -33,8 +38,13 @@
 
         <div class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding">
             <a href="javascript:void(0)" onclick="openSecondTab(event, 'schema_panel--{{file.filename}}' );"
-                style="text-decoration: none;">
-                {{session=='Expert'? 'Dimension':'Axis'}} Detection
+                style="text-decoration: none; display: none;" name="expert">
+                <!-- {{session=='Expert'? 'Dimension':'Axis'}} Detection -->
+                Dimension Detection
+            </a>
+            <a href="javascript:void(0)" onclick="openSecondTab(event, 'schema_panel--{{file.filename}}' );"
+                style="text-decoration: none;" name="noExpert">
+                Axis Detection
             </a>
             <span id="schema_icon--{{file.filename}}" class="w3-button w3-light-grey w3-padding w3-section">
                 <i class="far fa-minus-square"></i>
@@ -44,8 +54,13 @@
 
         <div class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding">
             <a href="javascript:void(0)" onclick="openSecondTab(event, 'db_panel--{{file.filename}}');"
-                style="text-decoration: none;">
-                Data Warehouse {{session=='Expert'? 'Implementation':'Generation'}}
+                style="text-decoration: none; display: none;" name="expert">
+                Data Warehouse Implementation
+                <!-- Data Warehouse {{session=='Expert'? 'Implementation':'Generation'}} -->
+            </a>
+            <a href="javascript:void(0)" onclick="openSecondTab(event, 'db_panel--{{file.filename}}');"
+                style="text-decoration: none;" name="noExpert">
+                Data Warehouse Generation
             </a>
             <span id="db_icon--{{file.filename}}" class="w3-button w3-light-grey w3-padding w3-section">
                 <i class="far fa-minus-square"></i>
@@ -59,8 +74,11 @@
         <!-- tab content for step1 select measures -->
         <div class="w3-panel" id="selec_measure_panel--{{file.filename}}">
             <form class="w3-form" id="form--{{file.filename}}" method="post" name="{{file.filename}}">
-                <h5><i class="far fa-check-circle w3-text-red w3-large"></i> Proposed {{session=='Expert'?
-                    'Measures':'Indicators'}} &emsp;
+                <h5>
+                    <i class="far fa-check-circle w3-text-red w3-large"></i> 
+                    <span name="expert" style="display: none;">Proposed Measures &emsp; </span>
+                    <span name="noExpert">Proposed Indicators &emsp; </span>
+                    <!-- Proposed {{session=='Expert'?'Measures':'Indicators'}} &emsp;  -->
                     <span class="badge bg-primary rounded-pill">
                         {{file.proposed_measures.length}}
                     </span>
@@ -81,8 +99,11 @@
                 </table>
                 <hr>
 
-                <h5><i class="fa fa-user-plus w3-text-yellow w3-large"></i> Can they also be {{session=='Expert'?
-                    'measures':'indicators'}} &emsp;
+                <h5>
+                    <i class="fa fa-user-plus w3-text-yellow w3-large"></i> 
+                    <!-- Can they also be {{session=='Expert'?'measures':'indicators'}} &emsp; -->
+                    <span name="expert" style="display: none;">Can they also be measures &emsp; </span>
+                    <span name="noExpert">Can they also be indicators &emsp; </span>
                     <!-- <i>Number: -->
                     <span class="badge bg-primary rounded-pill">
                         {{file.additional_measures.length}}

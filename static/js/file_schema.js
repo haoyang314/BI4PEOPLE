@@ -284,4 +284,20 @@ $(document).ready(() => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
+    if ( $("#select_version").prop("checked") ){
+        $("a[name='expert']").show()
+        $("span[name='expert']").show()
+        $("th[name='expert']").show()
+        $("button[name='expert']").show()
+        $("h1[name='expert']").show()
+        $("p[name='expert']").show()
+
+        $("a[name='noExpert']").hide()
+        $("span[name='noExpert']").hide()
+        $("th[name='noExpert']").hide()
+        $("button[name='noExpert']").hide()
+        $("h1[name='noExpert']").hide()
+        $("p[name='noExpert']").hide()
+    }
+
 })

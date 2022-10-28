@@ -54,7 +54,7 @@ $(document).ready(()=>{
             formData.append('file', files[i]);
         }
         formData.append('session', $('#session_val').text().trim())
-           $.ajax({
+        $.ajax({
             type: 'post',
             url: 'http://127.0.0.1:80/files',
             data: formData,
@@ -92,7 +92,7 @@ $(document).ready(()=>{
         //     console.error('Error:', error);
         //    })
     
-      })
+    })
     
     var upIndex = 0;
     function upload(files) {
@@ -142,8 +142,42 @@ $(document).ready(()=>{
         }, 100);
     }
     
+    //expert version
+    $("#expert").click(function(){
+        $("a[name='expert']").show()
+        $("span[name='expert']").show()
+        $("th[name='expert']").show()
+        $("button[name='expert']").show()
+        $("h1[name='expert']").show()
+        $("p[name='expert']").show()
+
+        $("a[name='noExpert']").hide()
+        $("span[name='noExpert']").hide()
+        $("th[name='noExpert']").hide()
+        $("button[name='noExpert']").hide()
+        $("h1[name='noExpert']").hide()
+        $("p[name='noExpert']").hide()
+        //console.log($("input[name=viewInitial]").val())
+    })
     
-    
+    //noExpert version
+    $("#noExpert").click(function(){
+        $("a[name='noExpert']").show()
+        $("span[name='noExpert']").show()
+        $("th[name='noExpert']").show()
+        $("button[name='noExpert']").show()
+        $("h1[name='noExpert']").show()
+        $("p[name='noExpert']").show()
+
+        $("a[name='expert']").hide()
+        $("span[name='expert']").hide()
+        $("th[name='expert']").hide()
+        $("button[name='expert']").hide()
+        $("h1[name='expert']").hide()
+        $("p[name='expert']").hide()
+        //console.log($("input[name=viewInitial]").val())
+    })
+
     
     // //  ============================ Listener ======================================
     // document.addEventListener("DOMContentLoaded", () => {

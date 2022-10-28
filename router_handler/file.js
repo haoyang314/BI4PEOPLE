@@ -26,12 +26,24 @@ const { json } = require('express');
 
 // get upload page
 exports.upload = (req, res) => {
+    // if (!req.session.VERSION) {
+    //     req.session.VERSION = req.body.session
+    // }
+    // console.log("Upload : req.session ==> " + req.session.VERSION)
+
     if (!req.session.VERSION) {
-        req.session.VERSION = req.body.session
+        req.session.VERSION = "No Expert"
     }
     console.log("Upload : req.session ==> " + req.session.VERSION)
-
-    var html = app.template('file', { session: req.session.VERSION, pagename: 'Generation' })
+   
+    //yang
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }
+    
+    var html = app.template('file', { session: req.session.VERSION, pagename: 'Generation', viewStatus: res.locals.viewStatus})
     res.end(html)
     // res.json({ session: req.session.VERSION, pagename: 'Generation' })
     // res.render(path.join(__dirname, '../views', 'file.html'))
@@ -39,6 +51,13 @@ exports.upload = (req, res) => {
 
 // ========================= Way 3 ========================
 exports.getMeasures = (req, res) => {
+    if (typeof req.session.VERSION == 'undefined'){
+        res.locals.viewStatus = "No Expert"
+    } else {
+        res.locals.viewStatus = req.session.VERSION
+    }
+
+
     console.log('req.files ' + req.files.length + " " + req.files + " " + req.files)
     if (!req.files) {
         throw Error("FILE_MISSING")
@@ -60,11 +79,14 @@ exports.getMeasures = (req, res) => {
         // res.render(path.join(__dirname, '../views', 'file_measure.html'), { files: dataToSends })
         // res.end()
         console.log("Measure : req.session ==> " + req.session.VERSION)
+        // if (!req.session.VERSION) {
+        //     req.session.VERSION = req.body.session
+        // }
         if (!req.session.VERSION) {
-            req.session.VERSION = req.body.session
+            req.session.VERSION = "No Expert"
         }
         console.log("Measure : req.session after ==> " + req.session.VERSION)
-        var html =  app.template('file_measure', { files: dataToSends, session: req.session.VERSION })
+        var html =  app.template('file_measure', { files: dataToSends, session: req.session.VERSION, viewStatus: res.locals.viewStatus })
         res.end(html)
     }
 }
@@ -106,8 +128,11 @@ exports.getSchema = (req, res) => {
         // data['additional_measure'] = fields.additional_measure
 
         console.log("Schema : req.session before ==> " + req.session.VERSION)
+        // if (!req.session.VERSION) {
+        //     req.session.VERSION = fields.session
+        // }
         if (!req.session.VERSION) {
-            req.session.VERSION = fields.session
+            req.session.VERSION = "No Expert"
         }
         console.log("Schema : req.session after ==> " + req.session.VERSION)
         console.log('req.fields.proposed_measure ' + fields.proposed_measure)

@@ -3,12 +3,20 @@
     <!-- detail content for step2 generate schema -->
     <div class="w3-panel" id="detail_schema_panel--{{database.filename}}">
         <h5><i class="fa fa-cube w3-text-green w3-large"></i> {{database.filename}} &emsp;
-            <span class="badge bg-primary rounded-pill">
-                {{database.dimensions.length}} {{session=='Expert'?'Dimensions':'Analysis Axis'}}
+            <span class="badge bg-primary rounded-pill" name="noExpert">
+                <!-- {{database.dimensions.length}} {{session=='Expert'?'Dimensions':'Analysis Axis'}} -->
+                {{database.dimensions.length}} Analysis Axis
+            </span>
+            <span class="badge bg-primary rounded-pill" name="expert" style="display: none;">
+                {{database.dimensions.length}} Dimensions
             </span>
             &emsp;&emsp;
-            <span class="badge bg-primary rounded-pill">
-                {{database.facts.length}} {{session=='Expert'?'Fact':'Subject'}}{{if database.facts.length > 1}}s{{/if}}
+            <span class="badge bg-primary rounded-pill" name="noExpert">
+                <!-- {{database.facts.length}} {{session=='Expert'?'Fact':'Subject'}}{{if database.facts.length > 1}}s{{/if}} -->
+                {{database.facts.length}} Subject{{if database.facts.length > 1}}s{{/if}}
+            </span>
+            <span class="badge bg-primary rounded-pill" name="expert" style="display: none;">
+                {{database.facts.length}} Fact{{if database.facts.length > 1}}s{{/if}}
             </span>
             &emsp;&emsp;
             <button type="button" id="edit_name_icon--{{database.filename}}"
@@ -58,9 +66,14 @@
 
                     <!-- add a modal for date dimension -->
                     {{if indexOf("date", lower(dim.name)) || (dim.attributes.length == 1 && indexOf("date", lower(dim.attributes[0])))}}
-                    <p>You can select the attributes for the {{session=="Expert"? 'hierarchies':
+                    <p name="noExpert">
+                        You can select the attributes for the analysis visions about the date.
+                        <!-- You can select the attributes for the {{session=="Expert"? 'hierarchies':
                         'analysis visions'}} about the
-                        date.
+                        date. -->
+                    </p>
+                    <p name="expert" style="display: none;">
+                        You can select the attributes for the hierarchies about the date.
                     </p>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -72,9 +85,12 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="select_date_modal_label--{{database.filename}}--{{indexdim}}">
-                                        Select date {{session=="Expert"? 'hierarchy':
-                                        'analysis vision'}} attributes
+                                    <h1 class="modal-title fs-5" id="select_date_modal_label--{{database.filename}}--{{indexdim}}" name="noExpert">
+                                        <!-- Select date {{session=="Expert"? 'hierarchy': 'analysis vision'}} attributes -->
+                                        Select date analysis vision attributes
+                                    </h1>
+                                    <h1 class="modal-title fs-5" id="select_date_modal_label--{{database.filename}}--{{indexdim}}" name="expert" style="display: none;">
+                                        Select date hierarchy attributes
                                     </h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     </button>
@@ -144,10 +160,21 @@
                     <table class="table table-striped table-hover" id="table_schema--{{database.filename}}--{{indexdim}}">
                         <tr>
                             <th width="20%">
-                                {{session=='Expert'? 'Dimension':'Analysis Axis'}} {{indexdim + 1}} <br>
-                                <span class="w3-text-grey" style="font-size: 10px;">
-                                    {{dim.hierarchies.length}}
-                                    {{session=='Expert'? 'Hierarchies':'Analysis Visions'}}
+                                <!-- {{session=='Expert'? 'Dimension':'Analysis Axis'}} {{indexdim + 1}} <br> -->
+                                <span name="noExpert">
+                                    Analysis Axis {{indexdim + 1}} <br>
+                                </span>
+                                <span name="expert" style="display: none;">
+                                    Dimension {{indexdim + 1}} <br>
+                                </span>
+                                <span class="w3-text-grey" style="font-size: 10px;" name="noExpert">
+                                    {{dim.hierarchies.length}} 
+                                    <!-- {{session=='Expert'? 'Hierarchies':'Analysis Visions'}} -->
+                                    Analysis Visions
+                                </span>
+                                <span class="w3-text-grey" style="font-size: 10px;" name="expert" style="display: none;">
+                                    {{dim.hierarchies.length}} 
+                                    Hierarchies
                                 </span>
                             </th>
                             <th>
@@ -172,7 +199,13 @@
                             <th colspan="2">
                                 <div class="row justify-content-around">
                                     <div class="col-4" style="text-align: center;">
-                                        {{session=='Expert'? 'Hierarchies':'Analysis Visions'}} &emsp;&emsp;
+                                        <span name="noExpert">
+                                            <!-- {{session=='Expert'? 'Hierarchies':'Analysis Visions'}} &emsp;&emsp; -->
+                                            Analysis Visions &emsp;&emsp;
+                                        </span>
+                                        <span name="expert" style="display: none;">
+                                            Hierarchies &emsp;&emsp;
+                                        </span>
                                         <span class="badge bg-primary rounded-pill">
                                             {{dim.hierarchies.length}}</span>
                                     </div>
@@ -184,12 +217,16 @@
                         </tr>
                         {{each dim.hierarchies h indexh}}
                         <tr>
-                            <th width="20%">
-                                {{session=='Expert'? 'Hierarchy':'Analysis Vision'}} {{indexh + 1}}
+                            <th width="20%" name="noExpert">
+                                <!-- {{session=='Expert'? 'Hierarchy':'Analysis Vision'}} {{indexh + 1}} -->
+                                Analysis Vision {{indexh + 1}}
                                 <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
                                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                     data-bs-title="In this {{session=='Expert'? 'dimension':'analysis axis'}}, you have following {{session=='Expert'? 'hierarchies':'analysis visions'}}."></i>
 
+                            </th>
+                            <th width="20%" name="expert" style="display: none;">
+                                Hierarchy {{indexh + 1}}
                             </th>
                             <td id="hie--{{dim.name + '_' + indexh}}">
                                 <div class="row justify-content-between">
@@ -205,11 +242,16 @@
                             </td>
                         </tr>
                         <tr class="detail_hie--{{dim.name + '_' + indexh}}">
-                            <th width="20%">
-                                - {{session=='Expert'? 'Parameters':'Levels'}} <i width="30px" height="30px"
+                            <th width="20%" name="noExpert">
+                                <!-- - {{session=='Expert'? 'Parameters':'Levels'}}  -->
+                                - Levels 
+                                <i width="30px" height="30px"
                                     viewBox="0 0 20 20" class="fa fa-info-circle w3-padding" data-bs-toggle="tooltip"
                                     data-bs-placement="top" data-bs-html="true"
                                     data-bs-title="In this {{session=='Expert'? 'hierarchy':'analysis vision'}}, you have following {{session=='Expert'? 'parameters':'levels'}}."></i>
+                            </th>
+                            <th width="20%" name="expert" style="display: none;">
+                                - Parameters 
                             </th>
                             <td>
                                 {{each h.parametres p indexP}}
@@ -218,12 +260,17 @@
                             </td>
                         </tr>
                         <tr class="detail_hie--{{dim.name + '_' + indexh}}">
-                            <th width="20%">
-                                - {{session=='Expert'? 'Weak Attributes':'Supplementary information'}} <i width="30px"
+                            <th width="20%" name="noExpert">
+                                <!-- - {{session=='Expert'? 'Weak Attributes':'Supplementary information'}}  -->
+                                - Supplementary information
+                                <i width="30px"
                                     height="30px" viewBox="0 0 20 20" class="fa fa-info-circle" data-bs-toggle="tooltip"
                                     data-bs-placement="top" data-bs-html="true"
                                     data-bs-title="The {{session=='Expert'? 'parameter':'level'}} contain following {{session=='Expert'? 'weak attributes':'supplementary information'}}.">
                                 </i>
+                            </th>
+                            <th width="20%" name="expert" style="display: none;">
+                                - Weak Attributes
                             </th>
                             <td>
                                 {{each h.weak_att wka indexWKA}}
@@ -285,12 +332,16 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col">
-                                {{session=="Expert"? 'Measures':'Indicators'}}
+                            <th scope="col" name="noExpert">
+                                <!-- {{session=="Expert"? 'Measures':'Indicators'}} -->
+                                Indicators
                                 <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
                                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                     data-bs-title="In this subject, you have following {{session=='Expert'? 'measures':'indicators'}}.">
                                 </i>
+                            </th>
+                            <th name="expert" style="display: none;">
+                                Measures
                             </th>
                             <td>
                                 {{each fact.measures measure indexm}}
@@ -317,13 +368,13 @@
         <!-- Button trigger modal -->
         <div class="row justify-content-between">
             <div class="col-4">
-                {{if session=='Expert'}}
+                <!-- {{if session=='Expert'}} -->
                 <!-- button 1 Edit Schema -->
                 <button id="open_edit_schema_modal--{{database.filename}}" type="button" class="btn btn-primary"
-                    data-bs-toggle="modal" data-bs-target="#edit_schema_modal--{{database.filename}}">
+                    data-bs-toggle="modal" data-bs-target="#edit_schema_modal--{{database.filename}}" name="expert" style="display: none;">
                     Edit Schema
                 </button>
-                {{/if}}
+                <!-- {{/if}} -->
             </div>
             <div class="col-4">
                 <!-- button 2 Confirme to Create DB -->
