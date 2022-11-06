@@ -32,7 +32,19 @@ const myStorage = multer.diskStorage({
     }
 })
 const upload = multer({storage:myStorage, 
-    // limits: {fileSize:10}
+    // limits: {fileSize:10},
+    // fileFilter: function (req, file, cb) {
+    //     if(file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg'){  //"text/csv"
+    //         cb(null, true) // proceed without error
+    //     }else{
+    //         // create custom error
+    //         const err = new Error()
+    //         err.name = "Extention Error"
+    //         err.message = "Only jpg, png or jpeg files allowed"
+
+    //         return cb(err, false)
+    //     }
+    //   }
 })
 // upload.any() == upload.array("file") or upload.single("file")
 router.post('/', upload.any() , fileHandler.getMeasures) //=============== Way 2 and 3 ==================
@@ -44,7 +56,7 @@ router.post('/upload', fileHandler.isExisted)
 // router.post('/', fileHandler.getFile)
 // router.post('/', fileHandler.uploadFile)
 
-
+router.delete('/delete/:id', fileHandler.deleteFile)
 router.post('/:id/schema', fileHandler.getSchema)
 router.post('/:id/editname', fileHandler.editName)
 router.post('/:id/editschema', fileHandler.editSchema)

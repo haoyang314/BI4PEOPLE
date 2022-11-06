@@ -65,7 +65,8 @@
                     aria-labelledby="nav-{{database.filename + '_' + dim.name + '_' + indexdim}}-tab" tabindex="0">
 
                     <!-- add a modal for date dimension -->
-                    {{if indexOf("date", lower(dim.name)) || (dim.attributes.length == 1 && indexOf("date", lower(dim.attributes[0])))}}
+                    {{if indexOf("date", lower(dim.name)) || (dim.attributes.length == 1 && indexOf("date",
+                    lower(dim.attributes[0])))}}
                     <p name="noExpert">
                         You can select the attributes for the analysis visions about the date.
                         <!-- You can select the attributes for the {{session=="Expert"? 'hierarchies':
@@ -81,15 +82,20 @@
                     </button>
                     <!-- Vertically centered scrollable modal -->
                     <div class="modal fade" id="select_date_modal--{{database.filename}}--{{indexdim}}" tabindex="-1"
-                        aria-labelledby="select_date_modal_label--{{database.filename}}--{{indexdim}}" aria-hidden="true">
+                        aria-labelledby="select_date_modal_label--{{database.filename}}--{{indexdim}}"
+                        aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="select_date_modal_label--{{database.filename}}--{{indexdim}}" name="noExpert">
+                                    <h1 class="modal-title fs-5"
+                                        id="select_date_modal_label--{{database.filename}}--{{indexdim}}"
+                                        name="noExpert">
                                         <!-- Select date {{session=="Expert"? 'hierarchy': 'analysis vision'}} attributes -->
                                         Select date analysis vision attributes
                                     </h1>
-                                    <h1 class="modal-title fs-5" id="select_date_modal_label--{{database.filename}}--{{indexdim}}" name="expert" style="display: none;">
+                                    <h1 class="modal-title fs-5"
+                                        id="select_date_modal_label--{{database.filename}}--{{indexdim}}" name="expert"
+                                        style="display: none;">
                                         Select date hierarchy attributes
                                     </h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
@@ -110,43 +116,57 @@
                                     </p>
                                     <form id="select_date_form--{{database.filename}}--{{indexdim}}"
                                         name="select_date_form--{{database.filename}}--{{indexdim}}" method="post">
-                                        <input class="form-check-input" type="checkbox" name="date" id="date_date" value="date"
+                                        <input class="form-check-input" type="checkbox" name="date"
+                                            id="date_date--{{database.filename}}--{{indexdim}}" value="date"
                                             form="select_date_form--{{database.filename}}--{{indexdim}}" checked>
-                                        <label class="form-check-label" for="date_date">
+                                        <label class="form-check-label"
+                                            for="date_date--{{database.filename}}--{{indexdim}}">
                                             Date
                                         </label>
-                                        <input class="form-check-input" type="checkbox" name="date" id="date_week"  value="week"
+                                        <input class="form-check-input" type="checkbox" name="date"
+                                            id="date_week--{{database.filename}}--{{indexdim}}" value="week"
                                             form="select_date_form--{{database.filename}}--{{indexdim}}" checked>
-                                        <label class="form-check-label" for="date_week">
+                                        <label class="form-check-label"
+                                            for="date_week--{{database.filename}}--{{indexdim}}">
                                             Week
                                         </label>
-                                        <input class="form-check-input" type="checkbox" name="date" id="date_month"  value="month"
+                                        <input class="form-check-input" type="checkbox" name="date"
+                                            id="date_month--{{database.filename}}--{{indexdim}}" value="month"
                                             form="select_date_form--{{database.filename}}--{{indexdim}}" checked>
-                                        <label class="form-check-label" for="date_month">
+                                        <label class="form-check-label"
+                                            for="date_month--{{database.filename}}--{{indexdim}}">
                                             Month
                                         </label>
-                                        <input class="form-check-input" type="checkbox" name="date" id="date_quarter"  value="quarter"
+                                        <input class="form-check-input" type="checkbox" name="date"
+                                            id="date_quarter--{{database.filename}}--{{indexdim}}" value="quarter"
                                             form="select_date_form--{{database.filename}}--{{indexdim}}" checked>
-                                        <label class="form-check-label" for="date_quarter">
+                                        <label class="form-check-label"
+                                            for="date_quarter--{{database.filename}}--{{indexdim}}">
                                             Quarter
                                         </label>
-                                        <input class="form-check-input" type="checkbox" name="date" id="date_semester" value="semester"
+                                        <input class="form-check-input" type="checkbox" name="date"
+                                            id="date_semester--{{database.filename}}--{{indexdim}}" value="semester"
                                             form="select_date_form--{{database.filename}}--{{indexdim}}" checked>
-                                        <label class="form-check-label" for="date_semester">
+                                        <label class="form-check-label"
+                                            for="date_semester--{{database.filename}}--{{indexdim}}">
                                             Semester
                                         </label>
-                                        <input class="form-check-input" type="checkbox" name="date" id="date_year" value="year"
+                                        <input class="form-check-input" type="checkbox" name="date"
+                                            id="date_year--{{database.filename}}--{{indexdim}}" value="year"
                                             form="select_date_form--{{database.filename}}--{{indexdim}}" checked>
-                                        <label class="form-check-label" for="date_year">
+                                        <label class="form-check-label"
+                                            for="date_year--{{database.filename}}--{{indexdim}}">
                                             Year
                                         </label>
                                     </form>
                                 </div>
                                 <!-- Modal Content ===end=== -->
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" id="btn_date_close--{{database.filename}}--{{indexdim}}"
+                                    <button type="button" class="btn btn-secondary"
+                                        id="btn_date_close--{{database.filename}}--{{indexdim}}"
                                         data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" id="btn_date--{{database.filename}}--{{indexdim}}">Save</button>
+                                    <button type="button" class="btn btn-primary"
+                                        id="btn_date--{{database.filename}}--{{indexdim}}">Save</button>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +177,8 @@
 
                     <!-- Table for Detail information of each dimension -->
                     <!-- New table for edit  -->
-                    <table class="table table-striped table-hover" id="table_schema--{{database.filename}}--{{indexdim}}">
+                    <table class="table table-striped table-hover"
+                        id="table_schema--{{database.filename}}--{{indexdim}}">
                         <tr>
                             <th width="20%">
                                 <!-- {{session=='Expert'? 'Dimension':'Analysis Axis'}} {{indexdim + 1}} <br> -->
@@ -168,17 +189,18 @@
                                     Dimension {{indexdim + 1}} <br>
                                 </span>
                                 <span class="w3-text-grey" style="font-size: 10px;" name="noExpert">
-                                    {{dim.hierarchies.length}} 
+                                    {{dim.hierarchies.length}}
                                     <!-- {{session=='Expert'? 'Hierarchies':'Analysis Visions'}} -->
                                     Analysis Visions
                                 </span>
-                                <span class="w3-text-grey" style="font-size: 10px;" name="expert" style="display: none;">
-                                    {{dim.hierarchies.length}} 
+                                <span class="w3-text-grey" style="font-size: 10px;" name="expert"
+                                    style="display: none;">
+                                    {{dim.hierarchies.length}}
                                     Hierarchies
                                 </span>
                             </th>
                             <th>
-                                <a href="javascript:;" class="editattribute dimname_{{indexdim}}"
+                                <a href="javascript:;" class="editattribute {{database.filename}} dimname_{{indexdim}}"
                                     style="text-decoration: none;">{{dim.name}}</a>
                             </th>
                         </tr>
@@ -231,7 +253,8 @@
                             <td id="hie--{{dim.name + '_' + indexh}}">
                                 <div class="row justify-content-between">
                                     <div class="col-4">
-                                        <a href="javascript:;" class="editattribute hiename_{{indexdim}}_{{indexh}}"
+                                        <a href="javascript:;"
+                                            class="editattribute {{database.filename}} hiename_{{indexdim}}_{{indexh}}"
                                             style="text-decoration: none;">{{h.name}}</a>
                                     </div>
                                     <div class="col-4">
@@ -244,14 +267,15 @@
                         <tr class="detail_hie--{{dim.name + '_' + indexh}}">
                             <th width="20%" name="noExpert">
                                 <!-- - {{session=='Expert'? 'Parameters':'Levels'}}  -->
-                                - Levels 
-                                <i width="30px" height="30px"
-                                    viewBox="0 0 20 20" class="fa fa-info-circle w3-padding" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-html="true"
-                                    data-bs-title="In this {{session=='Expert'? 'hierarchy':'analysis vision'}}, you have following {{session=='Expert'? 'parameters':'levels'}}."></i>
+                                - Levels
+                                <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle w3-padding"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                    data-bs-title="In this analysis vision, you have following levels."></i>
+
+                                <!-- data-bs-title="In this {{session=='Expert'? 'hierarchy':'analysis vision'}}, you have following {{session=='Expert'? 'parameters':'levels'}}." -->
                             </th>
                             <th width="20%" name="expert" style="display: none;">
-                                - Parameters 
+                                - Parameters
                             </th>
                             <td>
                                 {{each h.parametres p indexP}}
@@ -263,11 +287,11 @@
                             <th width="20%" name="noExpert">
                                 <!-- - {{session=='Expert'? 'Weak Attributes':'Supplementary information'}}  -->
                                 - Supplementary information
-                                <i width="30px"
-                                    height="30px" viewBox="0 0 20 20" class="fa fa-info-circle" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-html="true"
-                                    data-bs-title="The {{session=='Expert'? 'parameter':'level'}} contain following {{session=='Expert'? 'weak attributes':'supplementary information'}}.">
+                                <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                    data-bs-title="The level contain following supplementary information.">
                                 </i>
+                                <!-- data-bs-title="The {{session=='Expert'? 'parameter':'level'}} contain following {{session=='Expert'? 'weak attributes':'supplementary information'}}." -->
                             </th>
                             <th width="20%" name="expert" style="display: none;">
                                 - Weak Attributes
@@ -327,7 +351,7 @@
                         <tr>
                             <th scope="col" style="width: 20%">{{session=="Expert"? 'Fact':'Subject'}}</th>
                             <td scope="row" class="text-uppercase fw-bold">
-                                <a href="javascript:;" class="editattribute factname{{indexf}}"
+                                <a href="javascript:;" class="editattribute {{database.filename}} factname{{indexf}}"
                                     style="text-decoration: none;">{{fact.name}}</a>
                             </td>
                         </tr>
@@ -337,7 +361,7 @@
                                 Indicators
                                 <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
                                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                                    data-bs-title="In this subject, you have following {{session=='Expert'? 'measures':'indicators'}}.">
+                                    data-bs-title="In this subject, you have following indicators.">
                                 </i>
                             </th>
                             <th name="expert" style="display: none;">
@@ -368,13 +392,12 @@
         <!-- Button trigger modal -->
         <div class="row justify-content-between">
             <div class="col-4">
-                <!-- {{if session=='Expert'}} -->
                 <!-- button 1 Edit Schema -->
                 <button id="open_edit_schema_modal--{{database.filename}}" type="button" class="btn btn-primary"
-                    data-bs-toggle="modal" data-bs-target="#edit_schema_modal--{{database.filename}}" name="expert" style="display: none;">
+                    data-bs-toggle="modal" data-bs-target="#edit_schema_modal--{{database.filename}}" name="expert"
+                    style="display: none;">
                     Edit Schema
                 </button>
-                <!-- {{/if}} -->
             </div>
             <div class="col-4">
                 <!-- button 2 Confirme to Create DB -->
@@ -432,32 +455,38 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <p>Please create your new data warehouses :</p>
+                        <p>*user name and password can not cantain blank.</p>
                         <div class="mb-3 row">
-                            <label for="createUser" class="col-sm-4 col-form-label">User
-                                Name</label>
+                            <label for="gndb_username--{{database.filename}}" class="col-sm-4 col-form-label">User
+                                Name <span style="color: red;">*</span></label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="username--{{database.filename}}"
+                                <input type="text" class="form-control" id="gndb_username--{{database.filename}}"
                                     name="username" form="createdb_form--{{database.filename}}">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="createPassword" class="col-sm-4 col-form-label">Enter
-                                Password</label>
+                            <label for="gndb_pwd--{{database.filename}}" class="col-sm-4 col-form-label">Enter
+                                Password <span style="color: red;">*</span></label>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control" id="createPassword" name="password">
+                                <input type="password" class="form-control" id="gndb_pwd--{{database.filename}}"
+                                    name="password">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="pwd--{{database.filename}}" class="col-sm-4 col-form-label">Confirm
-                                Password</label>
+                            <label for="gndb_cf_pwd--{{database.filename}}" class="col-sm-4 col-form-label">Confirm
+                                Password <span style="color: red;">*</span></label>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control" id="pwd--{{database.filename}}" name="pwd"
-                                    form="createdb_form--{{database.filename}}"></td>
+                                <input type="password" class="form-control" id="gndb_cf_pwd--{{database.filename}}"
+                                    name="pwd" form="createdb_form--{{database.filename}}">
+                                <p><span id="gndb_pwd_message--{{database.filename}}"></span></p>
                             </div>
                         </div>
+                        <p id="gndb_cpt_message--{{database.filename}}"></p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" 
+                        id="btn_createdb_close--{{database.filename}}" data-bs-dismiss="modal">Close</button>
                         <form id="createdb_form--{{database.filename}}" name="createdb_form--{{database.filename}}"
                             method="post" action="/filusername--{{database.filename}}e/adddb/{{database.filename}}">
                             <button type="button" class="btn btn-primary"

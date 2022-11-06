@@ -24,12 +24,8 @@
         <div
             class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding w3-border-blue">
             <a href="javascript:void(0)" onclick="openSecondTab(event, 'measure_panel--{{file.filename}}');"
-                style="text-decoration: none; text-align: center; display: none;" name="expert">
-                Measure Detection
-            </a>
-            <a href="javascript:void(0)" onclick="openSecondTab(event, 'measure_panel--{{file.filename}}');"
-                style="text-decoration: none; text-align: center;" name="noExpert">
-                Indicator Detection
+                style="text-decoration: none; text-align: center;">
+                <span name="noExpert">Indicator</span><span name="expert" style="display: none;">Measure</span> Detection
                 <!-- {{session =='Expert'? 'Measure':'Indicator'}} Detection -->
             </a>
             <span id="selec_measure_icon--{{file.filename}}" class="w3-button w3-light-grey w3-section">
@@ -38,13 +34,9 @@
 
         <div class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding">
             <a href="javascript:void(0)" onclick="openSecondTab(event, 'schema_panel--{{file.filename}}' );"
-                style="text-decoration: none; display: none;" name="expert">
+                style="text-decoration: none;" >
                 <!-- {{session=='Expert'? 'Dimension':'Axis'}} Detection -->
-                Dimension Detection
-            </a>
-            <a href="javascript:void(0)" onclick="openSecondTab(event, 'schema_panel--{{file.filename}}' );"
-                style="text-decoration: none;" name="noExpert">
-                Axis Detection
+                <span name="noExpert">Axis</span><span name="expert" style="display: none;">Dimension</span> Detection
             </a>
             <span id="schema_icon--{{file.filename}}" class="w3-button w3-light-grey w3-padding w3-section">
                 <i class="far fa-minus-square"></i>
@@ -54,13 +46,9 @@
 
         <div class="w3-third secondtablink--{{file.filename}} w3-bottombar w3-hover-light-grey w3-padding">
             <a href="javascript:void(0)" onclick="openSecondTab(event, 'db_panel--{{file.filename}}');"
-                style="text-decoration: none; display: none;" name="expert">
-                Data Warehouse Implementation
+                style="text-decoration: none;">
+                Data Warehouse <span name="noExpert">Generation</span><span name="expert" style="display: none;">Implementation</span>
                 <!-- Data Warehouse {{session=='Expert'? 'Implementation':'Generation'}} -->
-            </a>
-            <a href="javascript:void(0)" onclick="openSecondTab(event, 'db_panel--{{file.filename}}');"
-                style="text-decoration: none;" name="noExpert">
-                Data Warehouse Generation
             </a>
             <span id="db_icon--{{file.filename}}" class="w3-button w3-light-grey w3-padding w3-section">
                 <i class="far fa-minus-square"></i>

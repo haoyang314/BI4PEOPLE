@@ -26,11 +26,6 @@ const { json } = require('express');
 
 // get upload page
 exports.upload = (req, res) => {
-    // if (!req.session.VERSION) {
-    //     req.session.VERSION = req.body.session
-    // }
-    // console.log("Upload : req.session ==> " + req.session.VERSION)
-
     if (!req.session.VERSION) {
         req.session.VERSION = "No Expert"
     }
@@ -57,15 +52,12 @@ exports.getMeasures = (req, res) => {
         res.locals.viewStatus = req.session.VERSION
     }
 
-
-    console.log('req.files ' + req.files.length + " " + req.files + " " + req.files)
     if (!req.files) {
         throw Error("FILE_MISSING")
     } else {
         let dataToSends = []
         let filenames = []
         req.files.forEach(file => {
-
             let result = getFD1(file.originalname)
             // let result = getFD2(file.originalname)
             dataToSends.push(result)
@@ -73,28 +65,21 @@ exports.getMeasures = (req, res) => {
         })
 
         // send data to browser
-        console.log("Stage 8 : dataToSend ==> " + dataToSends.length + " " + dataToSends[0].filename + " " + dataToSends[0].code + " " + dataToSends[0].proposed_measures)
         // res.writeHead(200, { "Content-type": "text/html; charset=UTF-8" });
 
         // res.render(path.join(__dirname, '../views', 'file_measure.html'), { files: dataToSends })
         // res.end()
-        console.log("Measure : req.session ==> " + req.session.VERSION)
-        // if (!req.session.VERSION) {
-        //     req.session.VERSION = req.body.session
-        // }
+
         if (!req.session.VERSION) {
             req.session.VERSION = "No Expert"
         }
-        console.log("Measure : req.session after ==> " + req.session.VERSION)
         var html =  app.template('file_measure', { files: dataToSends, session: req.session.VERSION, viewStatus: res.locals.viewStatus })
-        res.end(html)
+        res.json({status:200, html:html})
     }
 }
 
 // =============== Is Existed =====================
 exports.isExisted = async (req, res) => {
-    console.log('Stage 4: req.body.files ' + req.body.filenames)
-    console.log('Stage 4: req.body.files[0] ' + req.body.filenames[0])
     if (!req.body.filenames) {
         throw Error("FILE_MISSING")
     } else {
@@ -106,7 +91,6 @@ exports.isExisted = async (req, res) => {
             }
         })
 
-        console.log('Stage 5: existList ' + existList.length)
         if (existList.length > 0) {
             res.json({ code: 200, result: existList })
             // res.send(JSON.stringify({code: 200, result: existList}))
@@ -118,25 +102,32 @@ exports.isExisted = async (req, res) => {
     }
 }
 
+exports.deleteFile = (req, res) => {
+    let filepath = path.join(__dirname, "../uploads", req.params.id + '.csv')
+    if (isFileExisted(filepath)) {
+        try{
+            fs.rmSync(filepath, {recursive: true});
+            res.json({code:200})
+        }catch(err){
+            console.log(`Error while deleting ${filepath}.`)
+            res.json({code:400})
+        }
+    }
+}
 
 exports.getSchema = (req, res) => {
     let form = new multiparty.Form()
     form.parse(req, function (err, fields, file) {
-        console.log(fields)
         // data['session'] = fields.session
         // data['proposed_measure'] = fields.proposed_measure
         // data['additional_measure'] = fields.additional_measure
-
-        console.log("Schema : req.session before ==> " + req.session.VERSION)
         // if (!req.session.VERSION) {
         //     req.session.VERSION = fields.session
         // }
         if (!req.session.VERSION) {
             req.session.VERSION = "No Expert"
         }
-        console.log("Schema : req.session after ==> " + req.session.VERSION)
-        console.log('req.fields.proposed_measure ' + fields.proposed_measure)
-        console.log('req.fields.additional_measure ' + fields.additional_measure)
+
         if (!req.params.id) {
             throw Error("FILE_MISSING")
         } else {
@@ -164,7 +155,6 @@ exports.getSchema = (req, res) => {
                 // let json_result = getJson(req.params.id + ".csv")
 
                 let cls, schemastr = schemaStyle(data_recu)
-                console.log(`schemastr ==> ${schemastr}`)
 
                 // res.render(path.join(__dirname, '../views', 'file_schema.html'), { database: json_result, session: req.session.VERSION })
                 // res.end()
@@ -177,7 +167,6 @@ exports.getSchema = (req, res) => {
             python.stdout.on('end', (code) => {
                 console.log(`child process close all stdio with code ${code}`);
             })
-            console.log(`end ===== `)
         }
     })
 
@@ -190,17 +179,16 @@ exports.editName = (req, res) => {
     form.parse(req, function (err, fields, file) {
         for (let i = 0; i < jsondata.dimensions.length; i++) {
             var dim = "dimension" + i
-            jsondata.dimensions[i].name = fields[dim]
+            jsondata.dimensions[i].name = fields[dim][0]
             for (let j = 0; j < jsondata.dimensions[i].hierarchies.length; j++) {
                 var hie = "hierarchy" + i + "_" + j
-                jsondata.dimensions[i].hierarchies.name = fields[hie]
+                jsondata.dimensions[i].hierarchies[j].name = fields[hie][0]
             }
         }
 
         for (let i = 0; i < jsondata.facts.length; i++) {
             var fact = "fact" + i
-            jsondata.facts[i].name = fields[fact]
-            console.log(`fact ${i} ${jsondata.facts[i].name} ${fields[fact]}`)
+            jsondata.facts[i].name = fields[fact][0]
         }
 
         if (!req.session.VERSION) {
@@ -209,9 +197,9 @@ exports.editName = (req, res) => {
 
         let jsondatastr = JSON.stringify(jsondata, undefined, 2)
         fs.writeFile(jsonpath, jsondatastr, (err) => {
-            if (err) { res.json({ code: 400 }) }
+            if (err) { res.json({code: 400 , err:err}) }
             let cls, schemastr = schemaStyle(jsondatastr)
-            res.json({ code: 200, cls: cls, schema: schemastr,})
+            res.json({ code: 200, cls: cls, schema: schemastr})
         })
     })
 }
@@ -247,24 +235,20 @@ exports.dateDimension = (req, res) => {
         let form = new multiparty.Form()
         form.parse(req, function (err, fields, file) {
             jsondata.dimensions[fields.index].attributes = fields.date
-            console.log("before ==> " + JSON.stringify(fields.date))
 
               // transfomr date dimension
             var new_hie = JSON.parse(JSON.stringify(fields.date)) // light copy
             var new_hie2 = []
-            
-            if (fields.date.indexOf("week") > -1 && getInclude(fields.date, ["month", "quarter","semester"]).length > 1){
+            if (fields.date.indexOf("week") > -1 && getInclude(fields.date, ["month", "quarter","semester"]).length > 0){
                 new_hie2.push(fields.date[0])
                 new_hie.splice(new_hie.indexOf("week"), 1)
+                console.log('new hie ' + new_hie)
                 new_hie2.push("week")
                 if (new_hie.indexOf("year") > -1){
                     new_hie2.push("year")
                 }
             }
 
-            console.log("after ==> " + JSON.stringify(fields.date))
-
- 
             jsondata.dimensions[fields.index].hierarchies = []
             jsondata.dimensions[fields.index].hierarchies.push({
                 name: "h_" + new_hie[0] +"_" + new_hie[1],
@@ -295,17 +279,6 @@ exports.dateDimension = (req, res) => {
     }
 }
 
-// exports.editSchema = (req, res) => {
-//     let jsonpath = path.join(__dirname, "../json", req.params.id + ".json")
-//     var jsondata = JSON.parse(fs.readFileSync(jsonpath))
-//     jsondata.dimensions = req.body.dimensions
-//     jsondata.facts = req.body.facts
-
-//     fs.writeFile(jsonpath, JSON.stringify(jsondata, undefined, 2), (err) => {
-//         if (err) { res.json({ code: 400 }) }
-//         res.json({ code: 200 })
-//     })
-// }
 
 exports.generateDB = (req, res) => {
     console.log("req.body " + req.body.data)
@@ -313,11 +286,9 @@ exports.generateDB = (req, res) => {
     if (!req.params.id) {
         throw Error("FILE_MISSING")
     } else {
-        console.log("DB : req.session ==> " + req.session.VERSION)
         if (!req.session.VERSION) {
             req.session.VERSION = req.body.session
         }
-        console.log("DB : req.session after ==> " + req.session.VERSION)
 
         let jsonpath = path.join(__dirname, "../json", req.params.id + ".json")
         let pypath = path.join(__dirname, '../python', 'generate_db.py')
@@ -415,7 +386,6 @@ function getJson(filename) {
     filename = filename.split(".")[0] + "_V0.csv"
     // ============= Edit for DW Test End ================
     let jsonpath = path.join(__dirname, "../json", filename.replace('csv', 'json'))
-    console.log(`python jsonpath is ${jsonpath}`)
     let data = ""
     try {
         data = JSON.parse(fs.readFileSync(jsonpath, 'utf-8'))

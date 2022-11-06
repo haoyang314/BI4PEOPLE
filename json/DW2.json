@@ -183,14 +183,14 @@
     ]
   ],
   "proposed_measures": [
-    "SUPPKEY"
+    "NATIONKEYCUS"
   ],
   "additional_measures": [
-    "QUANTITY",
-    "DISCOUNT",
-    "NATIONKEYCUS",
     "CUSTKEY",
-    "NATIONKEYSUPP"
+    "NATIONKEYSUPP",
+    "SUPPKEY",
+    "DISCOUNT",
+    "QUANTITY"
   ],
   "selected_measures": [
     "QUANTITY",
@@ -202,18 +202,55 @@
     "SUPPKEY,NATIONKEY_SUPP"
   ],
   "equal_att": [
-    "CUSTKEY=CUSTNAME,CUSTPHONE",
+    "CUSTKEY=CUSTPHONE,CUSTNAME",
     "NATIONKEY_CUS=NATIONCOMMENT_CUS,NATION_CUS",
-    "SUPPKEY=SUPPNAME,SUPPADDRESS",
-    "NATIONKEY_SUPP=NATIONCOMMENT_SUPP,NATION_SUPP"
+    "SUPPKEY=SUPPADDRESS,SUPPNAME",
+    "NATIONKEY_SUPP=NATION_SUPP,NATIONCOMMENT_SUPP"
   ],
   "weak_att": [
     "CUSTKEY:CUSTPHONE,CUSTNAME",
     "NATIONKEY_CUS:NATIONCOMMENT_CUS,NATION_CUS",
-    "SUPPKEY:SUPPNAME,SUPPADDRESS",
-    "NATIONKEY_SUPP:NATIONCOMMENT_SUPP,NATION_SUPP"
+    "SUPPKEY:SUPPADDRESS,SUPPNAME",
+    "NATIONKEY_SUPP:NATION_SUPP,NATIONCOMMENT_SUPP"
   ],
   "dimensions": [
+    {
+      "name": "SUPPKEY1",
+      "attributes": [
+        "SUPPADDRESS",
+        "SUPPKEY",
+        "NATIONCOMMENT_SUPP",
+        "NATIONKEY_SUPP",
+        "NATION_SUPP",
+        "SUPPNAME"
+      ],
+      "hierarchies": [
+        {
+          "name": "h_SUPPKEY_NATIONKEY_SUPP",
+          "hierarchy": "SUPPKEY(SUPPADDRESS,SUPPNAME),NATIONKEY_SUPP(NATION_SUPP,NATIONCOMMENT_SUPP)",
+          "parametres": [
+            "SUPPKEY",
+            "NATIONKEY_SUPP"
+          ],
+          "weak_att": [
+            {
+              "name": "SUPPKEY",
+              "wk": [
+                "SUPPADDRESS",
+                "SUPPNAME"
+              ]
+            },
+            {
+              "name": "NATIONKEY_SUPP",
+              "wk": [
+                "NATION_SUPP",
+                "NATIONCOMMENT_SUPP"
+              ]
+            }
+          ]
+        }
+      ]
+    },
     {
       "name": "ORDERDATE123",
       "attributes": [
@@ -252,21 +289,21 @@
     {
       "name": "CUSTKEY",
       "attributes": [
-        "CUSTKEY",
-        "CUSTPHONE",
-        "NATIONCOMMENT_CUS",
-        "SEGMENT",
-        "CUSTNAME",
         "NATION_CUS",
-        "NATIONKEY_CUS"
+        "NATIONKEY_CUS",
+        "CUSTNAME",
+        "CUSTPHONE",
+        "CUSTKEY",
+        "SEGMENT",
+        "NATIONCOMMENT_CUS"
       ],
       "hierarchies": [
         {
           "name": "h_CUSTKEY_NATIONKEY_CUS",
           "hierarchy": "CUSTKEY(CUSTPHONE,CUSTNAME),NATIONKEY_CUS(NATIONCOMMENT_CUS,NATION_CUS)",
           "parametres": [
-            "CUSTKEY",
-            "NATIONKEY_CUS"
+            "NATIONKEY_CUS",
+            "CUSTKEY"
           ],
           "weak_att": [
             {
@@ -289,8 +326,8 @@
           "name": "h_CUSTKEY_SEGMENT",
           "hierarchy": "CUSTKEY(CUSTPHONE,CUSTNAME),SEGMENT",
           "parametres": [
-            "CUSTKEY",
-            "SEGMENT"
+            "SEGMENT",
+            "CUSTKEY"
           ],
           "weak_att": [
             {
@@ -305,53 +342,31 @@
       ]
     },
     {
-      "name": "SUPPKEY",
-      "attributes": [
-        "NATIONCOMMENT_SUPP",
-        "SUPPKEY",
-        "NATIONKEY_SUPP",
-        "SUPPADDRESS",
-        "NATION_SUPP",
-        "SUPPNAME"
-      ],
-      "hierarchies": [
-        {
-          "name": "h_SUPPKEY_NATIONKEY_SUPP",
-          "hierarchy": "SUPPKEY(SUPPNAME,SUPPADDRESS),NATIONKEY_SUPP(NATIONCOMMENT_SUPP,NATION_SUPP)",
-          "parametres": [
-            "SUPPKEY",
-            "NATIONKEY_SUPP"
-          ],
-          "weak_att": [
-            {
-              "name": "SUPPKEY",
-              "wk": [
-                "SUPPNAME",
-                "SUPPADDRESS"
-              ]
-            },
-            {
-              "name": "NATIONKEY_SUPP",
-              "wk": [
-                "NATIONCOMMENT_SUPP",
-                "NATION_SUPP"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "DATE",
       "attributes": [
-        "DATE"
+        "date",
+        "week",
+        "month",
+        "year"
       ],
       "hierarchies": [
         {
-          "name": "DATE",
-          "hierarchy": "DATE",
+          "name": "h_date_month",
+          "hierarchy": "date,month,year",
           "parametres": [
-            "DATE"
+            "date",
+            "month",
+            "year"
+          ],
+          "weak_att": []
+        },
+        {
+          "name": "h_date_week",
+          "hierarchy": "date,week,year",
+          "parametres": [
+            "date",
+            "week",
+            "year"
           ],
           "weak_att": []
         }
@@ -366,9 +381,9 @@
         "DISCOUNT"
       ],
       "associations": [
+        "SUPPKEY",
         "ORDERDATE",
-        "CUSTKEY",
-        "SUPPKEY"
+        "CUSTKEY"
       ]
     }
   ]

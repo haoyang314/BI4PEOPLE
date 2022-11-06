@@ -68,9 +68,8 @@
         evt.currentTarget.nextElementSibling.firstElementChild.className = "far fa-minus-square";
     }
 
-    //console.log($('#select_version'))
     function setNoExpert() {
-        if($("input[name='version']").prop('checked') == true ){
+        if ($("input[name='version']").prop('checked') == true) {
             $("input[name='version']").prop('checked', false)
             $('#session_val').text("No Expert")
             $("input[name=viewInitial]").val("noExpert")
@@ -89,7 +88,7 @@
     }
 
     function setExpert() {
-        if($("input[name='version']").prop('checked') != true ){
+        if ($("input[name='version']").prop('checked') != true) {
             $('#session_val').text("Expert")
             $("input[name='version']").prop('checked', true)
             $("input[name=viewInitial]").val("expert")
@@ -107,8 +106,27 @@
             })
     }
 
-        
-</script>
-</body>
+    // Show or fold the detail information of a hierarchie
+    $(document).on("click", "[id^=hie--]", function () {
+        var hie_name = $(this).attr('id').split("--")[1];
+        var tag = $(this).find('i');
+        if (tag.attr('class') == "fa fa-caret-up") {
+            tag.attr('class', "fa fa-sort");
+        } else {
+            tag.attr('class', "fa fa-caret-up");
+        }
+        $('.detail_hie--' + hie_name).toggle();
+    })
 
-</html>
+    // Show or fold the detail information of all hierarchies
+    $(document).on("click", "[id^=all_hie--]", function () {
+        var tag = $(this).find('i');
+        if (tag.attr('class') === "fa fa-caret-up") {
+            tag.attr('class', "fa fa-sort");
+        } else {
+            tag.attr('class', "fa fa-caret-up");
+        }
+        $(this).nextAll('tr').toggle();
+    })
+
+</script>

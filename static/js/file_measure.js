@@ -1,11 +1,10 @@
 $(document).ready(() => {
     $('[id^=file_fold]').click(function () {
         var show = $(this).find('i:eq(0)').attr('class') == "far fa-plus-square" ? true : false;
-        console.log("show ==> " + show);
         $(this).find('i:eq(0)').attr('class', show ? "far fa-minus-square" : "far fa-plus-square");
-        if(show){
+        if (show) {
             $(this).parent().nextAll().show();
-        }else{
+        } else {
             $(this).parent().nextAll().hide();
         }
     })
@@ -13,7 +12,7 @@ $(document).ready(() => {
     $('[id^=selec_measure_icon').click(function () {
         file = $(this).attr('id').split("--")[1];
         $('#measure_panel--' + file).toggle();
-        var show = $('#measure_panel--' + file).css("display")=="none"? false: true;
+        var show = $('#measure_panel--' + file).css("display") == "none" ? false : true;
         $(this).children(':first').attr('class', show ? "far fa-minus-square" : "far fa-plus-square");
         // var show = $(this).children(':first').attr('class') == "far fa-plus-square" ? true : false;
         // console.log("show ==> " + show);
@@ -27,9 +26,7 @@ $(document).ready(() => {
         var targetselect = '.propose--' + $(this).attr("id").split("--")[1];
         if ($(this).text() === "All") {
             $(this).text("None");
-            console.log($(this).text());
             $(this).css("color", "grey");
-            console.log('targetselect =>' + targetselect);
             $(targetselect).prop("checked", true);
 
         } else {
@@ -45,7 +42,6 @@ $(document).ready(() => {
         if ($(this).text() === "All") {
             $(targetselect).prop("checked", true)
             $(this).text("None");
-            console.log($(this).text())
             $(this).css("color", "grey");
 
         } else {
@@ -56,36 +52,26 @@ $(document).ready(() => {
         }
     })
 
-
     $('[id^=btn_measure]').click(function () {
-        // var file = $(this).parent().parent().prev().prop('firstChild').nodeValue;
+        $("#overlay").fadeIn(300);
+
         var file = $(this).attr('id').split("--")[1].trim();
-        console.log(`Stage 1 : filename ${file}  `);
         var form = document.getElementById('form--' + file);
         var formdata = new FormData(form);
-        var arraydata = $('#form--' + file).serialize();
-        console.log(`measure arraydata ${arraydata}`)
-        // var listdata = arraydata.split("&");
-        // for(let i=0; i< listdata.length; i++ ){
-        //     var kv = listdata[i].split("=")
-        //     formdata.append(kv[0], kv[1])
-        //     console.log(kv[0], kv[1])
-        // }
-        // console.log(`measure formdata ${formdata.getAll('proposed_measure')}`)
-
-        // =========== end modify ===========
         formdata.append('session', $('#session_val').text().trim())
-        var selec_div = "#selec_measure_panel--" + $(this).attr('id').split("--")[1];
-        if ($('schema_panel--' + file) !== undefined) {
+        if ($('#schema_panel--' + file) !== undefined) {
             $('#schema_panel--' + file).remove();
+        }
+
+        if ($('#db_panel--' + file) !== undefined) {
             $('#db_panel--' + file).remove();
         }
 
         $.ajax({
             type: 'post',
-            url: 'http://127.0.0.1:80/files/' + file.trim()+ "/schema",
+            url: 'http://127.0.0.1:80/files/' + file.trim() + "/schema",
             data: formdata,
-            xhrFields:{withCredentials:true},
+            xhrFields: { withCredentials: true },
             // Doesn't deal with the data and the contenu
             processData: false,
             // contentType: 'application/json;charset=utf-8',
@@ -103,14 +89,10 @@ $(document).ready(() => {
 
                 //  Add tab
                 var x, tablinks;
-                console.log("before " + $('#step_tab--' + file).children())
                 x = $('#step_tab--' + file).children();
                 tablinks = x.eq(0);
-                console.log('tablinks ' + tablinks)
-                tablinks.attr('class',tablinks.attr('class').replace(" w3-border-blue", ""));
+                tablinks.attr('class', tablinks.attr('class').replace(" w3-border-blue", ""));
                 x.eq(1).attr('class', x.eq(1).attr('class') + " w3-border-blue")
-                console.log('tablinks class ' +   tablinks.attr('class'))
-                console.log('measure panel ' +  document.getElementById("measure_panel--" + file).id)
                 // End add
 
                 //  ============ no select hierarchies version ============= 
@@ -118,24 +100,38 @@ $(document).ready(() => {
                 $('#selec_measure_icon--' + file).children(':first').attr("class", "far fa-minus-square");
                 $('#schema_icon--' + file).children(':first').attr("class", "far fa-minus-square");
                 $('#measure_panel--' + file).hide();
-                $('#message-text--'  + file).val()
+                $('#message-text--' + file).val()
 
             },
             error() {
-                var classname =  $("#err_exist").attr('class');
-                $("#err_exist").attr('class',  classname.replace(" w3-yellow", " w3-blue").replace(" w3-green", " w3-blue"))
-                $("#err_exist").html("<span onclick='this.parentElement.style.display=\"none\"' class='w3-button w3-large w3-display-topright'>&times;</span><h3>Info!</h3><p>Can't get schema, please try again!</p>")
-                // alert("Can not get hierarchies !!!");
+                setTimeout(function () {
+                    $("#overlay").fadeOut(300);
+                }, 500);
+
+                var classname = $("#err_exist").attr('class');
+                $("#err_exist").attr('class', classname.replace(" w3-yellow", " w3-blue").replace(" w3-green", " w3-blue")).show().delay(5000).hide(1000);
+                $("#err_exist").html("<span onclick='this.parentElement.style.display=\"none\"' class='w3-button w3-large w3-display-topright'>&times;</span><h3>Info!</h3><p>Can't get schema, please try again!</p>");
             }
-        })
+        }).done(function () {
+            setTimeout(function () {
+                $("#overlay").fadeOut(300);
+            }, 500);
+        });
 
     })
 
-    if ( $("#select_version").prop("checked") ){
-        $("a[name='expert']").show()
-        $("span[name='expert']").show()
-        
-        $("a[name='noExpert']").hide()
-        $("span[name='noExpert']").hide()
+    // if ( $("#select_version").prop("checked") ){
+    //     $("a[name='expert']").show()
+    //     $("span[name='expert']").show()
+
+    //     $("a[name='noExpert']").hide()
+    //     $("span[name='noExpert']").hide()
+    // }
+    if ($("#select_version").prop("checked")) {
+        $("[name='expert']").show()
+        $("[name='noExpert']").hide()
+    } else {
+        $("[name='expert']").hide()
+        $("[name='noExpert']").show()
     }
 })
