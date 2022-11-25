@@ -35,8 +35,10 @@ exports.mergingResult=function(req,res){
         res.locals.viewStatus = req.session.VERSION
     }    
 
+    //Python algo write mergingSchema.json
     let merging_rawdata = fs.readFileSync(path.join(__dirname, '../json','mergingSchema.json'))
     const merging_schema = JSON.parse(merging_rawdata)
+
     let all_rawdata = fs.readFileSync(path.join(__dirname, '../json','allSchema.json'))
     all_schema = JSON.parse(all_rawdata)
 

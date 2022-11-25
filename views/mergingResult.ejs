@@ -49,6 +49,34 @@
             </div>
         <% } %>
 
+        <% Object.entries(merging_schema).forEach(function(one_db){ 
+            const [db_name, db_schema]=one_db%>
+            <h5 class="mb-4">
+                <i class="fa fa-cube w3-text-green w3-large"></i> <%- userName %> &emsp;
+                <span class="badge bg-primary rounded-pill" name="noExpert">
+                    <%- Object.keys(db_schema).length-1 %> Analysis Axis
+                </span>
+                <span class="badge bg-primary rounded-pill" name="expert" style="display: none;">
+                    <%- Object.keys(db_schema).length-1 %> Dimensions
+                </span>
+                &emsp;&emsp;
+                <span class="badge bg-primary rounded-pill" name="noExpert">
+                    <% if (Object.keys(db_schema["Fact"]).length > 1){%>
+                        <%- Object.keys(db_schema["Fact"]).length %> Subjects
+                    <% } else {%>
+                        <%- Object.keys(db_schema["Fact"]).length %> Subject
+                    <% } %>
+                </span>
+                <span class="badge bg-primary rounded-pill" name="expert" style="display: none;">
+                    <% if (Object.keys(db_schema["Fact"]).length > 1){%>
+                        <%- Object.keys(db_schema["Fact"]).length %> Facts
+                    <% } else {%>
+                        <%- Object.keys(db_schema["Fact"]).length %> Fact
+                    <% } %>
+                </span>
+            </h5>
+        <% }) %>
+
         <!--Dimensions-->
         <p name="noExpert" class="fs-5">New axis infos:</p>
         <p name="expert" style="display: none;" class="fs-5">New dimensions infos:</p>
@@ -104,9 +132,9 @@
                                 <input type="hidden" value="<%- db_name %>" name="dbName">
                                 <table class="table table-hover table-responsive">
                                     <tr name="dimension">
-                                        <th scope="col" style="width: 18%" name="noExpert">Axis</th>
-                                        <th scope="col" style="width: 18%; display: none;"
-                                            name="expert">Dimension</th>
+                                        <th scope="col" style="width: 20%" name="noExpert">Axis <%- index+1 %></th>
+                                        <th scope="col" style="width: 20%; display: none;"
+                                            name="expert">Dimension <%- index+1 %></th>
                                         <td scope="row" class="text-uppercase fw-bold">
                                             <input class="form-control-plaintext text-uppercase" type="text"
                                                 placeholder="Create a new name."
@@ -123,17 +151,10 @@
                                                     <tr name = "hierarchy">
                                                         <th scope="col" name="noExpert">
                                                             Analysis Vision <%- index+1 %>
-                                                                <span
-                                                                    data-descr="In this axis, you have following analysis visions.">
-                                                                    <svg width="28px" height="28px"
-                                                                        viewBox="0 0 50 50"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <path
-                                                                            d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
-                                                                        <path
-                                                                            d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
-                                                                    </svg>
-                                                                </span>
+                                                            <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                                                data-bs-title="In this axis, you have following analysis visions.">
+                                                            </i>
                                                         </th>
                                                         <th scope="col" name="expert"
                                                             style="display: none;">Hierarchy <%- index+1 %>
@@ -150,13 +171,7 @@
                                                                         readonly>
                                                                 </div>
                                                                 <div class="col-2">
-                                                                    <svg width="20px" height="20px"
-                                                                        viewBox="0 0 20 20"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <path fill="#555"
-                                                                            fill-rule="evenodd"
-                                                                            d="M7.05307007,2.15808105 L14.2962587,9.41418482 C14.4320862,9.5496827 14.5,9.71077067 14.5,9.89744874 C14.5,10.0841268 14.4320862,10.2497803 14.2962587,10.3944092 C11.6760845,12.9498393 9.15095523,15.4168071 6.72087106,17.7953128 C6.5962677,17.912323 6.09560574,18.2032928 5.70989407,17.7705688 C5.3241824,17.3378448 5.55848694,16.9602509 5.70989407,16.8045692 C7.97174895,14.594209 10.3279004,12.2918355 12.7783485,9.89744874 L6.03100586,3.13816833 C5.78524099,2.79925826 5.80526899,2.48632792 6.09108986,2.19937732 C6.37691073,1.91242672 6.6975708,1.8986613 7.05307007,2.15808105 Z" />
-                                                                    </svg>
+                                                                    <i class="fa fa-sort"></i>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -167,16 +182,10 @@
                                                             <tr name="hieWeakAttributes" style="display: none;">
                                                                 <th scope="col" name="noExpert">
                                                                     - Supplementary Information
-                                                                    <span data-descr="The levels contain following supplementary information.">
-                                                                        <svg width="28px" height="28px"
-                                                                            viewBox="0 0 50 50"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <path
-                                                                                d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
-                                                                            <path
-                                                                                d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
-                                                                        </svg>
-                                                                    </span>
+                                                                    <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                                                        data-bs-title="The levels contain following supplementary information.">
+                                                                    </i>
                                                                 </th>
                                                                 <th scope="col" name="expert"
                                                                     style="display: none;">- <%- hie_key%>
@@ -195,16 +204,10 @@
                                                                 </th>
                                                                 <th scope="col" name="noExpert">
                                                                     - Analysis Levels
-                                                                    <span data-descr="In this vision, you have following analysis levels.">
-                                                                        <svg width="28px" height="28px"
-                                                                            viewBox="0 0 50 50"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <path
-                                                                                d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
-                                                                            <path
-                                                                                d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
-                                                                        </svg>
-                                                                    </span>
+                                                                    <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                                                        data-bs-title="In this vision, you have following analysis levels.">
+                                                                    </i>
                                                                 </th>
                                                                 <td class="text-uppercase">
                                                                     <%- hie_value%>
@@ -288,9 +291,11 @@
                     </div>
                 </div>
         
-                <button type="button" class="btn btn-primary mb-5" id="modifyDim">Modify</button>
-                <button type="button" class="btn btn-primary mb-5" style="display: none;" id="saveDim--<%- db_name%>">Confirm</button>
+                <button type="button" class="btn btn-primary mb-3" id="modifyDim">Modify</button>
+                <button type="button" class="btn btn-primary mb-3" style="display: none;" id="saveDim--<%- db_name%>">Confirm</button>
             </form>
+
+            <hr><br>
 
             <!--Facts-->
             <p name="noExpert" class="fs-5">New subjects infos:</p>
@@ -341,10 +346,10 @@
                                         <table class="table table-hover table-responsive">
                                             <tr>
                                                 <th scope="col" style="width: 20%"
-                                                    name="noExpert">Subject</th>
+                                                    name="noExpert">Subject <%- index +1 %></th>
                                                 <th scope="col"
                                                     style="width: 20%; display: none;"
-                                                    name="expert">Fact</th>
+                                                    name="expert">Fact <%- index +1 %></th>
                                                 <td scope="row" class="text-uppercase fw-bold">
                                                     <input class="form-control-plaintext text-uppercase"
                                                         type="text"
@@ -361,16 +366,10 @@
                                                     <tr>
                                                         <th scope="col" name="noExpert">
                                                             Indicators
-                                                            <span data-descr="In this subject, you have following indicators.">
-                                                                <svg width="28px" height="28px"
-                                                                    viewBox="0 0 50 50"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
-                                                                    <path
-                                                                        d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
-                                                                </svg>
-                                                            </span>
+                                                            <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                                                data-bs-title="In this subject, you have following indicators.">
+                                                            </i>
                                                         </th>
                                                         <th scope="col" name="expert"
                                                             style="display: none;">Measures</th>
@@ -383,18 +382,10 @@
                                                     <tr>
                                                         <th scope="col" name="noExpert">
                                                             Associated to
-                                                            <span
-                                                                data-descr="This subject can be analysed with respect to these axis.">
-                                                                <svg width="28px"
-                                                                    height="28px"
-                                                                    viewBox="0 0 50 50"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z" />
-                                                                    <path
-                                                                        d="M19.8 19.6c.3-.8.6-1.4 1.2-1.9.5-.5 1.1-.9 1.9-1.2s1.6-.4 2.5-.4c.7 0 1.4.1 2 .3.6.2 1.2.5 1.7.9s.9.9 1.1 1.5c.3.6.4 1.3.4 2 0 1-.2 1.8-.6 2.5s-1 1.3-1.6 2l-1.3 1.3c-.3.3-.6.6-.7.9-.2.3-.3.7-.3 1.1-.1.4-.1.7-.1 1.5h-1.6c0-.8 0-1.1.1-1.7.1-.5.3-1 .5-1.5.2-.4.5-.8.9-1.2.4-.4.9-.8 1.4-1.4.5-.5.9-1 1.2-1.5s.5-1.2.5-1.8c0-.5-.1-1-.3-1.4-.2-.4-.5-.8-.8-1.1-.3-.3-.7-.5-1.2-.7-.5-.2-.9-.3-1.4-.3-.7 0-1.3.1-1.8.4-.5.2-1 .6-1.3 1-.3.4-.6.9-.8 1.5s-.4.9-.4 1.6h-1.6c0-.9.1-1.6.4-2.4zM26 32v2h-2v-2h2z" />
-                                                                </svg>
-                                                            </span>
+                                                            <i width="30px" height="30px" viewBox="0 0 20 20" class="fa fa-info-circle"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                                                data-bs-title="This subject can be analysed with respect to these axis.">
+                                                            </i>
                                                         </th>
                                                         <th scope="col" name="expert"
                                                             style="display: none;">
@@ -428,7 +419,11 @@
                 $('h5[name=noExpert]').show()
                 $("p[name*='hints']").show()
                 $("p[name*='expert']").hide()
+                $('p[name=expert]').hide()
+                $('p[name=noExpert]').show()
                 $("tr[name='hierarchy-more']").hide()
+                $('span[name=expert]').hide()
+                $('span[name=noExpert]').show()
             })
 
             // expert version
@@ -438,6 +433,10 @@
                 $('th[name=expert]').show()
                 $('h5[name=noExpert]').hide()
                 $('h5[name=expert]').show()
+                $('p[name=noExpert]').hide()
+                $('p[name=expert]').show()
+                $('span[name=noExpert]').hide()
+                $('span[name=expert]').show()
                 $("p[name='expert-normal']").show()
 
                 //to more
@@ -461,6 +460,10 @@
                 $('th[name=expert]').show()
                 $('h5[name=noExpert]').hide()
                 $('h5[name=expert]').show()
+                $('p[name=noExpert]').hide()
+                $('p[name=expert]').show()
+                $('span[name=noExpert]').hide()
+                $('span[name=expert]').show()
                 $("p[name='expert-normal']").show()
 
                 //to more
@@ -485,11 +488,12 @@
                 $(this).next().next().toggle()
                 $(this).next().next().addClass("opencss")
                 var icon = $(this).children().last().children().children().last().children()
-
-                if (icon.hasClass("rotated")) {
-                    icon.removeClass("rotated")
+                if (icon.hasClass("fa-sort")) {
+                    icon.removeClass("fa-sort")
+                    icon.addClass("fa-caret-up")
                 } else {
-                    icon.addClass("rotated")
+                    icon.removeClass("fa-caret-up")
+                    icon.addClass("fa-sort")
                 }
             })
         
@@ -560,6 +564,8 @@
 
             })
     
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         })
         
 

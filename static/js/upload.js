@@ -88,7 +88,8 @@ $(document).ready(() => {
                                 filesize += files[i].size;
                                 percentComplete_i = 0;
                                 var uploaded = $('#progressbar' + i).parent();
-                                fileConent.eq(i).find('div span.uploading').replaceWith('<i class="fas fa-check"></i>');
+                                // fileConent.eq(i).find('div span.uploading').replaceWith('<i class="fas fa-check"></i>');
+                                fileConent.eq(i).find('div span.uploading').replaceWith('');
                                 var fileKB = Math.floor(files[i].size / 1024);
                                 fileConent.eq(i).children().eq(1).replaceWith(`<div class="size">${fileKB} KB</div>`);
                                 uploaded.attr('class', uploaded.attr('class') + " uploaded");
@@ -208,6 +209,11 @@ $(document).ready(() => {
                     if(document.getElementById('input_file').files.length===0){
                         $('.progress').remove();
                     }
+
+                    $("#views").children().first().bind('click', function() {
+                        window.location.href = $(this).attr('href');
+                    })
+                    
                 } else {
                     $("#err_exist").attr('class', classname.replace(" w3-green", " w3-yellow").replace(" w3-blue", " w3-yellow")).show().delay(5000).hide(1000);
                     $("#err_exist").html("<span onclick='this.parentElement.style.display=\"none\"' class='w3-button w3-large w3-display-topright'>&times;</span><h3>Info!</h3><p>Delete file failed!</p>")
@@ -251,6 +257,7 @@ $(document).ready(() => {
         $("button[name='expert']").show()
         $("h1[name='expert']").show()
         $("p[name='expert']").show()
+        $("h5[name='expert']").show()
 
         $("a[name='noExpert']").hide()
         $("span[name='noExpert']").hide()
@@ -258,6 +265,7 @@ $(document).ready(() => {
         $("button[name='noExpert']").hide()
         $("h1[name='noExpert']").hide()
         $("p[name='noExpert']").hide()
+        $("h5[name='noExpert']").hide()
         //console.log($("input[name=viewInitial]").val())
     })
 
@@ -269,6 +277,7 @@ $(document).ready(() => {
         $("button[name='noExpert']").show()
         $("h1[name='noExpert']").show()
         $("p[name='noExpert']").show()
+        $("h5[name='noExpert']").show()
 
         $("a[name='expert']").hide()
         $("span[name='expert']").hide()
@@ -276,6 +285,10 @@ $(document).ready(() => {
         $("button[name='expert']").hide()
         $("h1[name='expert']").hide()
         $("p[name='expert']").hide()
+        $("h5[name='expert']").hide()
         //console.log($("input[name=viewInitial]").val())
     })
+
+    
+
 })
