@@ -421,7 +421,7 @@
                 $("p[name*='expert']").hide()
                 $('p[name=expert]').hide()
                 $('p[name=noExpert]').show()
-                $("tr[name='hierarchy-more']").hide()
+                $("tr[name*='more']").hide()
                 $('span[name=expert]').hide()
                 $('span[name=noExpert]').show()
             })
@@ -450,7 +450,7 @@
                 $("p[name='expert-more']").click(function () {
                     $(this).hide()
                     $("p[name='expert-normal']").show()
-                    $("tr[name='hierarchy-more']").hide()
+                    $("tr[name*='more']").hide()
                 })
             })
 
@@ -477,7 +477,7 @@
                 $("p[name='expert-more']").click(function () {
                     $(this).hide()
                     $("p[name='expert-normal']").show()
-                    $("tr[name='hierarchy-more']").hide()
+                    $("tr[name*='more']").hide()
                 })
             }
 

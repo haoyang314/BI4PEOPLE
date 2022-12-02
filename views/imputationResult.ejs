@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Merging</title>
-    <%- include(process.cwd() +"/views/common/link.html") %>
-    <link rel="stylesheet" href="/css/collapse.css" type="text/css">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Merging</title>
+  <%- include(process.cwd() +"/views/common/link.html") %>
+  <link rel="stylesheet" href="../static/css/collapse.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/onoff.css">
 </head>
+
 <body class="w3-light-grey">
-    <%- include(process.cwd() +"/views/common/menu.html") %>
+    <%- include(process.cwd() +"/views/common/menu_yang.html") %>
     <%- include(process.cwd() +"/views/common/header.html") %>
 
       <div class="container-sm">
@@ -46,7 +49,8 @@
             <thead>
               <tr>
                 <th scope="col"></th>
-                <th scope="col">Dimension</th>
+                <th scope="col" name="expert" style="display: none;">Dimension</th>
+                <th scope="col" name="noExpert">Axis</th>
                 <th scope="col">Attribute</th>
                 <th scope="col">Missing Number</th>
                 <th scope="col">Completed Number</th>
@@ -75,6 +79,45 @@
         <% } %>       
       </div>
 
-      <%- include(process.cwd() +"/views/common/footer.html") %>
+      <%- include(process.cwd() +"/views/common/footer_yang.html") %>
+      <script>
+        $(document).ready(function () {
+          // no expert version
+          $("#noExpert").click(function () {
+              $('th[name=expert]').hide()
+              $('th[name=noExpert]').show()
+              $('select[name=noExpert]').show()
+              $('select[name=expert]').hide()
+              $('span[name=noExpert]').show()
+              $('span[name=expert]').hide()
+              $("p[name*='hints']").show()
+              $("input[name=viewStatus]").val("noExpert")
+            //}
+          })
+
+          // expert version
+          $("#expert").click(function () {
+              $("p[name*='hints']").hide()
+              $('th[name=noExpert]').hide()
+              $('th[name=expert]').show()
+              $('select[name=noExpert]').hide()
+              $('select[name=expert]').show()
+              $('span[name=noExpert]').hide()
+              $('span[name=expert]').show()
+              $("input[name=viewStatus]").val("expert")
+          })
+          
+          if ( $("#select_version").prop("checked") ){
+            $("p[name*='hints']").hide()
+            $('th[name=noExpert]').hide()
+            $('th[name=expert]').show()
+            $('select[name=noExpert]').hide()
+            $('select[name=expert]').show()
+            $('span[name=noExpert]').hide()
+            $('span[name=expert]').show()
+            $("input[name=viewStatus]").val("expert")
+          }
+        })  
+      </script>
     </body>
 </html>

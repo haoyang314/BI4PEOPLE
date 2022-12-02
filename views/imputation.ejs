@@ -77,13 +77,13 @@
                             <button class="nav-link active text-uppercase" id="nav-<%- dim_name%>-tab" data-bs-toggle="tab"
                               data-bs-target="#nav-<%- dim_name%>" type="button" role="tab" aria-controls="#nav-<%- dim_name%>"
                               aria-selected="true">
-                              <%- dim_name %>
+                              <%- dim_detail.Name %>
                             </button>
                           <% } else { %>
                             <button class="nav-link text-uppercase" id="nav-<%- dim_name%>-tab" data-bs-toggle="tab"
                               data-bs-target="#nav-<%- dim_name%>" type="button" role="tab"
                               aria-controls="#nav-<%- dim_name%>" aria-selected="false">
-                              <%- dim_name %>
+                              <%- dim_detail.Name %>
                             </button>
                           <% } %> 
                       <% } %>
@@ -107,7 +107,7 @@
                                 <th scope="col" style="width: 20%" name="noExpert">Axis</th>
                                 <th scope="col" style="width: 20%; display: none;" name="expert">Dimension</th>
                                 <td scope="row" class="text-uppercase fw-bold">
-                                  <%- dim_name %>
+                                  <%- dim_detail.Name %>
                                 </td>
                               </tr>
                                 <% Object.entries(dim_detail).forEach(function(property){ 
